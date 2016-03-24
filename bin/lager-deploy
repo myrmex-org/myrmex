@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+'use strict';
+
+var program = require('commander');
+program
+  .option('-s, --stage [stage]', 'Select the API stage to deploy [dev]', 'dev')
+  .option('--simulate', 'Simulate the deployment and generate a sample Swagger definition');
+
+var lager = require('lager');
+lager.deploy({
+  simulate: !!program.simulate,
+  stage: program.stage
+});

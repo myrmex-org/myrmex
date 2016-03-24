@@ -1,0 +1,48 @@
+{
+  "x-zazcar": {
+    "lambda": "sample-lambda",
+    "apis": ["sample-api"]
+  },
+  "produces": ["application/json"],
+  "responses": {
+    "200": {
+      "headers": {
+        "Access-Control-Allow-Headers": { "type": "string" },
+        "Access-Control-Allow-Methods": { "type": "string" },
+        "Access-Control-Allow-Origin": { "type": "string" }
+      }
+    },
+    "404": {
+      "headers": {
+        "Access-Control-Allow-Headers": { "type": "string" },
+        "Access-Control-Allow-Methods": { "type": "string" },
+        "Access-Control-Allow-Origin": { "type": "string" }
+      }
+    }
+  },
+  "x-amazon-apigateway-integration": {
+    "type": "aws",
+    "uri": "arn:aws:apigateway:{{ REGION }}:lambda:path/2015-03-31/functions/{{ LAMBDA_ARN }}/invocations",
+    "httpMethod": "POST",
+    "credentials": "{{ API_GATEWAY_LAMBDA_INVOKE_ROLE_ARN }}",
+    "requestTemplates": {
+      "application/json": "{\"endpoint\": {\"path\": \"$context.resourcePath\", \"method\": \"$context.httpMethod\"}, \"cognitoIdentityPoolId\": \"$context.identity.cognitoIdentityPoolId\", \"cognitoIdentityId\": \"$context.identity.cognitoIdentityId\", \"id\": \"$input.params('id')\", \"body\": $input.json('$') }"
+    },
+    "requestParameters": {},
+    "cacheNamespace": "cache-namespace",
+    "cacheKeyParameters": [],
+    "responses": {
+      "default": {
+        "statusCode": "200",
+        "responseParameters": {
+          "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-amz-security-token'",
+          "method.response.header.Access-Control-Allow-Methods": "'*'",
+          "method.response.header.Access-Control-Allow-Origin": "'*'"
+        },
+        "responseTemplates": {
+          "application/json": null
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "msg": {
+      "type": "string"
+    },
+    "input": {
+      "type": "object"
+    }
+  }
+}

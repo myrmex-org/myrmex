@@ -1,0 +1,31 @@
+{
+  "name": "aws-lager",
+  "version": "0.0.1",
+  "description": "AWS Lambda / API Gateway / Endpoint Router",
+  "main": "index.js",
+  "dependencies": {
+    "archiver": "*",
+    "aws-sdk": "*",
+    "bluebird": "^3.3.4",
+    "commander": "*",
+    "file": "*",
+    "lodash": "*",
+    "wrench": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test-ci": "XUNIT_FILE=\"reports/TESTS-xunit.xml\" NODE_ENV=\"test\" istanbul cover --include-all-sources=true _mocha -- --recursive -R xunit-file",
+    "test": "NODE_ENV=\"test\" istanbul cover --include-all-sources=true _mocha -- --recursive -R nyan"
+  },
+  "keywords": [
+    "AWS",
+    "Amazon",
+    "Lambda",
+    "Api",
+    "Gateway",
+    "Swagger"
+  ],
+  "author": "Alexis Hénaut"
+}

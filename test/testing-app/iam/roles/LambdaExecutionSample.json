@@ -1,0 +1,6 @@
+{
+  "managed-policies": [
+    "WriteLogs"
+  ],
+  "inline-policies": []
+}

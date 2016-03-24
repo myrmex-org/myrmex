@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+'use strict';
+
+var program = require('commander');
+
+program
+  .version('0.0.1')
+  .command('new [path_to_new_app]', 'create a new project')
+  .command('deploy', 'deploy the application')
+  .parse(process.argv);
