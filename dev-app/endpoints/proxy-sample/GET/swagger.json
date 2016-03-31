@@ -1,0 +1,35 @@
+{
+  "x-lager": {
+    "lambda": null,
+    "lambdaInvocationRole": null,
+    "apis": ["sample-api"]
+  },
+  "summary": "Returns the content of http://www.example.com/",
+  "description": "This endpoint proxyfies the page http://www.example.com/",
+  "responses": {
+    "200": {
+      "description": "Search results",
+      "schema": null
+    }
+  },
+  "x-amazon-apigateway-integration": {
+    "type": "HTTP",
+    "uri": "http://www.example.com/",
+    "httpMethod": "POST",
+    "requestTemplates": {
+      "application/json": null
+    },
+    "requestParameters": {},
+    "cacheNamespace": "cache-namespace",
+    "cacheKeyParameters": [],
+    "responses": {
+      "default": {
+        "statusCode": "200",
+        "responseParameters": null,
+        "responseTemplates": {
+          "application/json": null
+        }
+      }
+    }
+  }
+}

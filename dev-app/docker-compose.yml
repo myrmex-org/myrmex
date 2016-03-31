@@ -1,0 +1,12 @@
+# We use a container that uses AWS Lambda's version of Node.js
+node:
+  build: docker-compose/nodejs
+  env_file: docker-compose.env
+  volumes:
+    - ..:/home/lager/.node/lib/node_modules/lager
+    - .:/home/lager/app
+api-importer:
+  image: lager/api-importer
+  env_file: docker-compose.env
+  volumes:
+    - ./swagger/specifications:/usr/src/

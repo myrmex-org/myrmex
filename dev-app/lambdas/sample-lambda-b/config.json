@@ -1,0 +1,10 @@
+{
+  "params": {
+    "Timeout": 60,
+    "MemorySize": 128,
+    "Role": "LambdaExecutionSample"
+  },
+  "packageContent": [
+    "endpoints"
+  ]
+}

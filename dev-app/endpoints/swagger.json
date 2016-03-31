@@ -1,6 +1,7 @@
 {
   "x-lager": {
-    "lambda": "sample-lambda",
+    "lambda": "sample-lambda-a",
+    "lambdaInvocationRole": "LambdaInvocationSample",
     "apis": ["sample-api"]
   },
   "produces": ["application/json"],
@@ -24,7 +25,7 @@
     "type": "aws",
     "uri": "arn:aws:apigateway:{{ REGION }}:lambda:path/2015-03-31/functions/{{ LAMBDA_ARN }}/invocations",
     "httpMethod": "POST",
-    "credentials": "{{ API_GATEWAY_LAMBDA_INVOKE_ROLE_ARN }}",
+    "credentials": "LambdaInvocationSample",
     "requestTemplates": {
       "application/json": "{\"endpoint\": {\"path\": \"$context.resourcePath\", \"method\": \"$context.httpMethod\"}, \"cognitoIdentityPoolId\": \"$context.identity.cognitoIdentityPoolId\", \"cognitoIdentityId\": \"$context.identity.cognitoIdentityId\", \"id\": \"$input.params('id')\", \"body\": $input.json('$') }"
     },

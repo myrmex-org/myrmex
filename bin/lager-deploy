@@ -9,5 +9,6 @@ program
 var lager = require('lager');
 lager.deploy({
   simulate: !!program.simulate,
-  stage: program.stage
+  stage: program.stage,
+  environment: program.environment || 'NO_ENV'
 });
