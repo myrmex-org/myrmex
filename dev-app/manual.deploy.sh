@@ -34,12 +34,7 @@ fi
 ########################################
 # Deploy API Gateway
 ########################################
-docker run -it --rm \
-       --name manual-deploy-api-gateway \
-       --env-file dev.env \
-       -v "`pwd`/app/swagger:/usr/src/" \
-       brcomconcretesolutions/deploy-api-gateway \
-       /bin/bash -c /local.deploy.sh
+docker-compose run api-importer
 
 if [ $? -ne 0 ]; then
   # If the API Gateway deployment returned an error, we stop here

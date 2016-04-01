@@ -1,7 +1,7 @@
 {
   "x-lager": {
-    "lambda": null,
-    "lambdaInvocationRole": null,
+    "lambda": "",
+    "lambdaInvocationRole": "",
     "apis": ["sample-api"]
   },
   "summary": "Returns the content of http://www.example.com/",
@@ -19,6 +19,7 @@
     "requestTemplates": {
       "application/json": null
     },
+    "credentials": "",
     "requestParameters": {},
     "cacheNamespace": "cache-namespace",
     "cacheKeyParameters": [],
