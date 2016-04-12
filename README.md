@@ -14,3 +14,10 @@ Create a new project
 ```
 lager new <project-name>
 ```
+
+Deploy on AWS
+---
+
+```
+lager deploy
+```
