@@ -3,5 +3,5 @@ nodejs:
   build: docker-compose/nodejs
   env_file: docker-compose.env
   volumes:
-    - .:/home/dev/.node/lib/node_modules/lager
-    - ./dev-app:/var/www
+    - .:/home/lager/.node/lib/node_modules/lager
+    - ./dev-app:/home/lager/app

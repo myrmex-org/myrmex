@@ -1,8 +1,8 @@
-FROM alexisno/nodejs-dev:4.
+FROM lagerjs/node-dev
 
 USER root
-RUN change-dev-id 1001
-USER dev
+RUN change-uid 1001
+USER lager
 
 RUN npm install -g mocha istanbul
 
