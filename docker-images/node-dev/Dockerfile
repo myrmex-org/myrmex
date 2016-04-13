@@ -3,7 +3,7 @@ FROM ubuntu:latest
 
 MAINTAINER Alexis N-o "alexis@henaut.net"
 
-ENV NODE_VERSION=0.10.36
+ENV NODE_VERSION=4.3.2
 ENV USERNAME=lager
 
 # Install useful packages for a Node.js development environment

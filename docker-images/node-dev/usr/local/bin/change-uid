@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Change the "dev" user UID and GID
+# Change the "lager" user UID and GID
 
 # Retrieve new ids to apply
 USERNAME="lager"
