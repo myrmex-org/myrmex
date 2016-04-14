@@ -3,7 +3,7 @@ Lager
 
 AWS Lambda + API Gateway + Swagger + Docker === *Lager*
 
-The **L** ambda **A** PI **G** ateway **E** ndpoit **R** outer
+The **L**ambda **A**PI **G**ateway **E**ndpoints **R**outer
 
 *Under heavy development yet!*
 
