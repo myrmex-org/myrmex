@@ -1,5 +1,5 @@
 # We use a container that uses AWS Lambda's version of Node.js
-nodejs:
+node:
   build: docker-compose/nodejs
   env_file: docker-compose.env
   volumes:
