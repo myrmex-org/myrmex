@@ -1,0 +1,13 @@
+{
+  "swagger": "2.0",
+  "info": {},
+  "schemes": ["https"],
+  "host": "API_ID.execute-api.REGION.amazonaws.com",
+  "basePath": "",
+  "tags": [{
+    "name": "Lager",
+    "description": "Another lager sample API"
+  }],
+  "paths": {},
+  "definitions": {}
+}
