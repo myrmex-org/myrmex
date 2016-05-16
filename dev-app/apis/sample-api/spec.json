@@ -9,5 +9,17 @@
     "description": "Lager sample API"
   }],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "Sample": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "string"
+        },
+        "input": {
+          "type": "object"
+        }
+      }
+    }
+  }
 }
