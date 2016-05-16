@@ -25,7 +25,7 @@
     "type": "aws",
     "uri": "arn:aws:apigateway:{{ REGION }}:lambda:path/2015-03-31/functions/{{ LAMBDA_ARN }}/invocations",
     "httpMethod": "POST",
-    "credentials": "LambdaInvocationSample",
+    "credentials": "arn:aws:iam::856019870963:role/NO_ENV/NO_ENV_LambdaInvocationSample",
     "requestTemplates": {
       "application/json": "{\"endpoint\": {\"path\": \"$context.resourcePath\", \"method\": \"$context.httpMethod\"}, \"cognitoIdentityPoolId\": \"$context.identity.cognitoIdentityPoolId\", \"cognitoIdentityId\": \"$context.identity.cognitoIdentityId\", \"id\": \"$input.params('id')\", \"body\": $input.json('$') }"
     },

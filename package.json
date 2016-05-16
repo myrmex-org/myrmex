@@ -4,13 +4,13 @@
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "main": "index.js",
   "dependencies": {
-    "archiver": "*",
-    "aws-sdk": "*",
-    "bluebird": "^3.3.4",
+    "archiver": "^1.0.0",
+    "aws-sdk": "^2.3.9",
+    "bluebird": "^3.3.5",
     "commander": "*",
     "file": "*",
-    "lodash": "*",
-    "wrench": "*"
+    "lodash": "^4.12.0",
+    "wrench": "^1.5.9"
   },
   "devDependencies": {
     "mocha": "*"
