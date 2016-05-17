@@ -1,80 +1,127 @@
-Events to implements
+Lager plugings and hooks
 ===
 
-Events fired before any call to AWS
+Hooks allow to inject code during the execution of Lager.
+
+Definition of plugins
 ---
 
+A lager plugin is a node.js module that expose an object that has properties implementing hook functions.
+A function that implements a hook MUST return the `Promise` of a array containing its own parameters,
+eventually transformed.
+
 ```javascript
-lager.specBuilder.on('beforeInitAPISpec', () => {})           // this = ApiSpec instance
-lager.specBuilder.on('afterInitAPISpec', () => {})            // this = ApiSpec instance
-lager.specBuilder.on('beforeInitEndpointSpec', () => {})      // this = EndpointSpec instance
-lager.specBuilder.on('afterInitEndpointSpec', () => {})       // this = EndpointSpec instance
-lager.specBuilder.on('beforeAddEndpointsToAPISpec', (apiSpec) => {})
-lager.specBuilder.on('beforeAddEndpointToAPISpec', (endpointSpec, apiSpec) => {})
-lager.specBuilder.on('afterAddEndpointToAPISpec', (endpointSpec, apiSpec) => {})
-lager.specBuilder.on('afterAddEndpointsToAPISpec', (apiSpec) => {})
+module.exports = {
+  name: 'myShinyPlugin',
+  aHookThatIWantToUse: function(argument1, argument2) {
+    // Here we can alter argument1 and argument2
+    return Promise.resolve([argument1, argument2]);
+  },
+  anotherHookThatIWantToUse: function(argument1) {
+    // Here we can add code
+    return codeThatReturnsAPromise()
+    .then((promisedResult) => {
+      // Here I can alter argument1 with data from promisedResult
+      // ...
+      return Promise.resolve([argument1]);
+    }
+  }
+};
 ```
 
-Events fired during the deployment of policies
+Hooks fired by Lager core
 ---
 
 ```javascript
-lager.iamBuilder.on('beforeDeployAllPolicies', () => {})
-lager.iamBuilder.on('beforeDeployPolicy', () => {})           // this = Policy instance
-lager.iamBuilder.on('beforeCreatePolicy', () => {})           // this = Policy instance
-lager.iamBuilder.on('afterCreatePolicy', () => {})            // this = Policy instance
-lager.iamBuilder.on('beforeUpdatePolicy', () => {})           // this = Policy instance
-lager.iamBuilder.on('afterUpdatePolicy', () => {})            // this = Policy instance
-lager.iamBuilder.on('afterDeployPolicy', () => {})            // this = Policy instance
-lager.iamBuilder.on('afterDeployAllPolicies(', () => {})
+module.exports = {
+  beforeApisLoad: function() {}, // DONE
+  beforeApiLoad: function(apiSpecPath, identifier) // DONE
+  afterApiLoad: function(api) {}, // DONE
+  afterApisLoad: function() {}, // DONE
+
+  beforeEndpointsLoad: function() {}, // DONE
+  beforeEndpointLoad: function() {}, // DONE
+  afterEndpointLoad: function(endpoint) {}, // DONE
+  afterEndpointsLoad: function(endpoints) {}, // TODO
+
+  loadIntegrations: function([]) {},
+  beforeAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
+  afterAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
+
+  beforeAddEndpointsToApis: function(apis, endpoints) {}, // DONE
+  afterAddEndpointsToApis: function(apis, endpoints) {}, // DONE
+
+  beforePublishAllApis: function(apis) {}, // DONE
+  afterPublishAllApis: function(apis) {} // DONE
+};
 ```
 
-Events fired during the deployment of roles
+Hooks fired by Lager IAM plugin
 ---
 
 ```javascript
-lager.iamBuilder.on('beforeDeployAllRoles', () => {})
-lager.iamBuilder.on('beforeDeployRole', () => {})                     // this = Role instance
-lager.iamBuilder.on('beforeAttachPoliciesToRole(', (policies) => {})  // this = Role instance
-lager.iamBuilder.on('afterAttachPoliciesToRole', (policies) => {})    // this = Role instance
-lager.iamBuilder.on('beforeCreateRole', () => {})                     // this = Role instance
-lager.iamBuilder.on('afterCreateRole', () => {})                      // this = Role instance
-lager.iamBuilder.on('beforeUpdateRole', () => {})                     // this = Role instance
-lager.iamBuilder.on('afterUpdateRole', () => {})                      // this = Role instance
-lager.iamBuilder.on('afterDeployRole', () => {})                      // this = Role instance
-lager.iamBuilder.on('afterDeployAllRoles', () => {})
+// TODO
+module.exports = {
+  beforeDeployAllPolicies: function() {},
+  beforeDeployPolicy: function() {},
+  beforeCreatePolicy: function() {},
+  afterCreatePolicy: function() {},
+  beforeUpdatePolicy: function() {},
+  afterUpdatePolicy: function() {},
+  afterDeployPolicy: function() {},
+  afterDeployAllPolicies: function() {},
+
+  beforeDeployAllRoles: function() {},
+  beforeDeployRole: function() {},
+  beforeAttachPoliciesToRole: function() {},
+  afterAttachPoliciesToRole: function() {},
+  beforeCreateRole: function() {},
+  afterCreateRole: function() {},
+  beforeUpdateRole: function() {},
+  afterUpdateRole: function() {},
+  afterDeployRole: function() {},
+  afterDeployAllRoles: function() {}
+};
 ```
 
-Events fired during the deployment of lambdas
+Hooks fired by Lager Lambda Integration plugin
 ---
 
 ```javascript
-lager.lambdaBuilder.on('beforeDeployAllLambdas', () => {})
-lager.lambdaBuilder.on('beforeDeployLambda', () => {})          // this = Lambda instance
-lager.lambdaBuilder.on('beforeCreateLambda', () => {})          // this = Lambda instance
-lager.lambdaBuilder.on('beforeUpdateLambda', () => {})          // this = Lambda instance
-lager.lambdaBuilder.on('beforeBuildLambdaPackage', () => {})    // this = Lambda instance
-lager.lambdaBuilder.on('afterBuildLambdaPackage', () => {})     // this = Lambda instance
-lager.lambdaBuilder.on('beforePublishLambdaVersion', () => {})  // this = Lambda instance
-lager.lambdaBuilder.on('afterPublishLambdaVersion', () => {})   // this = Lambda instance
-lager.lambdaBuilder.on('afterDeployLambda', () => {})           // this = Lambda instance
-lager.lambdaBuilder.on('afterDeployAllLambdas', () => {})
+module.exports = {
+  beforeLambdasLoad: function() {}, // DONE
+  beforeLambdaLoad: function(lambdaConfigPath, identifier), // DONE
+  afterLambdaLoad: function(lambda), // DONE
+  afterLambdasLoad: function(lambdas), // DONE
+
+  // TODO
+  beforeDeployAllLambdas: function(lambdas) {},
+  beforeDeployLambda: function(lambda) {},
+
+  beforeCreateLambda: function(lambda) {},
+  beforeUpdateLambda: function(lambda) {},
+  beforeBuildLambdaPackage: function(lambda) {},
+  afterBuildLambdaPackage: function(lambda) {},
+  afterUpdateLambda: function(lambda) {},
+  afterCreateLambda: function(lambda) {},
+
+  beforePublishLambdaVersion: function(lambda) {},
+  afterPublishLambdaVersion: function(lambda) {},
+
+  afterDeployLambda: function(lambda) {},
+  afterDeployAllLambdas: function(lambdas) {}
+};
 ```
 
-Events fired when applying integration data to the specs
+Create new hooks
 ---
 
-```javascript
-lager.specBuilder.on('beforeAddIntegrationDataToEndpoint', (integrationData) => {})  // this = EndpointSpec instance
-lager.specBuilder.on('afterAddIntegrationDataToEndpoint', (integrationData) => {})   // this = EndpointSpec instance
-```
-
-Events fired during the deployment of APIs
----
+A lager plugin can fire it's own hooks by calling `lager.fire()`
 
 ```javascript
-lager.specBuilder.on('beforeDeployAllApis', () => {})
-lager.specBuilder.on('beforeDeployApi', () => {})     // this = ApiSpec instance
-lager.specBuilder.on('afterDeployApi', () => {})      // this = ApiSpec instance
-lager.specBuilder.on('afterDeployAllApis', () => {})
+lager.fire('myNewHookToInjectCode', argument1, argument2)
+.spread((argument1, argument2) => {
+  // Here I can continue to execute my plugin with arguments eventually transformed by other plugins
+  // ...
+});
 ```
