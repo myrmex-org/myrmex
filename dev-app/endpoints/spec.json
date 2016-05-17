@@ -2,7 +2,7 @@
   "x-lager": {
     "lambda": "sample-lambda-a",
     "lambdaInvocationRole": "LambdaInvocationSample",
-    "apis": ["sample-api"]
+    "apis": ["my-sample-api", "another-sample-api"]
   },
   "produces": ["application/json"],
   "responses": {

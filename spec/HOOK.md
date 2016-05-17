@@ -34,24 +34,32 @@ Hooks fired by Lager core
 
 ```javascript
 module.exports = {
+  // Load API configurations
   beforeApisLoad: function() {}, // DONE
   beforeApiLoad: function(apiSpecPath, identifier) // DONE
   afterApiLoad: function(api) {}, // DONE
   afterApisLoad: function() {}, // DONE
 
+  // Load endpoint configurations
   beforeEndpointsLoad: function() {}, // DONE
   beforeEndpointLoad: function() {}, // DONE
   afterEndpointLoad: function(endpoint) {}, // DONE
-  afterEndpointsLoad: function(endpoints) {}, // TODO
+  afterEndpointsLoad: function(endpoints) {}, // DONE
 
-  loadIntegrations: function([]) {},
+  // Execute integration plugins
+  // Here we can deploy Lambdas or proxified URLs and create instances of IntegrationDataInjector
+  loadIntegrations: function([]) {}, // DONE
   beforeAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
   afterAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
 
   beforeAddEndpointsToApis: function(apis, endpoints) {}, // DONE
+  beforeAddEndpointToApi: function(api, endpoint) {}, // DONE
+  afterAddEndpointToApi: function(api, endpoint) {}, // DONE
   afterAddEndpointsToApis: function(apis, endpoints) {}, // DONE
 
   beforePublishAllApis: function(apis) {}, // DONE
+  beforePublishApi: function(api) {}, // DONE
+  afterPublishApi: function(api) {}, // DONE
   afterPublishAllApis: function(apis) {} // DONE
 };
 ```

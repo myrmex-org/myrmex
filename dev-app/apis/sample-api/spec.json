@@ -1,4 +1,7 @@
 {
+  "x-lager": {
+    "identifier": "my-sample-api"
+  },
   "swagger": "2.0",
   "info": {},
   "schemes": ["https"],

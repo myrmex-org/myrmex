@@ -8,25 +8,26 @@ Configuration:
 
 ```javascript
 // Pseudo code to implement the sequelize blueprints
-lager.specBuilder.on('beforeAddEndpointsToAPISpec', (apiSpec) => {
-  if (applyBlueprintsToApi(apiSpec)) {
-    // Loop threw the Sequelize models
-    _.forEach(models, function(model) {
-      // Create REST endpoints to manipulate the models
-      apiSpec.addEndpoint({
-        path: model.name
-        method: 'GET'
-        spec: {}
+{
+  afterAddEndpointsToApis: function(api) {
+    if (applyBlueprintsToApi(api)) {
+      // Loop threw the Sequelize models
+      _.forEach(models, function(model) {
+        // Create REST endpoints to manipulate the models
+        api.addEndpoint({
+          path: model.name
+          method: 'GET'
+          spec: {}
+        })
       })
-    })
-    //
-})
+    }
+  },
 
-lager.lambdaBuilder.on('beforeBuildLambdaPackage', (pathToPackage) => {
-  if (lambdaExecuteBlueprints(apiSpec)) {
-    // We add the sequelize models to the package
-    copy(modelsFolder, pathToPackage);
-    copy(blueprintRouter, pathToPackage + '/lager-routers');
-  }
+  beforeBuildLambdaPackage: function(pathToPackage) {
+    if (lambdaExecuteBlueprints(apiSpec)) {
+      // We add the sequelize models to the package
+      copy(modelsFolder, pathToPackage);
+      copy(blueprintRouter, pathToPackage + '/lager-routers');
+    }
 })
 ```
