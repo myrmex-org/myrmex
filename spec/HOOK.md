@@ -1,4 +1,4 @@
-Lager plugings and hooks
+Lager plugins and hooks
 ===
 
 Hooks allow to inject code during the execution of Lager.
