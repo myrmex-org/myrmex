@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+'use strict';
+
+const program = require('commander');
+const lager = require('lager');
+
+program
+  .parse(process.argv);
+
+if (!program.args.length) {
+  console.log('You have to provide an API identifier');
+  process.exit(1);
+}
+
+lager.getApiSpec(program.args[0]);

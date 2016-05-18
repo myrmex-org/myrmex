@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-var program = require('commander');
-var wrench = require('wrench');
+const program = require('commander');
+const wrench = require('wrench');
 
-console.log(__dirname, process.cwd());
 wrench.copyDirSyncRecursive(
   __dirname + '/template-new',
   process.cwd(),
