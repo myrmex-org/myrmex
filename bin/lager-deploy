@@ -5,9 +5,9 @@ const program = require('commander');
 const lager = require('lager');
 
 program
-  .option('-r, --region [region]', 'Select the AWS region', process.env.AWS_DEFAULT_REGION || 'us-east-1')
-  .option('-s, --stage [stage]', 'Select the API Gateway stage', process.env.API_GATEWAY_STAGE || 'v0')
-  .option('-e, --environment [environment]', 'Select the environment', process.env.NODE_ENV || 'NO_ENV')
+  .option('-r, --region [region]', 'select the AWS region', process.env.AWS_DEFAULT_REGION || 'us-east-1')
+  .option('-s, --stage [stage]', 'select the API Gateway stage', process.env.API_GATEWAY_STAGE || 'v0')
+  .option('-e, --environment [environment]', 'select the environment', process.env.NODE_ENV || 'NO_ENV')
   .parse(process.argv);
 
 lager.deploy({

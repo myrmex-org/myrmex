@@ -1,11 +1,19 @@
 Roadmap
 ===
 
-*   ~~Update to node 4.3~~ **S**
-*   Setup the test container **M**
-*   Implements the components as Event Emitter to allow hooks **XL**
-*   Use AWS SDK to deploy the swagger file and not AWS API importer anymore **M**
-*   Create a sequelize blueprint plugin to automatically create REST API when declaring sequelize models **XL**
-*   Create a local webserver (Koa or Hapi?) **XL**
+*   Create a Lager plugin to inject documentation in the API **S** (Heucles)
+*   Create Github organization **S** (Alexis)
+*   Export the "doc" specification with double quotes **S**
+*   Allow CORS configuration **L**
+*   Update the dev application to create the "Planet Express" apis **L**
+*   Allow plugins to create new lager commands **L**
+*   Put the code about Api and Endpoint definitions in it's own plugin **M**
 *   Implements `lager` command line (see spec/COMMAND_LINE.md) **L**
+*   Create a plugin to create / update IAM roles/policies **L**
+*   Add a logging system **M**
+*   Write unit tests
+*   Setup continuous integration
+*   Setup the test container **M**
 *   When deploying, show the configuration api/endpoints using an array **M**
+*   Create a Sequelize REST blueprint plugin to automatically create REST API when declaring Sequelize models **XXL**
+*   Create a local webserver (Koa or Hapi?) **XXL**

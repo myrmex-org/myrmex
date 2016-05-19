@@ -5,6 +5,7 @@ const program = require('commander');
 const lager = require('lager');
 
 program
+  .option('-c, --colors', 'output with colors')
   .parse(process.argv);
 
 if (!program.args.length) {
@@ -12,4 +13,4 @@ if (!program.args.length) {
   process.exit(1);
 }
 
-lager.getApiSpec(program.args[0]);
+lager.outputApiSpec(program.args[0], program.colors);
