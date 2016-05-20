@@ -1,10 +1,10 @@
 {
   "name": "aws-lager",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "main": "index.js",
   "bin": {
-    "lager": "./bin/lager.js"
+    "lager": "./bin/lager"
   },
   "dependencies": {
     "archiver": "^1.0.0",
