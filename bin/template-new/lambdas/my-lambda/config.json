@@ -1,11 +1,11 @@
 {
-  "name": "sample-lambda",
   "params": {
     "Timeout": 60,
     "MemorySize": 128,
     "Role": "LambdaExecutionSample"
   },
-  "packageContent": [
-    "endpoints"
+  "includeEndpoints": true,
+  "includeLibs": [
+    "sample-a"
   ]
 }

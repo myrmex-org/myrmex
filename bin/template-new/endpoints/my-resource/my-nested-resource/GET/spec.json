@@ -1,0 +1,12 @@
+{
+  "summary": "Fails to retrieve a MyNestedResource object",
+  "description": "Example of Lager endpoint that returns an error",
+  "responses": {
+    "200": {
+      "description": "Execution succeed",
+      "schema": {
+        "$ref": "#/definitions/MyNestedResource"
+      }
+    }
+  }
+}
