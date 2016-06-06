@@ -13,7 +13,7 @@ Installation
 Install a recent version of *Docker* and *Docker Compose*
 
 ```bash
-npm install -g lager
+npm install -g aws-lager
 ```
 
 Create a new project
