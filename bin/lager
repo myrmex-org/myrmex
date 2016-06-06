@@ -11,8 +11,8 @@ var program = require('commander');
 
 program
   .version('0.0.1')
-  .command('new [path_to_new_app]', 'create a new project')
+  .command('new', 'create a new project')
   .command('deploy', 'deploy the application')
-  .command('inspect-api [identifier]', 'displays the OpenAPI specification of an API')
-  .command('inspect-endpoint [identifier]', 'displays the OpenAPI specification of an endpoint')
+  .command('inspect-api', 'displays the OpenAPI specification of an API')
+  .command('inspect-endpoint', 'displays the OpenAPI specification of an endpoint')
   .parse(process.argv);

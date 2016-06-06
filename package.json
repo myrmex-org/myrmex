@@ -7,16 +7,16 @@
     "lager": "./bin/lager"
   },
   "dependencies": {
-    "archiver": "^1.0.0",
-    "aws-sdk": "^2.3.9",
-    "bluebird": "^3.3.5",
-    "commander": "*",
-    "file": "*",
-    "lodash": "^4.12.0",
-    "wrench": "^1.5.9"
+    "archiver": "1.0.0",
+    "aws-sdk": "2.3.17",
+    "bluebird": "3.4.0",
+    "commander": "2.9.0",
+    "file": "0.2.2",
+    "lodash": "4.13.1",
+    "ncp": "2.0.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "2.5.3"
   },
   "scripts": {
     "test-ci": "XUNIT_FILE=\"reports/TESTS-xunit.xml\" NODE_ENV=\"test\" istanbul cover --include-all-sources=true _mocha -- --recursive -R xunit-file",

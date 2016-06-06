@@ -1,11 +1,25 @@
 #!/usr/bin/env node
 'use strict';
 
+const path = require('path');
 const program = require('commander');
-const wrench = require('wrench');
+const ncp = require('ncp');
 
-wrench.copyDirSyncRecursive(
-  __dirname + '/template-new',
-  process.cwd(),
-  { forceDelete: true }
-);
+let projectName;
+program
+  .arguments('[project-name]')
+  .action(function (name) {
+    projectName = name;
+  })
+  .parse(process.argv);
+
+
+const src = __dirname + '/template-new';
+const dst = projectName ? path.join(process.cwd(), projectName) : process.cwd();
+
+ncp(src, dst, (e) => {
+  if (e) {
+   return console.error(e);
+  }
+  console.log('New project created');
+});
