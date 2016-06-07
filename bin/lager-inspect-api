@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-const program = require('commander');
 const lager = require('lager');
+const program = lager.getProgram();
 
 program
   .option('-c, --colors', 'output with colors')

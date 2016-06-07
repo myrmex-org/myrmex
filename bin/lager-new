@@ -2,8 +2,9 @@
 'use strict';
 
 const path = require('path');
-const program = require('commander');
 const ncp = require('ncp');
+const lager = require('lager');
+const program = lager.getProgram();
 
 let projectName;
 program
@@ -18,8 +19,6 @@ const src = __dirname + '/template-new';
 const dst = projectName ? path.join(process.cwd(), projectName) : process.cwd();
 
 ncp(src, dst, (e) => {
-  if (e) {
-   return console.error(e);
-  }
+  if (e) { return console.error(e); }
   console.log('New project created');
 });

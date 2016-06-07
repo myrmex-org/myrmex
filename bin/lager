@@ -1,13 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-// var subcommand = process.argv;
-// console.log(subcommand);
-// var argv = require('minimist')(process.argv.slice(2));
-// console.dir(argv);
-// process.exit();
-
-var program = require('commander');
+const lager = require('lager');
+const program = lager.getProgram();
 
 program
   .version('0.0.1')
