@@ -15,5 +15,4 @@ module.exports = (program) => {
         console.log('New lambda created');
       });
     });
-
 };

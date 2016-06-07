@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "api-gateway",
+    "node-lambda"
+  ]
+}
