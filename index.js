@@ -9,9 +9,8 @@ try {
   config = require(path.join(process.cwd(), 'lager'));
   console.log('Lager project configuration loaded');
 } catch(e) {
-  console.error('Unable to load the Lager configuration. Are you in a Lager project folder?');
+  // console.error('Unable to load the Lager configuration. Are you in a Lager project folder?');
   config = {};
-  //process.exit(1);
 }
 
 config.plugins = config.plugins || [];

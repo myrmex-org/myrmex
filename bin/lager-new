@@ -3,22 +3,80 @@
 
 const path = require('path');
 const ncp = require('ncp');
-const lager = require('lager');
+const lager = require('lager/lib/lager');
+const Promise = lager.getPromise();
+const fs = Promise.promisifyAll(require('fs'));
 const program = lager.getProgram();
+const _ = lager.getLodash();
+const inquirer = lager.getInquirer();
+
+// If process.argv does not contain command arguments, commander will not call .action()
+// So we initialize the project-name argument with an empty string
+const argv = process.argv;
+if (argv.length == 2) {
+  argv.push('');
+}
 
 let projectName;
 program
-  .arguments('[project-name]')
-  .action(function (name) {
-    projectName = name;
+  .arguments('<project-name>')
+  .option('-p, --plugins <plugins-names>', 'list of plugins to activate for the project')
+  .action(function (name, options) {
+    const defaults = {
+      name,
+      plugins: options.plugins ? options.plugins.split(' ') : undefined
+    };
+    let projectConfig, configFilePath;
+    prompt(defaults)
+    .then(answers => {
+      projectConfig = {
+        name: answers.name || 'A Lager project',
+        plugins: answers.plugins
+      };
+      // If a name has been provided, we create the project directory
+      configFilePath = answers.name ? path.join(process.cwd(), answers.name) : process.cwd();
+      if (answers.name) {
+        return fs.mkdirAsync(configFilePath);
+      }
+      // Otherwise, the project will ne created in the current directory
+      return Promise.resolve();
+    })
+    .then(() => {
+      return fs.writeFileAsync(configFilePath + path.sep + 'lager.json', JSON.stringify(projectConfig, null, 2));
+    })
+    .then(() => {
+      console.log('New project created!');
+    })
+    .catch(e => {
+      console.error(e);
+    });
   })
-  .parse(process.argv);
+  .parse(argv);
 
 
-const src = __dirname + '/template-new';
-const dst = projectName ? path.join(process.cwd(), projectName) : process.cwd();
-
-ncp(src, dst, (e) => {
-  if (e) { return console.error(e); }
-  console.log('New project created');
-});
+function prompt(defaults) {
+  let questions = [{
+    type: 'input',
+    name: 'name',
+    message: 'What is your project name? If you do not provide one, the project will be created in the current directory.',
+    when: answers => { return !defaults.name; }
+  }, {
+    type: 'checkbox',
+    name: 'plugins',
+    message: 'Which core plugins do you want to use in your project?',
+    choices: [
+      { name: 'api-gateway', checked: true },
+      { name: 'node-lambda', checked: true }
+    ],
+    when: answers => { return !defaults.plugins; }
+  }];
+  return inquirer.prompt(questions)
+  .then(answers => {
+    _.forEach(defaults, (value, key) => {
+      if (!answers[key]) {
+        answers[key] = value;
+      }
+    });
+    return Promise.resolve(answers);
+  });
+}

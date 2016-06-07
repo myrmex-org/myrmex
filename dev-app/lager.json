@@ -1,4 +1,5 @@
 {
+  "name": "dev-app",
   "plugins": [
     "api-gateway",
     "node-lambda"
