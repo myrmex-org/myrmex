@@ -6,7 +6,7 @@ Roadmap
 *   Export the "doc" specification with double quotes **S**
 *   Allow CORS configuration **L**
 *   Update the dev application to create the "Planet Express" apis **L**
-*   ~Allow plugins to create new lager commands~ (Alexis) **L**
+*   ~~Allow plugins to create new lager commands~~ (Alexis) **L**
 *   Put the code about Api and Endpoint definitions in it's own plugin **M**
 *   Implements `lager` command line (see spec/COMMAND_LINE.md) **L**
 *   Create a plugin to create / update IAM roles/policies **L**
