@@ -9,8 +9,11 @@ const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();
 
 // Add plugin commands to lager cli
-require('./bin/deploy-apis');
+require('./bin/create-api');
+require('./bin/create-endpoint');
 require('./bin/inspect-api');
+require('./bin/inspect-endpoint');
+require('./bin/deploy-apis');
 
 const Api = require('./api');
 const Endpoint = require('./endpoint');
@@ -77,7 +80,8 @@ function loadApi(apiSpecPath, identifier) {
  * @return {Promise<[Endpoints]>}
  */
 function loadEndpoints() {
-  let endpointSpecsPath = path.join(process.cwd(), 'endpoints');
+  let endpointsDirectory = 'endpoints';
+  let endpointSpecsPath = path.join(process.cwd(), endpointsDirectory);
 
   return lager.fire('beforeEndpointsLoad')
   .spread(() => {
@@ -101,6 +105,12 @@ function loadEndpoints() {
   })
   .spread(endpoints => {
     return Promise.resolve(endpoints);
+  })
+  .catch(e => {
+    if (e.code === 'ENOENT' && path.basename(e.path) === endpointsDirectory) {
+      return Promise.resolve([]);
+    }
+    throw e;
   });
 }
 
@@ -115,6 +125,8 @@ function loadEndpoints() {
  * @return {Promise<Endpoint>}
  */
 function loadEndpoint(endpointSpecRootPath, resourcePath, method) {
+  // @TODO throw error if the endpoint does not exists
+  method = method.toUpperCase();
   return lager.fire('beforeEndpointLoad')
   .spread(() => {
     let parts = resourcePath.split('/');
@@ -271,15 +283,30 @@ function getApiSpec(identifier, colors) {
     return Promise.all([addEndpointsToApis([api], endpoints), endpoints]);
   })
   .spread((apis, endpoints) => {
-    return console.log(util.inspect(apis[0].genSpec('doc'), { colors, depth: null }));
+    // @TODO add syntax highlighting with "-c" option
+    return console.log(JSON.stringify(apis[0].genSpec('doc'), null, 2));
+    // return console.log(util.inspect(apis[0].genSpec('doc'), { colors, depth: null }));
   });
 }
+
+
+function getEndpointSpec(method, resourcePath, colors) {
+  let endpointSpecRootPath = path.join(process.cwd(), 'endpoints');
+  return loadEndpoint(endpointSpecRootPath, resourcePath, method)
+  .then(endpoint => {
+    // @TODO add syntax highlighting with "-c" option
+    return console.log(JSON.stringify(endpoint.getSpec(), null, 2));
+  });
+}
+
+
 
 module.exports = {
   name: 'api-gateway',
   hooks: {},
   helpers: {},
   outputApiSpec: getApiSpec,
+  outputEndpointSpec: getEndpointSpec,
   deploy: deploy
 };
 

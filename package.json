@@ -14,6 +14,7 @@
     "file": "0.2.2",
     "inquirer": "1.0.3",
     "lodash": "4.13.1",
+    "mkdirp": "^0.5.1",
     "ncp": "2.0.0"
   },
   "devDependencies": {
