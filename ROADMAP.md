@@ -22,6 +22,7 @@ General
 
 *   ~~Export the "doc" specification with double quotes~~ (Alexis) **S**
 *   ~~Put the code about Api and Endpoint definitions in it's own plugin~~ (Alexis) **M**
+*   Publish stages **S**
 *   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **M**
 *   Add syntax highlighting to inspection commands **S**
 *   Beautify deploy output (ASCII array describing configuration?) **M**
@@ -30,6 +31,7 @@ General
 ---
 
 *   Complete `node-lambda` command line (see spec/COMMAND_LINE.md) (Alexis) **M**
+*   Use aliases for versioning **S**
 *   Allow CORS configuration **L**
 *   Beautify deploy output **M**
 
