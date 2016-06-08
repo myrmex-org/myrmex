@@ -3,7 +3,7 @@
 const file = require('file');
 const path = require('path');
 const util = require('util');
-const lager = require('lager/lib/lager');
+const lager = require('aws-lager/lib/lager');
 const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();
@@ -308,6 +308,7 @@ module.exports = {
   name: 'api-gateway',
   hooks: {},
   helpers: {},
+  commands: {},
   outputApiSpec: getApiSpec,
   outputEndpointSpec: getEndpointSpec,
   deploy: deploy

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const lager = require('lager');
+const lager = require('aws-lager');
 const program = lager.getProgram();
 
 program
