@@ -213,11 +213,11 @@ function addEndpointsToApis(apis, endpoints) {
  * @param  {[type]} apis [description]
  * @return {[type]}      [description]
  */
-function publishAllApis(apis) {
+function publishAllApis(apis, region, stage, environment) {
   return lager.fire('beforePublishAllApis', apis)
   .spread((apis) => {
     return Promise.map(apis, (api) => {
-      return api.publish()
+      return api.publish(region, stage, environment)
       .then(() => {
         return lager.fire('afterPublishAllApis', apis);
       });
@@ -247,7 +247,10 @@ function buildSpecs() {
 }
 
 /**
- * @TODO use region, stage, environment args to configure the deployment
+ *
+ * @param  {string} region - AWS where we want to deploy APIs
+ * @param  {string} stage - the stage to apply to the deployment (typically, the version)
+ * @param  {string} environment - the environment prefixes the API name in API Gateway
  * @return {[type]}
  */
 function deploy(region, stage, environment) {
@@ -272,7 +275,7 @@ function deploy(region, stage, environment) {
   })
   .spread((apis, endpoints) => {
     // Now that we have complete API specifications, we can publish them in API Gateway
-    return publishAllApis(apis);
+    return publishAllApis(apis, region, stage, environment);
   });
 }
 

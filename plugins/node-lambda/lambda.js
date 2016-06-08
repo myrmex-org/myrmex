@@ -52,23 +52,23 @@ Lambda.prototype.toString =  function toString() {
 Lambda.prototype.deploy = function deploy(region, stage, environment) {
   console.log('   * Deploy ' + this.config.identifier);
 
-  const awsLambda = new AWS.Lambda({region});
+  const awsLambda = new AWS.Lambda({ region });
   return this.isDeployed(awsLambda)
   .then((isDeployed) => {
     if (isDeployed) {
       // If the function already exists
       console.log('   * The lambda ' + this.config.identifier + ' already exists');
-      return this.update(awsLambda);
+      return this.update(awsLambda, environment);
     } else {
       // If error occured because the function does not exists, we create it
       console.log('   * The lambda ' + this.config.identifier + ' does not exists');
-      return this.create(awsLambda);
+      return this.create(awsLambda, environment);
     }
   })
   .then((data) => {
     // Publish a new version
     console.log('   * Lambda ' + this.config.identifier + ' deployed');
-    return this.publishVersion(awsLambda);
+    return this.publishVersion(awsLambda, stage);
   })
   .then((data) => {
     console.log('   * Lambda ' + this.config.identifier + ' published: \x1b[0;36mversion ' + data.Version + '\x1b[0m');
@@ -150,9 +150,9 @@ Lambda.prototype.isDeployed = function isDeployed(awsLambda) {
  * Create the lambda in AWS
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.create = function create(awsLambda) {
+Lambda.prototype.create = function create(awsLambda, environment) {
   let params = _.cloneDeep(this.config.params);
-  return Promise.all([this.buildPackage(), lager.retrieveRoleArn(params.Role)])
+  return Promise.all([this.buildPackage(), lager.retrieveRoleArn(params.Role, environment)])
   .spread((buffer, roleArn) => {
     params.Code = { ZipFile: buffer };
     params.Role = roleArn;
@@ -166,7 +166,7 @@ Lambda.prototype.create = function create(awsLambda) {
  * Update the lambda in AWS
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.update = function update(awsLambda) {
+Lambda.prototype.update = function update(awsLambda, environment) {
   return this.buildPackage()
   .then((buffer) => {
     // First, update the code
@@ -177,7 +177,7 @@ Lambda.prototype.update = function update(awsLambda) {
     };
     return [
       Promise.promisify(awsLambda.updateFunctionCode.bind(awsLambda))(codeParams),
-      lager.retrieveRoleArn(this.config.params.Role)
+      lager.retrieveRoleArn(this.config.params.Role, environment)
     ];
   })
   .spread((codeUpdateResponse, roleArn) => {
@@ -195,7 +195,8 @@ Lambda.prototype.update = function update(awsLambda) {
  * Create a new version of the lambda
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.publishVersion = function publishVersion(awsLambda) {
+Lambda.prototype.publishVersion = function publishVersion(awsLambda, alias) {
+  // @TODO set alias and delete previous version
   let params = {
     FunctionName: this.config.params.FunctionName
   };
