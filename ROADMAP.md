@@ -4,7 +4,7 @@ Roadmap
 General
 ---
 
-*   Find a super cool name and create Github organization (Alexis) **S**
+*   Create Github organization (Alexis) **S**
 *   ~~Allow plugins to create new lager commands~~ (Alexis) **L**
 *   Manage IAM credentials from various sources: config file, environment variables, parameters **S**
 *   Update the dev application to create the "Planet Express" apis **L**
@@ -23,7 +23,7 @@ General
 *   ~~Export the "doc" specification with double quotes~~ (Alexis) **S**
 *   ~~Put the code about Api and Endpoint definitions in it's own plugin~~ (Alexis) **M**
 *   Publish stages **S**
-*   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **M**
+*   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **XL**
 *   Add syntax highlighting to inspection commands **S**
 *   Beautify deploy output (ASCII array describing configuration?) **M**
 
@@ -32,7 +32,6 @@ General
 
 *   Complete `node-lambda` command line (see spec/COMMAND_LINE.md) (Alexis) **M**
 *   Use aliases for versioning **S**
-*   Allow CORS configuration **L**
 *   Beautify deploy output **M**
 
 `iam` core plugin
@@ -44,5 +43,7 @@ General
 Other plugins
 ---
 
-*   Create a Lager plugin to inject documentation in the API (Heucles) **S**
-*   Create a Sequelize REST blueprint plugin to automatically create REST API when declaring Sequelize models **XL**
+*   Create a `api-gateway-cors` plugin to allow CORS configuration **L**
+*   Create a `api-gateway-self-doc` plugin to inject documentation in the API (Heucles) **S**
+*   Create a `sequelize-blueprints` plugin to automatically create REST API when declaring Sequelize models **XL**
+*   Create a `dynamodb-blueprints` plugin to automatically create routes to  **XL**
