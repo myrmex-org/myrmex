@@ -1,6 +1,6 @@
 {
   "name": "aws-lager",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "main": "index.js",
   "bin": {
@@ -14,7 +14,7 @@
     "file": "0.2.2",
     "inquirer": "1.0.3",
     "lodash": "4.13.1",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "0.5.1",
     "ncp": "2.0.0"
   },
   "devDependencies": {
