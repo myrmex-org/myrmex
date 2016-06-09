@@ -1,0 +1,12 @@
+{
+  "summary": "Retrieve a MyResource object",
+  "description": "Example of Lager endpoint",
+  "responses": {
+    "200": {
+      "description": "Execution succeed",
+      "schema": {
+        "$ref": "#/definitions/MyResource"
+      }
+    }
+  }
+}

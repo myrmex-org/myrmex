@@ -7,28 +7,16 @@ const _ = require('lodash');
 const AWS = require('aws-sdk');
 const archiver = require('archiver');
 const IntegrationDataInjector = require('./integration-data-injector');
+const lager = require('aws-lager/lib/lager');
 
-let lager;
-
-/**
- * Lazy loading of the lager instance to avoid circular require()
- * @return {Lager} the Lager instance
- */
-function getLager() {
-  if (!lager) {
-    lager = require('lager/lib/lager');
-  }
-  return lager;
-}
 
 /**
  * Constructor function
  * @param {Object} spec - base API specification
  * @constructor
  */
-let Lambda = function Lambda(config, awsLambdaOptions) {
+let Lambda = function Lambda(config) {
   this.config = config;
-  this.awsLambda = new AWS.Lambda(awsLambdaOptions);
 
   this.config.params = this.config.params || {};
   this.config.params = _.assign({
@@ -61,24 +49,26 @@ Lambda.prototype.toString =  function toString() {
  * Deploys the lambda in AWS
  * @return {Promise<LambdaIntegrationDataInjector>} - the IntegrationDataInjector of the lambda
  */
-Lambda.prototype.deploy = function deploy() {
+Lambda.prototype.deploy = function deploy(region, stage, environment) {
   console.log('   * Deploy ' + this.config.identifier);
-  return this.isDeployed()
+
+  const awsLambda = new AWS.Lambda({ region });
+  return this.isDeployed(awsLambda)
   .then((isDeployed) => {
     if (isDeployed) {
       // If the function already exists
       console.log('   * The lambda ' + this.config.identifier + ' already exists');
-      return this.update();
+      return this.update(awsLambda, environment);
     } else {
       // If error occured because the function does not exists, we create it
       console.log('   * The lambda ' + this.config.identifier + ' does not exists');
-      return this.create();
+      return this.create(awsLambda, environment);
     }
   })
   .then((data) => {
     // Publish a new version
     console.log('   * Lambda ' + this.config.identifier + ' deployed');
-    return this.publishVersion(data.FunctionName);
+    return this.publishVersion(awsLambda, stage);
   })
   .then((data) => {
     console.log('   * Lambda ' + this.config.identifier + ' published: \x1b[0;36mversion ' + data.Version + '\x1b[0m');
@@ -140,9 +130,9 @@ Lambda.prototype.buildPackage = function buildPackage() {
  * Check if the Lambda already exists in AWS
  * @return {Promise<Boolean>}
  */
-Lambda.prototype.isDeployed = function isDeployed() {
+Lambda.prototype.isDeployed = function isDeployed(awsLambda) {
   let params = { FunctionName: this.config.params.FunctionName };
-  return Promise.promisify(this.awsLambda.getFunction.bind(this.awsLambda))(params)
+  return Promise.promisify(awsLambda.getFunction.bind(awsLambda))(params)
   .then(() => {
     return Promise.resolve(true);
   })
@@ -160,13 +150,13 @@ Lambda.prototype.isDeployed = function isDeployed() {
  * Create the lambda in AWS
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.create = function create() {
+Lambda.prototype.create = function create(awsLambda, environment) {
   let params = _.cloneDeep(this.config.params);
-  return Promise.all([this.buildPackage(), getLager().retrieveRoleArn(params.Role)])
+  return Promise.all([this.buildPackage(), lager.retrieveRoleArn(params.Role, environment)])
   .spread((buffer, roleArn) => {
     params.Code = { ZipFile: buffer };
     params.Role = roleArn;
-    return Promise.promisify(this.awsLambda.createFunction.bind(this.awsLambda))(params);
+    return Promise.promisify(awsLambda.createFunction.bind(awsLambda))(params);
   });
 };
 
@@ -176,7 +166,7 @@ Lambda.prototype.create = function create() {
  * Update the lambda in AWS
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.update = function update() {
+Lambda.prototype.update = function update(awsLambda, environment) {
   return this.buildPackage()
   .then((buffer) => {
     // First, update the code
@@ -186,8 +176,8 @@ Lambda.prototype.update = function update() {
       ZipFile: buffer
     };
     return [
-      Promise.promisify(this.awsLambda.updateFunctionCode.bind(this.awsLambda))(codeParams),
-      getLager().retrieveRoleArn(this.config.params.Role)
+      Promise.promisify(awsLambda.updateFunctionCode.bind(awsLambda))(codeParams),
+      lager.retrieveRoleArn(this.config.params.Role, environment)
     ];
   })
   .spread((codeUpdateResponse, roleArn) => {
@@ -195,7 +185,7 @@ Lambda.prototype.update = function update() {
     var configParams = _.cloneDeep(this.config.params);
     delete configParams.Publish;
     configParams.Role = roleArn;
-    return Promise.promisify(this.awsLambda.updateFunctionConfiguration.bind(this.awsLambda))(configParams);
+    return Promise.promisify(awsLambda.updateFunctionConfiguration.bind(awsLambda))(configParams);
   });
 };
 
@@ -205,11 +195,12 @@ Lambda.prototype.update = function update() {
  * Create a new version of the lambda
  * @return {Promise<Object>} - AWS description of the lambda
  */
-Lambda.prototype.publishVersion = function publishVersion() {
+Lambda.prototype.publishVersion = function publishVersion(awsLambda, alias) {
+  // @TODO set alias and delete previous version
   let params = {
     FunctionName: this.config.params.FunctionName
   };
-  return Promise.promisify(this.awsLambda.publishVersion.bind(this.awsLambda))(params);
+  return Promise.promisify(awsLambda.publishVersion.bind(awsLambda))(params);
 };
 
 module.exports = Lambda;

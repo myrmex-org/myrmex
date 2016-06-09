@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
-const lager = require('lager');
+const lager = require('aws-lager');
 const program = lager.getProgram();
 
 program
   .version('0.0.1')
-  .command('new', 'create a new project')
-  .command('deploy', 'deploy the application')
-  .command('inspect-api', 'displays the OpenAPI specification of an API')
-  .command('inspect-endpoint', 'displays the OpenAPI specification of an endpoint')
+  .command('new [project-name]', 'create a new project')
   .parse(process.argv);

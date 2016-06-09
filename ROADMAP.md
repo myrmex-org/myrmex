@@ -1,20 +1,49 @@
 Roadmap
 ===
 
-*   Create a Lager plugin to inject documentation in the API **S** (Heucles)
-*   Create Github organization **S** (Alexis)
+General
+---
+
+*   Create Github organization (Alexis) **S**
 *   ~~Allow plugins to create new lager commands~~ (Alexis) **L**
-*   Put the code about Api and Endpoint definitions in it's own plugin (Alexis) **M**
-*   Export the "doc" specification with double quotes **S**
-*   Allow CORS configuration **L**
-*   Implements `lager` command line (see spec/COMMAND_LINE.md) **L**
-*   Create a plugin to create / update IAM roles/policies **L**
-*   Create a plugin to inspect other plugins self-documentation **M**
+*   Manage IAM credentials from various sources: config file, environment variables, parameters **S**
+*   Update the dev application to create the "Planet Express" apis **L**
+*   Complete `lager` command line (see spec/COMMAND_LINE.md) **S**
+*   Document IAM permission needed *for each plugin* **M**
 *   Add a logging system **M**
 *   Write unit tests
 *   Setup continuous integration
-*   Setup the test container **M**
-*   When deploying, show the configuration api/endpoints using an array **M**
-*   Create a Sequelize REST blueprint plugin to automatically create REST API when declaring Sequelize models **XXL**
-*   Create a local webserver (Koa or Hapi?) **XXL**
-*   Update the dev application to create the "Planet Express" apis **L**
+*   Create a local webserver (Koa or Hapi?) **XL**
+*   Put core plugins in their own node modules **M**
+*   Bonus: put the promise based event/observer in its own node module
+
+`api-gateway` core plugin
+---
+
+*   ~~Export the "doc" specification with double quotes~~ (Alexis) **S**
+*   ~~Put the code about Api and Endpoint definitions in it's own plugin~~ (Alexis) **M**
+*   Publish stages **S**
+*   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **XL**
+*   Add syntax highlighting to inspection commands **S**
+*   Beautify deploy output (ASCII array describing configuration?) **M**
+
+`node-lambda` core plugin
+---
+
+*   Complete `node-lambda` command line (see spec/COMMAND_LINE.md) (Alexis) **M**
+*   Use aliases for versioning **S**
+*   Beautify deploy output **M**
+
+`iam` core plugin
+---
+
+*   Create a plugin to create/update/manage IAM roles/policies **L**
+*   Implement `iam` command line (see spec/COMMAND_LINE.md) **M**
+
+Other plugins
+---
+
+*   Create a `api-gateway-cors` plugin to allow CORS configuration **L**
+*   Create a `api-gateway-self-doc` plugin to inject documentation in the API (Heucles) **S**
+*   Create a `sequelize-blueprints` plugin to automatically create REST API when declaring Sequelize models **XL**
+*   Create a `dynamodb-blueprints` plugin to automatically create routes to  **XL**

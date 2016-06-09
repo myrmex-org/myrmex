@@ -1,22 +1,15 @@
 'use strict';
 
-// @TODO find a nice way to make the Lager instance accessible here
-const lager = require('lager/lib/lager');
-
 const path = require('path');
+const lager = require('aws-lager/lib/lager');
 const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = require('lodash');
 
-// Add the plugin's commands to lager
-require('./bin')(lager.getProgram());
+// Add plugin commands to lager cli
+require('./bin/create-lambda');
 
 const Lambda = require('./lambda');
-
-// @TODO we should not configure it here ...
-let environment = lager.getEnvironment();
-let region = lager.getAWSRegion();
-
 
 function loadLambdas() {
   let lambdaConfigsPath = path.join(process.cwd(), 'lambdas');
@@ -59,7 +52,7 @@ function loadLambda(lambdaConfigPath, identifier) {
     // If the identifier is not specified, it will be the name of the directory that contains the config
     lambdaConfig.identifier = lambdaConfig.identifier || identifier;
 
-    let lambda = new Lambda(lambdaConfig, { region: lager.getAWSRegion() });
+    let lambda = new Lambda(lambdaConfig);
 
     // This event allows to inject code to alter the Lambda configuration
     return lager.fire('afterLambdaLoad', lambda);
@@ -72,7 +65,7 @@ function loadLambda(lambdaConfigPath, identifier) {
 let lambdas = [];
 
 module.exports = {
-  name: 'LambdaIntegrationHook',
+  name: 'node-lambda',
 
   /**
    * This hook load all lambda configurations
@@ -89,18 +82,19 @@ module.exports = {
   /**
    * This hook perform the deployment of lambdas in AWS and return integration data
    * that will be used to configure the related endpoints
+   * @param  {Object} config - the deployment config: a object containing the region, satge, and environment
    * @param  {Array} integrationResults - the collection of integration results
    *                                      we will add our own integrations results
    *                                      to this array
    * @return {Promise<Array>}
    */
-  loadIntegrations: function loadIntegrations(integrationResults) {
+  loadIntegrations: function loadIntegrations(config, integrationResults) {
     console.log('Add lambda integration');
     return Promise.map(lambdas, (lambda) => {
-      return lambda.deploy();
+      return lambda.deploy(config.region, config.stage, config.environment);
     })
     .then(lambdaIntegrationDataInjectors => {
-      return Promise.resolve([_.concat(integrationResults, lambdaIntegrationDataInjectors)]);
+      return Promise.resolve([config, _.concat(integrationResults, lambdaIntegrationDataInjectors)]);
     });
   },
 

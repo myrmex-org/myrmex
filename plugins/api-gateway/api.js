@@ -3,28 +3,15 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const AWS = require('aws-sdk');
-
-let lager;
-
-/**
- * Lazy loading of the lager instance to avoid circular require()
- * @return {Lager} the Lager instance
- */
-function getLager() {
-  if (!lager) {
-    lager = require('lager/lib/lager');
-  }
-  return lager;
-}
+const lager = require('aws-lager/lib/lager');
 
 /**
  * Constructor function
  *
  * @param {Object} spec - base API specification
  */
-let Api = function Api(spec, awsApiGatewayParams) {
+let Api = function Api(spec) {
   this.spec = spec;
-  this.awsApiGateway = new AWS.APIGateway(awsApiGatewayParams);
 };
 
 /**
@@ -50,7 +37,7 @@ Api.prototype.doesExposeEndpoint = function doesExposeEndpoint(endpoint) {
  * @return {Promise<Api>}
  */
 Api.prototype.addEndpoint = function addEndpoint(endpoint) {
-  return getLager().fire('beforeAddEndpointToApi', this, endpoint)
+  return lager.fire('beforeAddEndpointToApi', this, endpoint)
   .spread((api, endpoint) => {
     // We construct the path specification
     var path = {};
@@ -64,7 +51,7 @@ Api.prototype.addEndpoint = function addEndpoint(endpoint) {
     // Create or update OPTION method if necessary
     //addCorsConfig(endpointSpecification);
 
-    return getLager().fire('afterAddEndpointToApi', this, endpoint);
+    return lager.fire('afterAddEndpointToApi', this, endpoint);
   })
   .spread(() => {
     return Promise.resolve(this);
@@ -90,31 +77,33 @@ Api.prototype.genSpec = function genSpec(type) {
 
 /**
  * Publish the API specification in API Gateway
+ *
  * @return {Promise<Api>}
  */
-Api.prototype.publish = function publish() {
-  return getLager().fire('beforePublishApi', this)
+Api.prototype.publish = function publish(region, stage, environment) {
+  const awsApiGateway = new AWS.APIGateway({ region });
+  return lager.fire('beforePublishApi', this)
   .spread(() => {
     return this.genSpec('publish');
   })
   .then((spec) => {
-    return [getApiByName(this.awsApiGateway, spec['x-lager'].identifier), spec];
+    return [getApiByName(awsApiGateway, environment + '_' + spec['x-lager'].identifier), spec];
   })
   .spread((awsApi, spec) => {
     if (awsApi) {
-      return updateRestApi(spec, awsApi, this.awsApiGateway);
+      return updateRestApi(awsApiGateway, spec, awsApi);
     } else {
-      return createRestApi(spec, this.awsApiGateway);
+      return createRestApi(awsApiGateway, spec, environment + '_' + spec['x-lager'].identifier);
     }
   })
   .then((awsApi) => {
     this.spec['x-lager'].id = awsApi.id;
     // WARN: awsApiGateway.putRestApi() rewrites the name of the API with the date of the import
     // We have to rewrite it correctly
-    return this.setName(this.spec['x-lager'].identifier);
+    return this.setName(awsApiGateway, environment + '_' + this.spec['x-lager'].identifier);
   })
   .then(() => {
-    return getLager().fire('afterPublishApi', this);
+    return lager.fire('afterPublishApi', this);
   })
   .spread(() => {
     return Promise.resolve(this);
@@ -126,7 +115,7 @@ Api.prototype.publish = function publish() {
  * @param {string} newName - the name to apply to the API in ApiGateway
  * @return {Promise<Object>} - the AWS response
  */
-Api.prototype.setName = function setName(newName) {
+Api.prototype.setName = function setName(awsApiGateway, newName) {
   var params = {
     restApiId: this.spec['x-lager'].id,
     patchOperations: [{
@@ -135,7 +124,7 @@ Api.prototype.setName = function setName(newName) {
       value: newName
     }]
   };
-  return Promise.promisify(this.awsApiGateway.updateRestApi.bind(this.awsApiGateway))(params);
+  return Promise.promisify(awsApiGateway.updateRestApi.bind(awsApiGateway))(params);
 };
 
 module.exports = Api;
@@ -174,26 +163,26 @@ function getApiByName(awsApiGateway, name, listParams, position) {
 
 /**
  * Creates a new API in ApiGateway
- * @param  {Object} apiSpec - an OpenAPI specification
  * @param  {AWS.ApiGateway} - an ApiGateway client from the AWS SDK
+ * @param  {Object} apiSpec - an OpenAPI specification
  * @return {Promise<Object>} - an AWS Object representing the API
  */
-function createRestApi(apiSpec, awsApiGateway) {
+function createRestApi(awsApiGateway, apiSpec, name) {
   console.log('Create Rest API ' + apiSpec['x-lager'].identifier);
-  return Promise.promisify(awsApiGateway.createRestApi.bind(awsApiGateway))({name: apiSpec['x-lager'].identifier})
+  return Promise.promisify(awsApiGateway.createRestApi.bind(awsApiGateway))({ name })
   .then((awsApi) => {
-    return updateRestApi(apiSpec, awsApi, awsApiGateway);
+    return updateRestApi(awsApiGateway, apiSpec, awsApi);
   });
 }
 
 /**
  * Creates a new API in ApiGateway
+ * @param  {AWS.ApiGateway} - an ApiGateway client from the AWS SDK
  * @param  {Object} apiSpec - an OpenAPI specification
  * @param  {Object} - an AWS Object representing the API
- * @param  {AWS.ApiGateway} - an ApiGateway client from the AWS SDK
  * @return {Promise<Object>} - an AWS Object representing the API
  */
-function updateRestApi(apiSpec, awsApi, awsApiGateway) {
+function updateRestApi(awsApiGateway, apiSpec, awsApi) {
   console.log('Update Rest API ' + apiSpec['x-lager'].identifier);
   let params = {
     body: JSON.stringify(apiSpec),
