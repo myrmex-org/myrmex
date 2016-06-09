@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const lager = require('aws-lager/lib/lager');
+const lager = require('@lager/lager/lib/lager');
 const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = require('lodash');

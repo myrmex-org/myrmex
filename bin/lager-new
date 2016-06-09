@@ -3,7 +3,7 @@
 
 const path = require('path');
 const ncp = require('ncp');
-const lager = require('aws-lager/lib/lager');
+const lager = require('@lager/lager/lib/lager');
 const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();

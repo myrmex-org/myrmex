@@ -7,7 +7,7 @@ const _ = require('lodash');
 const AWS = require('aws-sdk');
 const archiver = require('archiver');
 const IntegrationDataInjector = require('./integration-data-injector');
-const lager = require('aws-lager/lib/lager');
+const lager = require('@lager/lager/lib/lager');
 
 
 /**

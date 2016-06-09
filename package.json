@@ -1,6 +1,6 @@
 {
-  "name": "aws-lager",
-  "version": "0.0.8",
+  "name": "@lager/lager",
+  "version": "0.0.2",
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "main": "index.js",
   "bin": {
@@ -20,10 +20,6 @@
   "devDependencies": {
     "mocha": "2.5.3"
   },
-  "scripts": {
-    "test-ci": "XUNIT_FILE=\"reports/TESTS-xunit.xml\" NODE_ENV=\"test\" istanbul cover --include-all-sources=true _mocha -- --recursive -R xunit-file",
-    "test": "NODE_ENV=\"test\" istanbul cover --include-all-sources=true _mocha -- --recursive -R nyan"
-  },
   "keywords": [
     "AWS",
     "Amazon",
@@ -32,5 +28,20 @@
     "Gateway",
     "Swagger"
   ],
-  "author": "Alexis Hénaut"
+  "author": "Alexis Hénaut",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lagerjs/lager.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lagerjs/lager/issues"
+  },
+  "homepage": "https://github.com/lagerjs/lager#readme",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  }
 }

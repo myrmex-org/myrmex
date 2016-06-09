@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const AWS = require('aws-sdk');
-const lager = require('aws-lager/lib/lager');
+const lager = require('@lager/lager/lib/lager');
 
 /**
  * Constructor function

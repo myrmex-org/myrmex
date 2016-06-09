@@ -1,6 +1,6 @@
 'use strict';
 
-const lager = require('aws-lager/lib/lager');
+const lager = require('@lager/lager/lib/lager');
 const program = lager.getProgram();
 
 program
