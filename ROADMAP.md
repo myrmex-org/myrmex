@@ -4,17 +4,17 @@ Roadmap
 General
 ---
 
-*   Create Github organization (Alexis) **S**
+*   ~~Create Github organization~~ (Alexis) **S**
 *   ~~Allow plugins to create new lager commands~~ (Alexis) **L**
+*   Complete `lager` command line (see spec/COMMAND_LINE.md) (alexis) **S**
 *   Manage IAM credentials from various sources: config file, environment variables, parameters **S**
-*   Update the dev application to create the "Planet Express" apis **L**
-*   Complete `lager` command line (see spec/COMMAND_LINE.md) **S**
 *   Document IAM permission needed *for each plugin* **M**
-*   Add a logging system **M**
+*   Add a logging system (use bunyan) **M**
+*   Update the dev application to create the "Planet Express" apis **L**
 *   Write unit tests
 *   Setup continuous integration
 *   Create a local webserver (Koa or Hapi?) **XL**
-*   Put core plugins in their own node modules **M**
+*   Put core plugins in their own NPM modules **M**
 *   Bonus: put the promise based event/observer in its own node module
 
 `api-gateway` core plugin
@@ -22,7 +22,7 @@ General
 
 *   ~~Export the "doc" specification with double quotes~~ (Alexis) **S**
 *   ~~Put the code about Api and Endpoint definitions in it's own plugin~~ (Alexis) **M**
-*   Publish stages **S**
+*   Publish stages (Pedro) **S**
 *   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **XL**
 *   Add syntax highlighting to inspection commands **S**
 *   Beautify deploy output (ASCII array describing configuration?) **M**
