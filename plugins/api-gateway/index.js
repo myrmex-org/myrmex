@@ -47,6 +47,12 @@ function loadApis() {
   })
   .spread(apis => {
     return Promise.resolve(apis);
+  })
+  .catch(e => {
+    if (e.code === 'ENOENT' && path.basename(e.path) === 'apis') {
+      return Promise.resolve([]);
+    }
+    Promise.reject(e);
   });
 }
 
@@ -93,7 +99,7 @@ function loadEndpoints() {
       let subPath = dirPath.substr(endpointSpecsPath.length);
       let resourcePathParts = subPath.split(path.sep);
       let method = resourcePathParts.pop();
-      if (['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].indexOf(method)) return;
+      if (['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].indexOf(method) === -1) return;
 
       // We construct the path to the resource (url style, not filesystem)
       let resourcePath = resourcePathParts.join('/');
@@ -112,7 +118,7 @@ function loadEndpoints() {
     if (e.code === 'ENOENT' && path.basename(e.path) === endpointsDirectory) {
       return Promise.resolve([]);
     }
-    throw e;
+    Promise.reject(e);
   });
 }
 
@@ -310,16 +316,16 @@ function getEndpointSpec(method, resourcePath, colors) {
 module.exports = {
   name: 'api-gateway',
   hooks: {
-    registerCommands(program) {
+    registerCommands(program, inquirer) {
       return Promise.all([
-        createApi(program),
-        createEndpoint(program),
-        inspectApi(program),
-        inspectEndpoint(program),
-        deployApis(program)
+        createApi(program, inquirer),
+        createEndpoint(program, inquirer),
+        inspectApi(program, inquirer),
+        inspectEndpoint(program, inquirer),
+        deployApis(program, inquirer)
       ])
       .then(() => {
-        return Promise.resolve([program]);
+        return Promise.resolve([program, inquirer]);
       });
     }
   },

@@ -6,7 +6,7 @@ General
 
 *   ~~Create Github organization~~ (Alexis) **S**
 *   ~~Allow plugins to create new lager commands~~ (Alexis) **L**
-*   Complete `lager` command line (see spec/COMMAND_LINE.md) (alexis) **S**
+*   Complete `lager` command line (alexis) **S**
 *   Manage IAM credentials from various sources: config file, environment variables, parameters **S**
 *   Document IAM permission needed *for each plugin* **M**
 *   Add a logging system (use bunyan) **M**
@@ -23,14 +23,20 @@ General
 *   ~~Export the "doc" specification with double quotes~~ (Alexis) **S**
 *   ~~Put the code about Api and Endpoint definitions in it's own plugin~~ (Alexis) **M**
 *   Publish stages (Pedro) **S**
-*   Complete `api-gateway` command line (see spec/COMMAND_LINE.md) **XL**
+*   Complete `api-gateway` command line (alexis) **XL**
 *   Add syntax highlighting to inspection commands **S**
 *   Beautify deploy output (ASCII array describing configuration?) **M**
+
+`mock-integration` core plugin
+---
+
+*   Create a plugin to handle API Gateway mock integration **L**
+*   Implement `mock-integration` command line **M**
 
 `node-lambda` core plugin
 ---
 
-*   Complete `node-lambda` command line (see spec/COMMAND_LINE.md) (Alexis) **M**
+*   Complete `node-lambda` command line (Alexis) **M**
 *   Use aliases for versioning **S**
 *   Beautify deploy output **M**
 
@@ -38,7 +44,7 @@ General
 ---
 
 *   Create a plugin to create/update/manage IAM roles/policies **L**
-*   Implement `iam` command line (see spec/COMMAND_LINE.md) **M**
+*   Implement `iam` command line **M**
 
 Other plugins
 ---

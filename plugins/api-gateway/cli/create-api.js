@@ -6,9 +6,8 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const _ = lager.getLodash();
-const inquirer = lager.getInquirer();
 
-module.exports = function(program) {
+module.exports = function(program, inquirer) {
 
   function prompt(defaults) {
     let questions = [{

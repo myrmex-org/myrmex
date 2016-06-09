@@ -4,11 +4,14 @@
 const lager = require('@lager/lager');
 const program = lager.getProgram();
 
+// We create the "lager new" commands
 program
   .version('0.0.1')
   .command('new [project-name]', 'create a new project');
 
-lager.fire('registerCommands', program)
-.spread(program => {
+// We fire the "registerCommands" event so plugins can add their own commands
+lager.fire('registerCommands', program, lager.getInquirer())
+.spread((program, inquirer) => {
+  // Finally, we execute the cli
   program.parse(process.argv);
 });

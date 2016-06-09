@@ -3,38 +3,46 @@
 const lager = require('@lager/lager/lib/lager');
 const Promise = lager.getPromise();
 const _ = lager.getLodash();
-const inquirer = lager.getInquirer();
 
-module.exports = function(program) {
+const cliTools = require('./cli-tools');
+
+module.exports = function(program, inquirer) {
   // We have to require the plugin inside the function
-  // Otherwise we could have a circular require occuring when Lager register it
+  // Otherwise we could have a circular require occuring when Lager is registering it
   const plugin = lager.getPlugin('api-gateway');
 
+  // First, retrieve possible values for the identifier parameter
   return plugin.loadApis()
   .then(apis => {
-    let apiChoices = _.map(apis, api => {
-      return {
-        value: api.spec['x-lager'].identifier,
-        label: api.spec['x-lager'].identifier + (api.spec.info && api.spec.info.title ? ' - ' + api.spec.info.title : '')
-      };
-    });
-
-    let questions = [{
-      type: 'list',
-      name: 'identifier',
-      message: 'Which API do you want to inspect?',
-      choices: _.map(apiChoices, 'label')
-    }];
+    // Build the list of available APIs for input verification and interactive selection
+    const valueLists = {
+      'api-identifier': _.map(apis, api => {
+        return {
+          value: api.spec['x-lager'].identifier,
+          label: api.spec['x-lager'].identifier + (api.spec.info && api.spec.info.title ? ' - ' + api.spec.info.title : '')
+        };
+      })
+    };
+    const validators = {
+      'api-identifier': cliTools.generateListValidator(valueLists['api-identifier'], 'API identifier')
+    };
 
     program
     .command('inspect-api')
     .description('inspect an api specification')
     .arguments('[api-identifier]')
-    .option('-c, --colors', 'output with colors')
-    .action((identifier, options) => {
-      inquirer.prompt(questions)
+    .option('-c, --colors', 'highlight output')
+    .action(function (apiIdentifier, options) {
+      // Transform cli arguments and options into a parameter map
+      let parameters = cliTools.processCliArgs(arguments, validators);
+
+      // If the cli arguments are correct, we can prepare the questions for the interactive prompt
+      // Launch the interactive prompt
+      return inquirer.prompt(prepareQuestions(parameters, valueLists))
       .then(answers => {
-        return plugin.getApiSpec(answers.identifier, answers.colors);
+        // Merge the parameters provided in the command and in the prompt
+        parameters =  _.merge(parameters, answers);
+        return plugin.getApiSpec(parameters['api-identifier'], parameters.colors);
       })
       .then(spec => {
         return console.log(spec);
@@ -42,3 +50,22 @@ module.exports = function(program) {
     });
   });
 };
+
+
+/**
+ * Prepare the list of questions for the prompt
+ * @param  {Object} parameters - the parameters that have already been passed to the cli
+ * @param  {Object} valueLists - lists of values for closed choice parameters
+ * @return {Array}
+ */
+function prepareQuestions(parameters, valueLists) {
+  return [{
+    type: 'list',
+    name: 'api-identifier',
+    message: 'Which API do you want to inspect?',
+    choices: _.map(valueLists['api-identifier'], 'label'),
+    when: function(currentAnswers) {
+      return !parameters['api-identifier'];
+    }
+  }];
+}

@@ -28,7 +28,11 @@ Api.prototype.toString =  function toString() {
  * @return {boolean}
  */
 Api.prototype.doesExposeEndpoint = function doesExposeEndpoint(endpoint) {
-  return endpoint.getSpec()['x-lager'].apis.indexOf(this.spec['x-lager'].identifier) !== -1;
+  const spec = endpoint.getSpec();
+  if (spec['x-lager'] && spec['x-lager'].apis && spec['x-lager'].apis.length) {
+    return endpoint.getSpec()['x-lager'].apis.indexOf(this.spec['x-lager'].identifier) !== -1;
+  }
+  return false;
 };
 
 /**

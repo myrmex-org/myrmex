@@ -2,7 +2,7 @@
 
 const lager = require('@lager/lager/lib/lager');
 
-module.exports = function(program) {
+module.exports = function(program, inquirer) {
   return program
   .command('inspect-endpoint <HTTP_METHOD> <resourcePath>')
   .description('inspect an endpoint specification')
