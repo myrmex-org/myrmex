@@ -6,13 +6,13 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const _ = lager.getLodash();
-const program = lager.getProgram();
 const inquirer = lager.getInquirer();
 
 const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 const commonMimeTypes = ['text/plain', 'application/json'];
 
-program
+module.exports = function(program) {
+  return program
   .command('create-endpoint')
   .description('create a new endpoint')
   .arguments('[HTTP_METHOD] [resource-path]')
@@ -66,43 +66,44 @@ program
   });
 
 
-function prompt(defaults) {
-  let questions = [{
-    type: 'list',
-    name: 'method',
-    message: 'What is the HTTP method?',
-    choices: httpMethods,
-    when: answers => { return !defaults.method; }
-  }, {
-    type: 'input',
-    name: 'resourcePath',
-    message: 'What is the resource path?',
-    when: answers => { return !defaults.resourcePath; }
-  }, {
-    type: 'input',
-    name: 'summary',
-    message: 'Shortly, what does the operation do?',
-    when: answers => { return !defaults.summary; }
-  }, {
-    type: 'checkbox',
-    name: 'consume',
-    message: 'What are the MIME types that the operation can consume?',
-    choices: commonMimeTypes,
-    when: answers => { return !defaults.consume; }
-  }, {
-    type: 'checkbox',
-    name: 'produce',
-    message: 'What are the MIME types that the operation can produce?',
-    choices: commonMimeTypes,
-    when: answers => { return !defaults.produce; }
-  }];
-  return inquirer.prompt(questions)
-  .then(answers => {
-    _.forEach(defaults, (value, key) => {
-      if (!answers[key]) {
-        answers[key] = value;
-      }
+  function prompt(defaults) {
+    let questions = [{
+      type: 'list',
+      name: 'method',
+      message: 'What is the HTTP method?',
+      choices: httpMethods,
+      when: answers => { return !defaults.method; }
+    }, {
+      type: 'input',
+      name: 'resourcePath',
+      message: 'What is the resource path?',
+      when: answers => { return !defaults.resourcePath; }
+    }, {
+      type: 'input',
+      name: 'summary',
+      message: 'Shortly, what does the operation do?',
+      when: answers => { return !defaults.summary; }
+    }, {
+      type: 'checkbox',
+      name: 'consume',
+      message: 'What are the MIME types that the operation can consume?',
+      choices: commonMimeTypes,
+      when: answers => { return !defaults.consume; }
+    }, {
+      type: 'checkbox',
+      name: 'produce',
+      message: 'What are the MIME types that the operation can produce?',
+      choices: commonMimeTypes,
+      when: answers => { return !defaults.produce; }
+    }];
+    return inquirer.prompt(questions)
+    .then(answers => {
+      _.forEach(defaults, (value, key) => {
+        if (!answers[key]) {
+          answers[key] = value;
+        }
+      });
+      return Promise.resolve(answers);
     });
-    return Promise.resolve(answers);
-  });
-}
+  }
+};

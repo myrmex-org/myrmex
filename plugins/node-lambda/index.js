@@ -7,11 +7,12 @@ const fs = Promise.promisifyAll(require('fs'));
 const _ = require('lodash');
 
 // Add plugin commands to lager cli
-require('./bin/create-lambda');
+const createLambda = require('./cli/create-lambda');
 
 const Lambda = require('./lambda');
 
 function loadLambdas() {
+  console.log('Load lambdas configs');
   let lambdaConfigsPath = path.join(process.cwd(), 'lambdas');
 
   // This event allows to inject code before loading all APIs
@@ -44,7 +45,9 @@ function loadLambda(lambdaConfigPath, identifier) {
   .spread((lambdaConfigPath, identifier) => {
     // Because we use require() to get the config, it could either be a JSON file
     // or the content exported by a node module
-    let lambdaConfig = require(lambdaConfigPath);
+    // But because require() caches the content it loads, we clone the result to avoid bugs
+    // if the function is called twice
+    let lambdaConfig = _.cloneDeep(require(lambdaConfigPath));
 
     // If the handler path is not specified, we consider it is the same that the config path
     lambdaConfig.handlerPath = lambdaConfig.handlerPath || path.dirname(lambdaConfigPath);
@@ -67,44 +70,58 @@ let lambdas = [];
 module.exports = {
   name: 'node-lambda',
 
-  /**
-   * This hook load all lambda configurations
-   * @return {Boolean}
-   */
-  beforeApisLoad: function beforeApisLoad() {
-    return loadLambdas()
-    .then((loadedLambdas) => {
-      lambdas = loadedLambdas;
-      return Promise.resolve([]);
-    });
-  },
+  hooks: {
+    /**
+     *
+     */
+    registerCommands: function registerCommands(program) {
+      return Promise.all([
+        createLambda(program)
+      ])
+      .then(() => {
+        return Promise.resolve([program]);
+      });
+    },
 
-  /**
-   * This hook perform the deployment of lambdas in AWS and return integration data
-   * that will be used to configure the related endpoints
-   * @param  {Object} config - the deployment config: a object containing the region, satge, and environment
-   * @param  {Array} integrationResults - the collection of integration results
-   *                                      we will add our own integrations results
-   *                                      to this array
-   * @return {Promise<Array>}
-   */
-  loadIntegrations: function loadIntegrations(config, integrationResults) {
-    console.log('Add lambda integration');
-    return Promise.map(lambdas, (lambda) => {
-      return lambda.deploy(config.region, config.stage, config.environment);
-    })
-    .then(lambdaIntegrationDataInjectors => {
-      return Promise.resolve([config, _.concat(integrationResults, lambdaIntegrationDataInjectors)]);
-    });
-  },
 
-  /**
-   * When the APIs have been deployed, we should cleanup the Lambda environment
-   * and delete the lambdas that are not used anymore
-   * @return {[type]} [description]
-   */
-  afterDeployAll: function afterDeployAll() {
-    return Promise.resolve();
+    /**
+     * This hook load all lambda configurations
+     * @return {Boolean}
+     */
+    beforeApisLoad: function beforeApisLoad() {
+      return loadLambdas()
+      .then((loadedLambdas) => {
+        lambdas = loadedLambdas;
+        return Promise.resolve([]);
+      });
+    },
+
+    /**
+     * This hook perform the deployment of lambdas in AWS and return integration data
+     * that will be used to configure the related endpoints
+     * @param  {Object} config - the deployment config: a object containing the region, satge, and environment
+     * @param  {Array} integrationResults - the collection of integration results
+     *                                      we will add our own integrations results
+     *                                      to this array
+     * @return {Promise<Array>}
+     */
+    loadIntegrations: function loadIntegrations(config, integrationResults) {
+      console.log('Add lambda integration');
+      return Promise.map(lambdas, (lambda) => {
+        return lambda.deploy(config.region, config.stage, config.environment);
+      })
+      .then(lambdaIntegrationDataInjectors => {
+        return Promise.resolve([config, _.concat(integrationResults, lambdaIntegrationDataInjectors)]);
+      });
+    },
+
+    /**
+     * When the APIs have been deployed, we should cleanup the Lambda environment
+     * and delete the lambdas that are not used anymore
+     * @return {[type]} [description]
+     */
+    afterDeployAll: function afterDeployAll() {
+      return Promise.resolve();
+    }
   }
-
 };

@@ -8,12 +8,12 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();
 
-// Add plugin commands to lager cli
-require('./bin/create-api');
-require('./bin/create-endpoint');
-require('./bin/inspect-api');
-require('./bin/inspect-endpoint');
-require('./bin/deploy-apis');
+// Each of these modules expose a function that returns the promise of a command
+const createApi = require('./cli/create-api');
+const createEndpoint = require('./cli/create-endpoint');
+const inspectApi = require('./cli/inspect-api');
+const inspectEndpoint = require('./cli/inspect-endpoint');
+const deployApis = require('./cli/deploy-apis');
 
 const Api = require('./api');
 const Endpoint = require('./endpoint');
@@ -62,7 +62,9 @@ function loadApi(apiSpecPath, identifier) {
   .spread((apiSpecPath, identifier) => {
     // Because we use require() to get the spec, it could either be a JSON file
     // or the content exported by a node module
-    let apiSpec = require(apiSpecPath);
+    // But because require() caches the content it loads, we clone the result to avoid bugs
+    // if the function is called twice
+    let apiSpec = _.cloneDeep(require(apiSpecPath));
     apiSpec['x-lager'] = apiSpec['x-lager'] || {};
     apiSpec['x-lager'].identifier = apiSpec['x-lager'].identifier || identifier;
     let api = new Api(apiSpec);
@@ -279,7 +281,9 @@ function deploy(region, stage, environment) {
   });
 }
 
-function getApiSpec(identifier, colors) {
+function getApiSpec(identifier, type, colors) {
+  type = type || 'doc';
+  // @TODO identifier is not necessarily the name of the folder: it can be overriden in the spec file
   let apiSpecPath = path.join(process.cwd(), 'apis', identifier, 'spec');
   return Promise.all([loadApi(apiSpecPath, identifier), loadEndpoints()])
   .spread((api, endpoints) => {
@@ -287,16 +291,15 @@ function getApiSpec(identifier, colors) {
   })
   .spread((apis, endpoints) => {
     // @TODO add syntax highlighting with "-c" option
-    return console.log(JSON.stringify(apis[0].genSpec('doc'), null, 2));
-    // return console.log(util.inspect(apis[0].genSpec('doc'), { colors, depth: null }));
+    return JSON.stringify(apis[0].genSpec(type), null, 2);
   });
 }
-
 
 function getEndpointSpec(method, resourcePath, colors) {
   let endpointSpecRootPath = path.join(process.cwd(), 'endpoints');
   return loadEndpoint(endpointSpecRootPath, resourcePath, method)
   .then(endpoint => {
+    // @TODO create Endpoint.genSpec(type) similarly ti Api
     // @TODO add syntax highlighting with "-c" option
     return console.log(JSON.stringify(endpoint.getSpec(), null, 2));
   });
@@ -306,12 +309,25 @@ function getEndpointSpec(method, resourcePath, colors) {
 
 module.exports = {
   name: 'api-gateway',
-  hooks: {},
+  hooks: {
+    registerCommands(program) {
+      return Promise.all([
+        createApi(program),
+        createEndpoint(program),
+        inspectApi(program),
+        inspectEndpoint(program),
+        deployApis(program)
+      ])
+      .then(() => {
+        return Promise.resolve([program]);
+      });
+    }
+  },
   helpers: {},
-  commands: {},
-  outputApiSpec: getApiSpec,
-  outputEndpointSpec: getEndpointSpec,
-  deploy: deploy
+  getApiSpec: getApiSpec,
+  getEndpointSpec: getEndpointSpec,
+  deploy: deploy,
+  loadApis: loadApis
 };
 
 
@@ -338,7 +354,11 @@ function mergeSpecsFiles(beginPath, subPath) {
 
     try {
       // Try to load the definition and silently ignore the error if it does not exist
-      subSpec = require(searchSpecDir + path.sep + 'spec');
+      // Because we use require() to get the config, it could either be a JSON file
+      // or the content exported by a node module
+      // But because require() caches the content it loads, we clone the result to avoid bugs
+      // if the function is called twice
+      subSpec = _.cloneDeep(require(searchSpecDir + path.sep + 'spec'));
     } catch (e) {}
 
     // Merge the spec eventually found

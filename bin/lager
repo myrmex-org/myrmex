@@ -6,5 +6,9 @@ const program = lager.getProgram();
 
 program
   .version('0.0.1')
-  .command('new [project-name]', 'create a new project')
-  .parse(process.argv);
+  .command('new [project-name]', 'create a new project');
+
+lager.fire('registerCommands', program)
+.spread(program => {
+  program.parse(process.argv);
+});

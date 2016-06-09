@@ -16,6 +16,7 @@ const lager = require('@lager/lager/lib/lager');
  * @constructor
  */
 let Lambda = function Lambda(config) {
+//console.log(config);
   this.config = config;
 
   this.config.params = this.config.params || {};

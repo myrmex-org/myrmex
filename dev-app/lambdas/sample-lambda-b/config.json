@@ -4,7 +4,5 @@
     "MemorySize": 128,
     "Role": "LambdaExecutionSample"
   },
-  "packageContent": [
-    "endpoints"
-  ]
+  "includeEndpoints": true
 }

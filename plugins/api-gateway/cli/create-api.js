@@ -6,10 +6,29 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const _ = lager.getLodash();
-const program = lager.getProgram();
 const inquirer = lager.getInquirer();
 
-program
+module.exports = function(program) {
+
+  function prompt(defaults) {
+    let questions = [{
+      type: 'input',
+      name: 'identifier',
+      message: 'What is the API identifier?',
+      when: answers => { return !defaults.identifier; }
+    }];
+    return inquirer.prompt(questions)
+    .then(answers => {
+      _.forEach(defaults, (value, key) => {
+        if (!answers[key]) {
+          answers[key] = value;
+        }
+      });
+      return Promise.resolve(answers);
+    });
+  }
+
+  return program
   .command('create-api')
   .description('create a new API')
   .arguments('[api-identifier]')
@@ -41,22 +60,4 @@ program
       console.error(e);
     });
   });
-
-
-function prompt(defaults) {
-  let questions = [{
-    type: 'input',
-    name: 'identifier',
-    message: 'What is the API identifier?',
-    when: answers => { return !defaults.identifier; }
-  }];
-  return inquirer.prompt(questions)
-  .then(answers => {
-    _.forEach(defaults, (value, key) => {
-      if (!answers[key]) {
-        answers[key] = value;
-      }
-    });
-    return Promise.resolve(answers);
-  });
-}
+};

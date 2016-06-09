@@ -1,9 +1,9 @@
 'use strict';
 
 const lager = require('@lager/lager/lib/lager');
-const program = lager.getProgram();
 
-program
+module.exports = function(program) {
+  return program
   .command('deploy-apis')
   .description('deploy apis')
   .option('-r, --region [region]', 'select the AWS region', process.env.AWS_DEFAULT_REGION || 'us-east-1')
@@ -16,3 +16,4 @@ program
       options.environment
     );
   });
+};
