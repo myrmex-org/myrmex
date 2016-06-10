@@ -4,7 +4,7 @@ const lager = require('@lager/lager/lib/lager');
 const Promise = lager.getPromise();
 const _ = lager.getLodash();
 
-const cliTools = require('./cli-tools');
+const cliTools = require('@lager/lager/lib/cli-tools');
 
 module.exports = function(program, inquirer) {
   // We have to require the plugin inside the function

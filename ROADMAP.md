@@ -37,7 +37,7 @@ General
 ---
 
 *   Complete `node-lambda` command line (Alexis) **M**
-*   Use aliases for versioning **S**
+*   Use aliases for versioning (Pedro) **S**
 *   Beautify deploy output **M**
 
 `iam` core plugin
@@ -53,3 +53,10 @@ Other plugins
 *   Create a `api-gateway-self-doc` plugin to inject documentation in the API (Heucles) **S**
 *   Create a `sequelize-blueprints` plugin to automatically create REST API when declaring Sequelize models **XL**
 *   Create a `dynamodb-blueprints` plugin to automatically create routes to  **XL**
+
+Possible side projects
+---
+
+*   A NPM module containing the promise based Event/Observer implementation of `Lager`
+*   A NPM module parsing a JSON object to display it with syntax highlighting in the terminal
+*   A NPM module that facilitate the use of `inquirer` with `commander`

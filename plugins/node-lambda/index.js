@@ -12,7 +12,6 @@ const createLambda = require('./cli/create-lambda');
 const Lambda = require('./lambda');
 
 function loadLambdas() {
-  console.log('Load lambdas configs');
   let lambdaConfigsPath = path.join(process.cwd(), 'lambdas');
 
   // This event allows to inject code before loading all APIs
@@ -106,7 +105,6 @@ module.exports = {
      * @return {Promise<Array>}
      */
     loadIntegrations: function loadIntegrations(config, integrationResults) {
-      console.log('Add lambda integration');
       return Promise.map(lambdas, (lambda) => {
         return lambda.deploy(config.region, config.stage, config.environment);
       })

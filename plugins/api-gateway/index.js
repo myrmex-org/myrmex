@@ -333,7 +333,8 @@ module.exports = {
   getApiSpec: getApiSpec,
   getEndpointSpec: getEndpointSpec,
   deploy: deploy,
-  loadApis: loadApis
+  loadApis: loadApis,
+  loadEndpoints: loadEndpoints
 };
 
 
