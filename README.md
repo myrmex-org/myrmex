@@ -19,6 +19,5 @@ npm install -g @lager/lager
 Create a new project
 ---
 
-```bash
-lager new <project-name>
-```
+[![asciicast](https://asciinema.org/a/40asd3d0jbmpgancifbaqa9nj.png)](https://asciinema.org/a/40asd3d0jbmpgancifbaqa9nj)
+
