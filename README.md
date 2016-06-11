@@ -1,6 +1,8 @@
 Lager
 ===
 
+[![Build Status](https://travis-ci.org/lagerjs/lager.svg?branch=dev)](https://travis-ci.org/lagerjs/lager)
+
 AWS Lambda + API Gateway + Swagger === *Lager*
 
 The **L**ambda **A**PI **G**ateway **E**ndpoints **R**outer
