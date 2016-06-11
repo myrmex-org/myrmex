@@ -1,5 +1,3 @@
-Mandatory
-
 ```
 ├── apis                              The APIs defined by the application
 |   ├── {an-api-identifier}           A custom identifier for the API
@@ -13,7 +11,7 @@ Mandatory
 |           ├── spec.json
 |           └── <resource>
 |               ├── spec.json
-|               └── <METHOD>          GET|POST|PUT|PATCH|OPTION
+|               └── <HTTP_METHOD>     GET|POST|PUT|PATCH|DELETE|OPTION
 |                   ├── index.js      A module returning a simple node function that will be used
 |                   |                 as the *callback* parameter of the AWS lambda *handler*
 |                   └── spec.json     The endpoint's specification will be the result of the fusion
@@ -28,10 +26,4 @@ Mandatory
 |       ├── config.json
 |       └── router.js
 └── models
-```
-
-
-Optional
-```
-
 ```

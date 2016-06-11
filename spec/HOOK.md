@@ -29,43 +29,42 @@ module.exports = {
 };
 ```
 
-Hooks fired by Lager core
+Hooks fired by Lager api-gateway
 ---
 
 ```javascript
 module.exports = {
   // Load API configurations
-  beforeApisLoad: function() {}, // DONE
-  beforeApiLoad: function(apiSpecPath, identifier) // DONE
-  afterApiLoad: function(api) {}, // DONE
-  afterApisLoad: function() {}, // DONE
+  beforeApisLoad: function() {},
+  beforeApiLoad: function(apiSpecPath, identifier),
+  afterApiLoad: function(api) {},
+  afterApisLoad: function() {},
 
   // Load endpoint configurations
-  beforeEndpointsLoad: function() {}, // DONE
-  beforeEndpointLoad: function() {}, // DONE
-  afterEndpointLoad: function(endpoint) {}, // DONE
-  afterEndpointsLoad: function(endpoints) {}, // DONE
+  beforeEndpointsLoad: function() {},
+  beforeEndpointLoad: function() {},
+  afterEndpointLoad: function(endpoint) {},
+  afterEndpointsLoad: function(endpoints) {},
 
   // Execute integration plugins
   // Here we can deploy Lambdas or proxified URLs and create instances of IntegrationDataInjector
-  loadIntegrations: function([]) {}, // DONE
-  beforeAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
-  afterAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {}, // DONE
+  loadIntegrations: function([]) {},
+  beforeAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {},
+  afterAddIntegrationDataToEndpoints: function(endpoints, integrationDataInjectors) {},
 
-  beforeAddEndpointsToApis: function(apis, endpoints) {}, // DONE
-  beforeAddEndpointToApi: function(api, endpoint) {}, // DONE
-  afterAddEndpointToApi: function(api, endpoint) {}, // DONE
-  afterAddEndpointsToApis: function(apis, endpoints) {}, // DONE
+  beforeAddEndpointsToApis: function(apis, endpoints) {},
+  beforeAddEndpointToApi: function(api, endpoint) {},
+  afterAddEndpointToApi: function(api, endpoint) {},
+  afterAddEndpointsToApis: function(apis, endpoints) {},
 
-  beforePublishAllApis: function(apis) {}, // DONE
-  beforePublishApi: function(api) {}, // DONE
-  afterPublishApi: function(api) {}, // DONE
-  afterPublishAllApis: function(apis) {} // DONE
+  beforePublishAllApis: function(apis) {},
+  beforePublishApi: function(api) {},
+  afterPublishApi: function(api) {},
+  afterPublishAllApis: function(apis) {}
 };
 ```
 
-Hooks fired by Lager IAM plugin
----
+Hooks fired by Lager iam
 
 ```javascript
 // TODO
@@ -92,7 +91,7 @@ module.exports = {
 };
 ```
 
-Hooks fired by Lager Lambda Integration plugin
+Hooks fired by Lager node-lambda
 ---
 
 ```javascript
