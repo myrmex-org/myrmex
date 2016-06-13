@@ -16,7 +16,7 @@ module.exports = function(program, inquirer) {
   .then(apis => {
     // Build the list of available APIs for input verification and interactive selection
     const valueLists = {
-      'api-identifier': _.map(apis, api => {
+      apiIdentifier: _.map(apis, api => {
         return {
           value: api.spec['x-lager'].identifier,
           label: api.spec['x-lager'].identifier + (api.spec.info && api.spec.info.title ? ' - ' + api.spec.info.title : '')
@@ -24,7 +24,7 @@ module.exports = function(program, inquirer) {
       })
     };
     const validators = {
-      'api-identifier': cliTools.generateListValidator(valueLists['api-identifier'], 'API identifier')
+      apiIdentifier: cliTools.generateListValidator(valueLists.apiIdentifier, 'API identifier')
     };
 
     program
@@ -42,7 +42,7 @@ module.exports = function(program, inquirer) {
       .then(answers => {
         // Merge the parameters provided in the command and in the prompt
         parameters =  _.merge(parameters, answers);
-        return plugin.getApiSpec(parameters['api-identifier'], parameters.colors);
+        return plugin.getApiSpec(parameters.apiIdentifier, parameters.colors);
       })
       .then(spec => {
         return console.log(spec);
@@ -61,11 +61,11 @@ module.exports = function(program, inquirer) {
 function prepareQuestions(parameters, valueLists) {
   return [{
     type: 'list',
-    name: 'api-identifier',
+    name: 'apiIdentifier',
     message: 'Which API do you want to inspect?',
-    choices: _.map(valueLists['api-identifier'], 'label'),
+    choices: _.map(valueLists.apiIdentifier, 'label'),
     when: function(currentAnswers) {
-      return !parameters['api-identifier'];
+      return !parameters.apiIdentifier;
     }
   }];
 }

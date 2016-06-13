@@ -1,9 +1,0 @@
-{
-  "x-lager": {
-    "lambda": "my-lambda",
-    "apis": ["my-api"]
-  },
-  "x-amazon-apigateway-integration": {
-    "credentials": "{{ API_GATEWAY_LAMBDA_INVOKE_ROLE_ARN }}"
-  }
-}

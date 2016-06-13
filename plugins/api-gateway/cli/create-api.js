@@ -6,7 +6,6 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const _ = lager.getLodash();
-
 const cliTools = require('@lager/lager/lib/cli-tools');
 
 module.exports = function(program, inquirer) {
@@ -19,14 +18,14 @@ module.exports = function(program, inquirer) {
   .then(endpoints => {
     // Build the list of available endpoints for interactive selection
     const valueLists = {
-      'endpoints-identifiers': _.map(endpoints, endpoint => {
+      endpointsIdentifiers: _.map(endpoints, endpoint => {
         let spec = endpoint.getSpec();
         return {
           value: endpoint.getMethod() + ' ' + endpoint.getResourcePath(),
           label: endpoint.getMethod() + ' ' + endpoint.getResourcePath() + (spec.summary ? ' - ' + spec.summary : '')
         };
       }),
-      'mime-type': ['application/json', 'text/plain', { value: 'other', label: 'other (you will be prompted to enter a value)'}]
+      mimeType: ['application/json', 'text/plain', { value: 'other', label: 'other (you will be prompted to enter a value)'}]
     };
 
 
@@ -38,7 +37,7 @@ module.exports = function(program, inquirer) {
     .option('-d, --description <description>', 'A short description of the API')
     .option('-c, --consume <mime-types>', 'A list of MIME types the operation can consume separated by ","', cliTools.listParser)
     .option('-p, --produce <mime-types>', 'A list of MIME types the operation can produce separated by ","', cliTools.listParser)
-    .action((apiIdentifier, options) => {
+    .action(function(apiIdentifier, options) {
       // Transform cli arguments and options into a parameter map
       let parameters = cliTools.processCliArgs(arguments, []);
 
@@ -67,9 +66,9 @@ module.exports = function(program, inquirer) {
 function prepareQuestions(parameters, valueLists) {
   return [{
     type: 'input',
-    name: 'api-identifier',
+    name: 'apiIdentifier',
     message: 'Choose a unique identifier for the new API (alphanumeric caracters, "_" and "-" accepted)',
-    when: answers => { return !parameters.identifier; },
+    when: answers => { return !parameters.apiIdentifier; },
     validate: input => { return /^[a-z0-9_-]+$/i.test(input); }
   }, {
     type: 'input',
@@ -85,24 +84,24 @@ function prepareQuestions(parameters, valueLists) {
     type: 'checkbox',
     name: 'consume',
     message: 'What are the MIME types that the operation can consume?',
-    choices: valueLists['mime-type'],
+    choices: valueLists.mimeType,
     when: answers => { return !parameters.consume; },
     default: ['application/json']
   }, {
     type: 'input',
-    name: 'consume-other',
+    name: 'consumeOther',
     message: 'Enter the MIME types that the operation can consume, separated by commas',
     when: answers => { return !parameters.consume && answers.consume.indexOf('other') !== -1; }
   }, {
     type: 'checkbox',
     name: 'produce',
     message: 'What are the MIME types that the operation can produce?',
-    choices: valueLists['mime-type'],
+    choices: valueLists.mimeType,
     when: answers => { return !parameters.produce; },
     default: ['application/json']
   }, {
     type: 'input',
-    name: 'produce-other',
+    name: 'produceOther',
     message: 'Enter the MIME types that the operation can produce, separated by commas',
     when: answers => { return !parameters.produce && answers.produce.indexOf('other') !== -1; }
   }];
@@ -116,7 +115,7 @@ function prepareQuestions(parameters, valueLists) {
  */
 function performTask(parameters) {
   // If a name has been provided, we create the project directory
-  const specFilePath = path.join(process.cwd(), 'apis', parameters['api-identifier']);
+  const specFilePath = path.join(process.cwd(), 'apis', parameters.apiIdentifier);
   return mkdirpAsync(specFilePath)
   .then(() => {
     const spec = {

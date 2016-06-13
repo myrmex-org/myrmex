@@ -6,7 +6,6 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const _ = lager.getLodash();
-
 const cliTools = require('@lager/lager/lib/cli-tools');
 
 module.exports = function(program, inquirer) {
@@ -19,18 +18,18 @@ module.exports = function(program, inquirer) {
   .then(apis => {
     // Build the list of available APIs for input verification and interactive selection
     const valueLists = {
-      'api-identifiers': _.map(apis, api => {
+      apis: _.map(apis, api => {
         return {
           value: api.spec['x-lager'].identifier,
           label: api.spec['x-lager'].identifier + (api.spec.info && api.spec.info.title ? ' - ' + api.spec.info.title : '')
         };
       }),
-      'http-method': ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-      'mime-type': ['application/json', 'text/plain', { value: 'other', label: 'other (you will be prompted to enter a value)'}]
+      httpMethod: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+      mimeType: ['application/json', 'text/plain', { value: 'other', label: 'other (you will be prompted to enter a value)'}]
     };
     const validators = {
-      'api-identifier': cliTools.generateListValidator(valueLists['api-identifier'], 'API identifier'),
-      'http-method': cliTools.generateListValidator(valueLists['http-method'], 'HTTP method')
+      apis: cliTools.generateListValidator(valueLists.apis, 'API identifier'),
+      httpMethod: cliTools.generateListValidator(valueLists.httpMethod, 'HTTP method')
     };
 
     return program
@@ -59,7 +58,7 @@ module.exports = function(program, inquirer) {
         parameters =  _.merge(parameters, answers);
 
         // Specific cleanup of parameters
-        if (parameters['resource-path'].charAt(0) !== '/') { parameters['resource-path'] = '/' + parameters['resource-path']; }
+        if (parameters.resourcePath.charAt(0) !== '/') { parameters.resourcePath = '/' + parameters.resourcePath; }
 
         return performTask(parameters);
       });
@@ -77,15 +76,15 @@ module.exports = function(program, inquirer) {
 function prepareQuestions(parameters, valueLists) {
   return [{
     type: 'list',
-    name: 'http-method',
+    name: 'httpMethod',
     message: 'What is the HTTP method?',
-    choices: valueLists['http-method'],
-    when: answers => { return !parameters['http-method']; }
+    choices: valueLists.httpMethod,
+    when: answers => { return !parameters.httpMethod; }
   }, {
     type: 'input',
-    name: 'resource-path',
+    name: 'resourcePath',
     message: 'What is the resource path?',
-    when: answers => { return !parameters['resource-path']; }
+    when: answers => { return !parameters.resourcePath; }
   }, {
     type: 'input',
     name: 'summary',
@@ -95,19 +94,19 @@ function prepareQuestions(parameters, valueLists) {
     type: 'checkbox',
     name: 'consume',
     message: 'What are the MIME types that the operation can consume?',
-    choices: valueLists['mime-type'],
+    choices: valueLists.mimeType,
     when: answers => { return !parameters.consume; },
     default: ['application/json']
   }, {
     type: 'input',
-    name: 'consume-other',
+    name: 'consumeOther',
     message: 'Enter the MIME types that the operation can consume, separated by commas',
     when: answers => { return !parameters.consume && answers.consume.indexOf('other') !== -1; }
   }, {
     type: 'checkbox',
     name: 'produce',
     message: 'What are the MIME types that the operation can produce?',
-    choices: valueLists['mime-type'],
+    choices: valueLists.mimeType,
     when: answers => { return !parameters.produce; },
     default: ['application/json']
   }, {
@@ -119,9 +118,9 @@ function prepareQuestions(parameters, valueLists) {
     type: 'checkbox',
     name: 'apis',
     message: 'Which APIs should expose this endpoint?',
-    choices: _.map(valueLists['api-identifiers'], 'label'),
+    choices: _.map(valueLists.apis, 'label'),
     when: answers => { return !parameters.apis; },
-    filter: input => { return cliTools.retrieveValuesFromList(valueLists['api-identifiers'], input); }
+    filter: input => { return cliTools.retrieveValuesFromList(valueLists.apis, input); }
   }];
 }
 
@@ -134,8 +133,8 @@ function performTask(parameters) {
   // We calculate the path where we will save the specification and create the directory
   // Destructuring parameters only available in node 6 :(
   // specFilePath = path.join(process.cwd(), 'endpoints', ...answers.resourcePath.split('/'));
-  let pathParts = parameters['resource-path'].split('/');
-  pathParts.push(parameters['http-method']);
+  let pathParts = parameters.resourcePath.split('/');
+  pathParts.push(parameters.httpMethod);
   pathParts.unshift('endpoints');
   pathParts.unshift(process.cwd());
   let specFilePath = path.join.apply(null, pathParts);
@@ -156,9 +155,9 @@ function performTask(parameters) {
     return fs.writeFileAsync(specFilePath + path.sep + 'spec.json', JSON.stringify(spec, null, 2));
   })
   .then(() => {
-    let msg = '\n  The endpoint ' + cliTools.format.info(parameters['http-method'] + ' ' + parameters['resource-path']) + ' has been created\n\n';
+    let msg = '\n  The endpoint ' + cliTools.format.info(parameters.httpMethod + ' ' + parameters.resourcePath) + ' has been created\n\n';
     msg += '  Its OpenAPI specification is available in ' + cliTools.format.info(specFilePath + path.sep + 'spec.json') + '\n';
-    msg += '  You can inspect it using the command ' + cliTools.format.cmd('lager inspect-endpoint ' + parameters['http-method'] + ' ' + parameters['resource-path']) + '\n';
+    msg += '  You can inspect it using the command ' + cliTools.format.cmd('lager inspect-endpoint ' + parameters.httpMethod + ' ' + parameters.resourcePath) + '\n';
     console.log(msg);
   });
 }

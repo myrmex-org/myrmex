@@ -36,6 +36,12 @@ function loadLambdas() {
   })
   .spread((lambdas) => {
     return Promise.resolve(lambdas);
+  })
+  .catch(e => {
+    if (e.code === 'ENOENT' && path.basename(e.path) === 'lambdas') {
+      return Promise.resolve([]);
+    }
+    return Promise.reject(e);
   });
 }
 
@@ -73,12 +79,12 @@ module.exports = {
     /**
      *
      */
-    registerCommands: function registerCommands(program) {
+    registerCommands: function registerCommands(program, inquirer) {
       return Promise.all([
-        createLambda(program)
+        createLambda(program, inquirer)
       ])
       .then(() => {
-        return Promise.resolve([program]);
+        return Promise.resolve([program, inquirer]);
       });
     },
 

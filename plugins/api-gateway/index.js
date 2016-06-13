@@ -8,13 +8,6 @@ const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();
 
-// Each of these modules expose a function that returns the promise of a command
-const createApi = require('./cli/create-api');
-const createEndpoint = require('./cli/create-endpoint');
-const inspectApi = require('./cli/inspect-api');
-const inspectEndpoint = require('./cli/inspect-endpoint');
-const deployApis = require('./cli/deploy-apis');
-
 const Api = require('./api');
 const Endpoint = require('./endpoint');
 
@@ -52,7 +45,7 @@ function loadApis() {
     if (e.code === 'ENOENT' && path.basename(e.path) === 'apis') {
       return Promise.resolve([]);
     }
-    Promise.reject(e);
+    return Promise.reject(e);
   });
 }
 
@@ -312,29 +305,30 @@ function getEndpointSpec(method, resourcePath, colors) {
 }
 
 
+function registerCommands(program, inquirer) {
+  return Promise.all([
+    require('./cli/create-api')(program, inquirer),
+    require('./cli/create-endpoint')(program, inquirer),
+    require('./cli/inspect-api')(program, inquirer),
+    require('./cli/inspect-endpoint')(program, inquirer),
+    require('./cli/deploy-apis')(program, inquirer)
+  ])
+  .then(() => {
+    return Promise.resolve([program, inquirer]);
+  });
+}
 
 module.exports = {
   name: 'api-gateway',
   hooks: {
-    registerCommands(program, inquirer) {
-      return Promise.all([
-        createApi(program, inquirer),
-        createEndpoint(program, inquirer),
-        inspectApi(program, inquirer),
-        inspectEndpoint(program, inquirer),
-        deployApis(program, inquirer)
-      ])
-      .then(() => {
-        return Promise.resolve([program, inquirer]);
-      });
-    }
+    registerCommands
   },
   helpers: {},
-  getApiSpec: getApiSpec,
-  getEndpointSpec: getEndpointSpec,
-  deploy: deploy,
-  loadApis: loadApis,
-  loadEndpoints: loadEndpoints
+  getApiSpec,
+  getEndpointSpec,
+  deploy,
+  loadApis,
+  loadEndpoints
 };
 
 
