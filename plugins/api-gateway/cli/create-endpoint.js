@@ -111,7 +111,7 @@ function prepareQuestions(parameters, valueLists) {
     default: ['application/json']
   }, {
     type: 'input',
-    name: 'produce-other',
+    name: 'produceOther',
     message: 'Enter the MIME types that the operation can produce, separated by commas',
     when: answers => { return !parameters.produce && answers.produce.indexOf('other') !== -1; }
   }, {

@@ -3,7 +3,6 @@
 const lager = require('@lager/lager/lib/lager');
 const Promise = lager.getPromise();
 const _ = lager.getLodash();
-
 const cliTools = require('@lager/lager/lib/cli-tools');
 
 module.exports = function(program, inquirer) {
@@ -21,10 +20,16 @@ module.exports = function(program, inquirer) {
           value: api.spec['x-lager'].identifier,
           label: api.spec['x-lager'].identifier + (api.spec.info && api.spec.info.title ? ' - ' + api.spec.info.title : '')
         };
-      })
+      }),
+      specVersion: [
+        { value: 'doc', label: 'version of the specification for documentation purpose' },
+        { value: 'publish', label: 'version of the specification used for publication in API Gateway' },
+        { value: 'complete', label: 'version of the specification unaltered' },
+      ]
     };
     const validators = {
-      apiIdentifier: cliTools.generateListValidator(valueLists.apiIdentifier, 'API identifier')
+      apiIdentifier: cliTools.generateListValidator(valueLists.apiIdentifier, 'API identifier'),
+      specVersion: cliTools.generateListValidator(valueLists.specVersion, 'specification version')
     };
 
     program
@@ -32,6 +37,7 @@ module.exports = function(program, inquirer) {
     .description('inspect an api specification')
     .arguments('[api-identifier]')
     .option('-c, --colors', 'highlight output')
+    .option('-t, --type', 'select the type of specification to retrieve: doc, deploy, complete')
     .action(function (apiIdentifier, options) {
       // Transform cli arguments and options into a parameter map
       let parameters = cliTools.processCliArgs(arguments, validators);
@@ -42,10 +48,10 @@ module.exports = function(program, inquirer) {
       .then(answers => {
         // Merge the parameters provided in the command and in the prompt
         parameters =  _.merge(parameters, answers);
-        return plugin.getApiSpec(parameters.apiIdentifier, parameters.colors);
+        return plugin.getApiSpec(parameters.apiIdentifier, 'doc', parameters.colors);
       })
       .then(spec => {
-        return console.log(spec);
+        console.log(spec);
       });
     });
   });
@@ -66,6 +72,14 @@ function prepareQuestions(parameters, valueLists) {
     choices: _.map(valueLists.apiIdentifier, 'label'),
     when: function(currentAnswers) {
       return !parameters.apiIdentifier;
+    }
+  }, {
+    type: 'list',
+    name: 'specVersion',
+    message: 'Which version of the specification do ou want to see?',
+    choices: _.map(valueLists.specVersion, 'label'),
+    when: function(currentAnswers) {
+      return !parameters.specVersion;
     }
   }];
 }

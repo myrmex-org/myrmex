@@ -4,6 +4,7 @@ const file = require('file');
 const path = require('path');
 const util = require('util');
 const lager = require('@lager/lager/lib/lager');
+const cardinal = require('cardinal');
 const Promise = lager.getPromise();
 const fs = Promise.promisifyAll(require('fs'));
 const _ = lager.getLodash();
@@ -289,19 +290,25 @@ function getApiSpec(identifier, type, colors) {
     return Promise.all([addEndpointsToApis([api], endpoints), endpoints]);
   })
   .spread((apis, endpoints) => {
-    // @TODO add syntax highlighting with "-c" option
-    return JSON.stringify(apis[0].genSpec(type), null, 2);
+    let json = JSON.stringify(apis[0].genSpec(type), null, 2);
+    if (colors) {
+      json = cardinal.highlight(json, { json: true });
+    }
+    return json;
   });
 }
 
-function getEndpointSpec(method, resourcePath, colors) {
+function getEndpointSpec(method, resourcePath, type, colors) {
   let endpointSpecRootPath = path.join(process.cwd(), 'endpoints');
   return loadEndpoint(endpointSpecRootPath, resourcePath, method)
   .then(endpoint => {
     // @TODO create Endpoint.genSpec(type) similarly ti Api
-    // @TODO add syntax highlighting with "-c" option
-    return console.log(JSON.stringify(endpoint.getSpec(), null, 2));
-  });
+    let json = JSON.stringify(endpoint.getSpec(), null, 2);
+    if (colors) {
+      json = cardinal.highlight(json, { json: true });
+    }
+    return json;
+});
 }
 
 
