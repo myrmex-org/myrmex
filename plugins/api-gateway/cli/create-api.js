@@ -31,6 +31,7 @@ module.exports = function(program, inquirer) {
 
     return program
     .command('create-api')
+    .alias('new-api')
     .description('create a new API')
     .arguments('[api-identifier]')
     .option('-t, --title <title>', 'The title of the API')

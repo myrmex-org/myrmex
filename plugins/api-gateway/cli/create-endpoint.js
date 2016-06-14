@@ -34,6 +34,7 @@ module.exports = function(program, inquirer) {
 
     return program
     .command('create-endpoint')
+    .alias('new-endpoint')
     .description('create a new endpoint')
     .arguments('[http-method] [resource-path]')
     .option('-a, --apis <api-identifiers>', 'The identifiers of APIs that expose the endpoint separated by ","', cliTools.listParser)

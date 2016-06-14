@@ -81,48 +81,44 @@ Lambda.prototype.deploy = function deploy(region, stage, environment) {
 
 /**
  * Create a zip package for a lambda and provide it's content in a buffer
- * @param {String} lambdaPath - path to the function
- * @param {Array} dependenciesPaths - directories to include in the the function
- * @param {Function} cb
- */
-function getPackageBufferCb(lambdaPath, dependenciesPaths, cb) {
-  dependenciesPaths = dependenciesPaths || [];
-
-  var archivePath = '/tmp/' + (new Buffer(lambdaPath).toString('base64')) + '.zip';
-  var outputStream = fs.createWriteStream(archivePath);
-  var archive = archiver.create('zip', {});
-  outputStream.on('close', function() {
-    fs.readFile(archivePath, cb);
-  });
-
-  archive.on('error', function(e) {
-    cb(e);
-  });
-
-  archive.pipe(outputStream);
-
-  // Add the Lamba code to the archive
-  archive.directory(lambdaPath, '');
-
-  // Add the library code (aka code in common for all lambdas) to the archive
-  dependenciesPaths.forEach(function(dependencyPath) {
-    archive.directory(dependencyPath, path.basename(dependencyPath));
-  });
-
-  // Add the application configuration of the environment to the archive
-  var envConfig = process.env;
-  envConfig.LAMBDA = true;
-  archive.append(JSON.stringify(envConfig), { name: 'env_config.json' });
-
-  archive.finalize();
-}
-// @TODO improve this to avoid using Promise.promisify()
-/**
- * Creates a buffer containing the lambda package
  * @return {Promise<Buffer>}
  */
 Lambda.prototype.buildPackage = function buildPackage() {
-  return Promise.promisify(getPackageBufferCb)(this.config.handlerPath, this.config.includeLibs);
+  const lambdaPath = this.config.handlerPath;
+  const dependenciesPaths = (this.config.includeLibs || []);
+  return new Promise(function(resolve, reject) {
+
+    var archivePath = '/tmp/' + (new Buffer(lambdaPath).toString('base64')) + '.zip';
+    var outputStream = fs.createWriteStream(archivePath);
+    var archive = archiver.create('zip', {});
+    outputStream.on('close', function() {
+      fs.readFile(archivePath, (e, result) => {
+        if (e) { return reject(e); }
+        resolve(result);
+      });
+    });
+
+    archive.on('error', function(e) {
+      reject(e);
+    });
+
+    archive.pipe(outputStream);
+
+    // Add the Lamba code to the archive
+    archive.directory(lambdaPath, '');
+
+    // Add the library code (aka code in common for all lambdas) to the archive
+    dependenciesPaths.forEach(function(dependencyPath) {
+      archive.directory(dependencyPath, path.basename(dependencyPath));
+    });
+
+    // Add the application configuration of the environment to the archive
+    var envConfig = process.env;
+    envConfig.LAMBDA = true;
+    archive.append(JSON.stringify(envConfig), { name: 'env_config.json' });
+
+    archive.finalize();
+  });
 };
 
 

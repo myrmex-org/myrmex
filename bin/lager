@@ -4,9 +4,9 @@
 const lager = require('@lager/lager');
 const program = lager.getProgram();
 const cliTools = require('@lager/lager/lib/cli-tools');
+const packageJson = require('@lager/lager/package');
 
-// We create the "lager new" commands
-program.version('0.0.1');
+program.version(packageJson.version);
 
 // We fire the "registerCommands" event so plugins can add their own commands
 lager.fire('registerCommands', program, lager.getInquirer())
