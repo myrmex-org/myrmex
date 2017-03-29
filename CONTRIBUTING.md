@@ -21,71 +21,47 @@ If you want to contribute to Lager or one of its core plugins
 *   Write / rewrite ES6 code compatible with node v4
 *   Follow the rules of the `.eslintrc` and `.remarkrc` files (You can test using the command `npm run lint`)
 *   Respect case conventions: `ConstructorFunctionName`, `instanceName`, `functionName`, `node-module-file-name.js`
-*   Code coverage objective: 80% (Yes, we are far from it... for now...)
+*   Code coverage objective: 80% minimum
 
 Setup your development environment
 ---
 
-The Lager repository comes with a docker-compose configuration that allows to quickly test modification on the lager command line.
-
-Indeed, it installs the `lager` command line like `npm install @lager/lager -g` would do and comes with a test application.
+The Lager core packages belong to a monorepo managed with [Lerna](https://github.com/lerna/lerna). The monorepo comes with a development project that runs
+in a docker container. This allows to make new developments with the latest version of all core packages.
 
 ### Prerequisites
 
-*   Install docker and docker-compose
-*   Clone the repo `git clone git@github.com:lagerjs/lager.git`
-*   Install dependencies `npm install`
-*   Setup environment for the development application `cd ../dev-app && cp docker-compose.env.example docker-compose.env`
-*   Configure the file `docker-compose.env` with AWS credentials that you want to use to perform deployments in AWS
-
-#### Checking that the container user matches your `uid/gid`
-
-To have appropriate permissions on the files in the container, the user in the container must have the same `uid/gid` that the user that owns the repository
-on the host machine. Check the `uid/gid` of your user on the host machine:
-
-```bash
-id
-# => uid=1000(alexis) gid=1000(alexis) groups=1000(alexis),27(sudo),126(docker)
-```
-
-If your user has a `uid/gid` different than 1000, you can edit `dev-app/docker-compose/nodejs/Dockerfile` and uncomment these lines:
-
-```bash
-### If your uid/gid is different than 1000, you can modify the uid/gid of the lager user
-### in the container by uncommenting these lines and setting the appropriate value (change-uid <NEW_UID> [NEW_GID])
-### Then run `docker-compose build` in the `dev-app` directory to re-build the docker image
-### Please take care to NOT COMMIT this modification
-# USER root
-# RUN change-uid 1234
-# USER lager
-```
-
-Rebuild the docker image if necessary:
-
-```bash
-# In the directory `dev-app`
-docker-compose build
-```
+*   Install docker
+*   Clone the repo `git clone git@github.com:lagerjs/lager.git && cd lager`
+*   Install the Lerna command line globally:  `npm install -g lerna`
+*   Install dependencies in all packages `lerna run npm install`
+*   Go to the folder of the development environment/project `cd demo/dev-env`
+*   Create a configuration file and set the AWS credentials that Lager will use to deploy in AWS `cp env.list.example env.list`
 
 #### Launching the development environment
 
-If/when the `uid/gid` matches, run a shell in a container of the node image:
+The `run.sh` script runs zsh in a docker container.
 
 ```bash
-# In the directory `dev-app`
-docker-compose run node zsh
+# In the directory `/demo/dev-env`
+bash ./run.sh
 ```
 
-You will be logged with the user `lager`, in the root directory of a sample project. Lager will be installed globally. Test it with the following command.
+You will be logged with the user `lager`, in the root directory of a sample project. This sample project is empty, but it is configured to use
+the core packages of Lager. Test that the project is correctly configured with the following command.
 
 ```bash
 # Inside the node container
 lager -h
 ```
 
+The code of the repository is available in the container via docker volumes, so any change will be automatically visible in the container.
+`run.sh` detects you UID/GID on the host machine and pass it to the container that will change the UID/GID of the user `lager` of the container accordingly.
+So the permissions in the container will match the permissions on the host.
+
 ### Before creating a pull request
 
-Run the unit tests and check the code style
+From the root folder of the git repository, run the unit tests and check the code style.
 
 ```bash
 npm test

@@ -166,11 +166,11 @@ module.exports = (icli) => {
       let delay = 0;
       _.forEach(apis, api => {
         promises.push(new Promise((resolve, reject) => {
-          // 30 seconds delay
+          // 32 seconds delay
           setTimeout(() => {
             console.log('Deploying ' + api.getIdentifier() + ' ...');
             resolve(api.deploy(parameters.region, context));
-          }, delay * 30000);
+          }, delay * 32000);
         }));
         delay++;
       });

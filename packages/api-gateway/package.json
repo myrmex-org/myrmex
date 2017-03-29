@@ -46,9 +46,5 @@
     "mocha": "^2.5.3",
     "remark-cli": "^1.0.0",
     "remark-lint": "^4.0.1"
-  },
-  "directories": {
-    "doc": "doc",
-    "test": "test"
   }
 }
