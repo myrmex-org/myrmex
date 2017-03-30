@@ -4,8 +4,5 @@
     "MemorySize": "1536",
     "Role": "LambdaInspection"
   },
-  "includeEndpoints": false,
-  "modules": [
-    "inspection"
-  ]
+  "includeEndpoints": false
 }

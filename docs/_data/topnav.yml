@@ -24,5 +24,7 @@ topnav_dropdowns:
           url: /api-gateway-overview.html
     - title: Tutorials
       folderitems:
-        - title: Planet express example
+        - title: Planet Express example
           url: /planet-express.html
+        - title: Lambda profiling example
+          url: /lambda-profiling.html

@@ -1,0 +1,7 @@
+{
+  "name": "config-128",
+  "version": "0.0.0",
+  "dependencies": {
+    "inspection": "../../modules/inspection"
+  }
+}

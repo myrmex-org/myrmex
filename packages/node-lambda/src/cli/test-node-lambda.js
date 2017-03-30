@@ -24,12 +24,23 @@ module.exports = (icli) => {
         message: 'Which Lambda do you want to execute in AWS?'
       }
     }, {
-      cmdSpec: '--event',
+      cmdSpec: '--event <event-name>',
       description: 'Event example to use',
       type: 'list',
       choices: choicesLists.events,
       question: {
-        message: 'Which event example do you want to use?'
+        message: 'Which event example do you want to use?',
+        when: (answers, cmdParameterValues) => {
+          if (cmdParameterValues.event) { return false; }
+          return choicesLists.events(answers, cmdParameterValues)
+          .then(choices => {
+            if (choices.length === 1) {
+              cmdParameterValues.event = choices[0];
+              return false;
+            }
+            return choices.length > 0;
+          });
+        }
       }
     }, {
       cmdSpec: '-r, --region [region]',
@@ -88,10 +99,23 @@ module.exports = (icli) => {
         });
       },
       events: (answers, cmdParameterValues) => {
-        const lambdaIdentifier = answers.lambdaIdentifier || cmdParameterValues.lambdaIdentifier;
-        return plugin.findLambda(lambdaIdentifier)
-        .then(lambda => {
-          return lambda.getEventExamples();
+        // @FIXME comquirer is not able to validate a list for a question, using the command parameter values
+        if (answers) {
+          const lambdaIdentifier = answers.lambdaIdentifier || cmdParameterValues.lambdaIdentifier;
+          return plugin.findLambda(lambdaIdentifier)
+          .then(lambda => {
+            return lambda.getEventExamples();
+          });
+        }
+        // @FIXME so we list all the events of all the lambdas as a workarround
+        return plugin.loadLambdas()
+        .then(lambdas => {
+          return Promise.map(lambdas, lambda => {
+            return lambda.getEventExamples();
+          });
+        })
+        .then(eventsLists => {
+          return _.uniq(_.concat.apply(null, eventsLists));
         });
       },
       region: [
@@ -139,7 +163,7 @@ module.exports = (icli) => {
       if (parameters.environment === undefined) { parameters.environment = plugin.lager.getConfig('environment'); }
       if (parameters.stage === undefined) { parameters.stage = plugin.lager.getConfig('stage'); }
       const context = { stage: parameters.stage, environment: parameters.environment };
-      return lambda.execute(parameters.region, context, lambda.loadEventExample(parameters.event));
+      return lambda.execute(parameters.region, context, parameters.event ? lambda.loadEventExample(parameters.event) : {});
     })
     .then(result => {
       console.log('Success result:');
