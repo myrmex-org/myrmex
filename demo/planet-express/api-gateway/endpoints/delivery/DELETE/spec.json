@@ -7,12 +7,6 @@
     "lambda": "api-generic"
   },
   "summary": "View a delivery",
-  "consume": [
-    "application/json"
-  ],
-  "produce": [
-    "application/json"
-  ],
   "responses": {
     "200": {}
   },
@@ -21,13 +15,14 @@
   },
   "x-amazon-apigateway-integration": {
     "credentials": "PlanetExpressLambdaInvocation",
-    "requestTemplates": {
-      "application/json": null
-    },
     "responses": {
       "default": {
         "statusCode": 200
       }
-    }
+    },
+    "type": "aws_proxy",
+    "contentHandling": "CONVERT_TO_TEXT",
+    "passthroughBehavior": "when_no_match",
+    "httpMethod": "POST"
   }
 }

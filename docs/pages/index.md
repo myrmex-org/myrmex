@@ -29,7 +29,7 @@ These plugins can interact with each other but can also be used independently.
 
 ## Installation
 
-**Prerequisites**: `node` (version 4 minimum) and `npm` must be installed.
+**Prerequisites**: `node` (version 4 minimum) and `npm` (version 4 recommended) must be installed.
 
 The `lager` command line has its own Node module. We install it globally.
 
@@ -72,9 +72,9 @@ that have been installed in the project.
 
 ## Working on a Lager project
 
-This documentation is currently under construction. This section will contain links to the documentation of plugins and some use case examples.
+This documentation is currently under construction. Here are some links to some tutorials.
 
-*   [Overview of Lager and it's main plugins](core-overview.html)
+*   [Create and test different Lambda configurations](lambda-profiling.html)
 *   [Create an application exposing several APIs](planet-express.html)
 
 Installing `@lager/cli` and testing it helps to discover Lager too.

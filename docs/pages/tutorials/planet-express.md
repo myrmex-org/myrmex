@@ -1,9 +1,8 @@
 ---
 title: Creating APIs for the space delivery company "Planet Express"
 keywords: lager, iam, api-gateway, lambda
-last_updated: Nov 28, 2016
 tags: [getting_started, tutorial, iam, api-gateway, lambda]
-summary: "I this tutorial, we will follow the steps to create an application that expose several APIs .
+summary: "In this tutorial, we will follow the steps to create an application that expose several APIs.
 We will create some IAM roles, a Lambda that should contain the application logic, and define several APIs that will expose some endpoints."
 sidebar: home_sidebar
 permalink: planet-express.html
@@ -74,6 +73,10 @@ cd planet-express
 We are free to use as many Lambdas as we want in a Lager project. For example, we could associate one specific Lambda for each endpoint. But the
 *Planet Express* development team choose to put all the logic of the application in one single Lambda. Parameters provided by API Gateway will allow
 the lambda to know which portions of code to execute.
+
+> The implementation of the Lambda and of the modules is out of the scope of this tutorial. We will create them and leave them empty. This will give
+> an overview of the structure of a Lager project and show the integration of Lambdas with API Gateway. Lager helps you to organize and deploy serverless
+> projects, but it does not interfere about how you write Node.js code.
 
 #### Creation of the Lambda's execution role
 

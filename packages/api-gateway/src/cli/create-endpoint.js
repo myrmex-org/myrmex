@@ -6,7 +6,6 @@ const _ = require('lodash');
 const path = require('path');
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
-const ncpAsync = Promise.promisify(require('ncp'));
 
 const plugin = require('../index');
 
@@ -132,7 +131,7 @@ module.exports = (icli) => {
   function getChoices() {
     // First, retrieve possible values for the api-identifiers parameter
     const choicesLists = {
-      httpMethod: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'ANY'],
+      httpMethod: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS', 'ANY'],
       auth: [
         { value: 'aws_iam', name: 'AWS authorization' },
         { value: 'none', name: 'None' }

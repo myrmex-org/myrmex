@@ -1,0 +1,8 @@
+{
+  "name": "api-generic",
+  "version": "0.0.0",
+  "dependencies": {
+    "data-access": "../../modules/data-access",
+    "log": "../../modules/log"
+  }
+}

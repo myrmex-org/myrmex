@@ -96,9 +96,9 @@ function loadEndpoints() {
       const subPath = dirPath.substr(endpointSpecsPath.length);
       const resourcePathParts = subPath.split(path.sep);
       const method = resourcePathParts.pop();
-      if (['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'ANY'].indexOf(method) === -1) { return; }
+      if (['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS', 'ANY'].indexOf(method) === -1) { return; }
 
-      // We construct the path to the resource (url style, not filesystem)
+      // We construct the path to the resource
       const resourcePath = resourcePathParts.join('/');
 
       endpointPromises.push(loadEndpoint(endpointSpecsPath, resourcePath, method));

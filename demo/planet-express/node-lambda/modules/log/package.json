@@ -1,3 +1,5 @@
 {
-  "x-lager": {}
+  "name": "log",
+  "version": "0.0.0",
+  "dependencies": {}
 }
