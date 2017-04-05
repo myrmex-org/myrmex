@@ -26,8 +26,14 @@ Do not worry, Lager helps you to experiment quickly. But if you really want to b
 Lager plugins that manage AWS resources need to have permissions to execute commands that communicate with the AWS API. When a command needs these
 permissions, Lager will use the AWS credentials provided by the environment.
 
-~~Each Lager plugin calling the AWS API documents which IAM permissions are needed for each command.~~ *not yet!* Thereby a Lager developer can optimize the
-configuration of the IAM policies, users and roles he needs to deploy a project.
+To begin to use Lager, you can use AWS credentials with the following policies:
+
+*  `IAMFullAccess`
+*  `AmazonAPIGatewayAdministrator`
+*  `AWSLambdaFullAccess`
+
+You can always use a more restrictive set of permissions that better fit your use of Lager. Soon. the documentation of each plugin will come with a more
+precise definition of the permissions they need.
 
 ## The deployment `context`
 
@@ -36,4 +42,4 @@ When managing content in AWS, Lager main plugins take in consideration the notio
 *   An environment name that allows to deploy several environment on one AWS account. For example `DEV`, `QA`, `DEVELOPER_JANE`, `DEVELOPER_JOHN`, etc ...
 *   A stage name that allows to deploy several versions of the project in one environment. For example `v1`, `v2`, `latest`, etc ...
 
-The use of the `context` will be explain for each main plugin.
+The use of the `context` will be explained for each main plugin.

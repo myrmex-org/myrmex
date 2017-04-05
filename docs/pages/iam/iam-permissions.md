@@ -7,3 +7,5 @@ sidebar: iam_sidebar
 permalink: iam-permissions.html
 folder: iam
 ---
+
+To quickly start with the plugin `@lager/iam`, you can use AWS credentials that have the `IAMFullAccess` policy.

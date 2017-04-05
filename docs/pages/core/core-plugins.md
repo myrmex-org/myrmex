@@ -8,11 +8,11 @@ permalink: core-plugins.html
 folder: core
 ---
 
-The Lager core is the node module `@lager/lager`. It exports an object (refered as the *Lager instance*) that is based on [Pebo](https://github.com/AlexisNo/pebo#readme)
+The Lager core is the node module `@lager/lager`. It exports an object (referred as the *Lager instance*) that is based on [Pebo](https://github.com/AlexisNo/pebo#readme)
 that is a kind of event emitter.
 
 Lager plugins use the *Lager instance* to interact with each other. A Lager plugin can be published on npm to be used by anyone, or it can be a project
-specific plugin in the folder `project-root/plugins/my-plugin-identifier`.
+specific plugin in the folder `plugins/my-plugin-identifier` of the project.
 
 Lager plugins can make use of the following functionalities:
 
@@ -75,7 +75,7 @@ When the Lager command line is called. It checks if it is called from a Lager pr
 
 Once a `@lager/lager` module have been found, the Lager command line loads it and receives an object: the *Lager instance*.
 
-The Lager command line then load the project configuration (including the list of plugins) and applies it to the *Lager instance*. Each plugin is loaded and
+The Lager command line then loads the project configuration (including the list of plugins) and applies it to the *Lager instance*. Each plugin is loaded and
 registered in the *Lager instance*.
 
 ### Registration of plugins
@@ -86,8 +86,8 @@ When the *Lager instance* registers a plugin, it basically performs three operat
 *   Checks if it there are *extensions* and add them to the Lager instance.
 *   Create a reference of itself in a `lager` property that is added to the plugin.
 
-So, once the *Lager instance* registers the plugin, it is accessible via `plugin.lager`. The plugin can use it to fire events or call *extensions* that have
-been provided by other plugins.
+So, once a plugin has been registered by the *Lager instance*, it has a new `lager` property that contains the *Lager instance*. It can be used to fire events
+or call *extensions* that have been provided by other plugins.
 
 ## Events mecanism
 

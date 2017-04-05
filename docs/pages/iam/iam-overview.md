@@ -18,7 +18,7 @@ To use the `@lager/iam` plugin, you should have a minimal knowledge about [AWS I
 In the root folder of a lager project:
 
 ```bash
-npm install -g @lager/iam
+npm install @lager/iam
 ```
 
 Then enable the plugin in the `lager.json` config file:
