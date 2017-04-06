@@ -1,0 +1,17 @@
+{
+  "name": "configuration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@lager/iam": "0.0.*",
+    "@lager/lager": "0.0.*",
+    "@lager/node-lambda": "0.0.*"
+  }
+}
