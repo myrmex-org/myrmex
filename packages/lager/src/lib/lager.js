@@ -65,20 +65,30 @@ class Lager extends Pebo {
    * @returns {Lager}
    */
   registerPlugin(plugin) {
+    // We inject the Lager instnce into the plugin
     plugin.lager = this;
-    const pluginConfig = this.getConfig(plugin.name);
+
+    // We retrieve the configuration defined in the project for this plugin
+    // The norm in Lager is to write configuration object keys in camelCase
+    const plugiConfigKey = _.camelCase(plugin.name);
+    const pluginConfig = this.getConfig(plugiConfigKey);
     if (pluginConfig !== undefined) {
+      // We override the default configuration of the plugin with th one of the project
       plugin.config = _.assign(plugin.config, pluginConfig);
     }
+    // We reference the "final" plugin configuration in the Lager configuration
+    this.config[plugiConfigKey] = plugin.config;
+
+    // We "register" the plugin in the Lager instance
     this.plugins.push(plugin);
 
-    // add hooks/event listeners
+    // Add hooks/event listeners
     plugin.hooks = plugin.hooks || [];
     _.map(plugin.hooks, (fn, event) => {
       this.when(event, fn);
     });
 
-    // add extensions: functions that extends the Lager instance
+    // Add extensions: functions that extends the Lager instance
     plugin.extensions = plugin.extensions || [];
     _.map(plugin.extensions, (fn, extensionName) => {
       this.extensions[plugin.name + ':' + extensionName] = fn;
@@ -170,14 +180,8 @@ class Lager extends Pebo {
       return this.config;
     }
 
-    // First check if the configuration exist in environment variables
-    const envVarName = 'LAGER_' + key.toUpperCase().replace('.', '_');
-    if (process.env[envVarName]) {
-      return process.env[envVarName];
-    }
-
     // If the key has the form "my.config.key"
-    // We look for a value in this.config["my"]["config"]["key"]
+    // We look for a value in this.config.my.config.key
     const configParts = key.split('.');
     let part = this.config[configParts.shift()];
     while (configParts.length > 0) {

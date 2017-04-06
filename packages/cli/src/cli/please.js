@@ -65,8 +65,10 @@ const cheers = {
   'yiddish': 'Sei gesund',
 };
 
-const latinFonts = ['Big', 'Slant', 'Small', 'Small Slant', 'Standard', 'Block', 'Def Leppard', 'Efti Font', 'Efti Italic',
-                    'Georgi16', 'Georgia11', 'Lean', 'Mini', 'Mirror', 'Mnemonic', 'Script', 'Shadow', 'Wavy'];
+const latinFonts = [
+  'Big', 'Slant', 'Small', 'Small Slant', 'Standard', 'Block', 'Def Leppard', 'Efti Font', 'Efti Italic',
+  'Georgi16', 'Georgia11', 'Lean', 'Mini', 'Mirror', 'Mnemonic', 'Script', 'Shadow', 'Wavy'
+];
 
 /**
  * This module exports a function that enrich the interactive command line and return a promise

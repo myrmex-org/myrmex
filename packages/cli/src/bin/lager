@@ -13,6 +13,10 @@ icli.getProgram().commandHelp = require('../commander-help-override');
 // Check if the user calls the command from a lager project
 require('../load-lager-project')(icli)
 .then(lager => {
+  if (lager) {
+    require('../cli/show-config')(icli, lager);
+  }
+
   icli.getProgram().parse(process.argv);
 
   // If no arguments where provided, we call the help option

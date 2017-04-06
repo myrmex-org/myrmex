@@ -29,7 +29,7 @@ module.exports = function loadLagerProject(icli) {
   }
 
   // if there is no lager instance to initialise, we return a resolved promise
-  return Promise.resolve(true);
+  return Promise.resolve(null);
 };
 
 
@@ -73,7 +73,8 @@ function getLagerInstance() {
     if (e.code !== 'MODULE_NOT_FOUND' || e.message.slice(e.message.length - 13, -1) !== '@lager' + path.sep + 'lager') {
       throw e;
     }
-    throw new Error('Lager seems to be present in a package.json file but not installed. Maybe you have to use `npm install`.');
+    process.stderr.write('Lager seems to be present in a package.json file but not installed. Maybe you have to use `npm install`.');
+    process.exit(1);
   }
 }
 
@@ -102,13 +103,32 @@ function getConfig() {
     files = fs.readdirSync(configPath);
   } catch (e) {
     // Silently ignore if there is no configuration directory
-    return config;
   }
   files.forEach(file => {
     const parse = path.parse(file);
     // We load all .js and .json files in the configuration directory
-    if (['.js', '.json'].indexOf(parse.ext)) {
+    if (['.js', '.json'].indexOf(parse.ext) !== -1) {
       config.config[parse.name] = require(path.join(configPath, file));
+    }
+  });
+
+  // Add configuration passed by environment variables
+  Object.keys(process.env).forEach(key => {
+    if (key.substring(0, 6) === 'LAGER_') {
+      // We transform
+      //     LAGER_myConfig_levels = value
+      // into
+      //     { config: { myConfig: { levels: value } } }
+      function addParts(config, parts, value) {
+        const part = parts.shift();
+        if (parts.length === 0) {
+          config[part] = value;
+        } else {
+          config[part] = config[part] || {};
+          addParts(config[part], parts, value);
+        }
+      }
+      addParts(config.config, key.substring(6).split('_'), process.env[key]);
     }
   });
 
