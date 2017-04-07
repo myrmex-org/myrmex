@@ -10,7 +10,6 @@ const Promise = require('bluebird');
 module.exports = (icli, lager) => {
 
   const config = {
-    section: 'Lager CLI core',
     cmd: 'show-config',
     description: 'show the configuration of the project',
     parameters: [{

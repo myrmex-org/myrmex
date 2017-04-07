@@ -73,8 +73,9 @@ function getLagerInstance() {
     if (e.code !== 'MODULE_NOT_FOUND' || e.message.slice(e.message.length - 13, -1) !== '@lager' + path.sep + 'lager') {
       throw e;
     }
-    process.stderr.write('Lager seems to be present in a package.json file but not installed. Maybe you have to use `npm install`.');
-    process.exit(1);
+    const msg = 'Lager seems to be present in a package.json file but not installed. Maybe you have to use `npm install`.';
+    process.stderr.write('\n' + msg + '\n\n');
+    throw new Error(msg);
   }
 }
 

@@ -14,7 +14,6 @@ module.exports = (icli) => {
   const choicesLists = getChoices();
 
   const config = {
-    section: 'Lager CLI core',
     cmd: 'new',
     description: 'create a new project',
     parameters: [{

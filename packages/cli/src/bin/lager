@@ -4,7 +4,6 @@
 const icli = require('comquirer');
 
 // Add base commands
-require('../cli/new')(icli);
 require('../cli/disable-default')(icli);
 require('../cli/please')(icli);
 
@@ -15,6 +14,8 @@ require('../load-lager-project')(icli)
 .then(lager => {
   if (lager) {
     require('../cli/show-config')(icli, lager);
+  } else {
+    require('../cli/new')(icli);
   }
 
   icli.getProgram().parse(process.argv);
