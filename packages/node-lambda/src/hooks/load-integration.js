@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 const plugin = require('../index');
+const showReports = require('../tools/show-deployment-reports');
 
 let deployMode = 'none';
 
@@ -12,6 +13,10 @@ module.exports.setDeployMode = function setDeployMode(mode) {
 };
 
 module.exports.hook = function loadIntegrationsHook(region, context, endpoints, integrationResults) {
+  if (deployMode === 'none') {
+    return Promise.resolve();
+  }
+
   return plugin.loadLambdas()
   .then(lambdas => {
     // If the user does not want to deploy all lambdas, we filter the ones that are related to the endpoints
@@ -28,15 +33,16 @@ module.exports.hook = function loadIntegrationsHook(region, context, endpoints, 
       });
     }
 
-    // Deploy the lambdas if needed
-    return Promise.map(lambdas, lambda => {
-      if (deployMode !== 'none') {
-        return lambda.deploy(region, context)
-        .then(report => {
-          return lambda;
-        });
-      }
-      return lambda;
+    process.stdout.write(lambdas.length + ' Lambda(s) to deploy: ' + _.map(lambdas, l => l.getIdentifier()).join(', ') + '\n\n');
+
+    // Deploy the lambdas
+    return Promise.map(lambdas, lambda => lambda.deploy(region, context))
+    .then(reports => {
+      // Show the result of the deployments on stdout
+      showReports(reports);
+    })
+    .then(() => {
+      return lambdas;
     });
   })
   .then(lambdas => {

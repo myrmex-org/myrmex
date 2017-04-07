@@ -148,31 +148,27 @@ class Lager extends Pebo {
 
     config.plugins = config.plugins || [];
 
-    try {
-      _.forEach(config.plugins, pluginIdentifier => {
-        let requireArg = pluginIdentifier;
+    _.forEach(config.plugins, pluginIdentifier => {
+      let requireArg = pluginIdentifier;
+      try {
+        // Try to load plugins installed in node_modules
+        require.resolve(requireArg);
+      } catch (e) {
         try {
-          // Try to load plugins installed in node_modules
+          // Try to load project specific plugins
+          requireArg = path.join(process.cwd(), pluginIdentifier);
           require.resolve(requireArg);
         } catch (e) {
-          try {
-            // Try to load project specific plugins
-            requireArg = path.join(process.cwd(), pluginIdentifier);
-            require.resolve(requireArg);
-          } catch (e) {
-            requireArg = false;
-            lager.log.warn('Lager could not find the plugin "' + pluginIdentifier + '"');
-          }
+          requireArg = false;
+          lager.log.warn('Lager could not find the plugin "' + pluginIdentifier + '"');
         }
-        if (requireArg) {
-          lager.registerPlugin(require(requireArg), pluginIdentifier);
-        }
-      });
-    } catch (e) {
-      return Promise.reject(e);
-    }
+      }
+      if (requireArg) {
+        lager.registerPlugin(require(requireArg), pluginIdentifier);
+      }
+    });
 
-    return Promise.resolve();
+    return this.fire('afterInit');
   }
 
   getConfig(key) {

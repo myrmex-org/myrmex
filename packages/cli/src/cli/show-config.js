@@ -1,8 +1,5 @@
 'use strict';
 
-const path = require('path');
-const Promise = require('bluebird');
-
 /**
  * This module exports a function that enrich the interactive command line and return a promise
  * @returns {Promise} - a promise that resolve when the operation is done
@@ -22,7 +19,6 @@ module.exports = (icli, lager) => {
       }
     }]
   };
-
 
   /* istanbul ignore next */
   /**

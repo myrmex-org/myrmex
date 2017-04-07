@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const Table = require('easy-table');
+const showReports = require('../tools/show-deployment-reports');
 const plugin = require('../index');
 
 /**
@@ -123,10 +123,10 @@ module.exports = (icli) => {
     if (parameters.stage === undefined) { parameters.stage = plugin.lager.getConfig('stage'); }
 
     console.log();
-    console.log('Deploying ' + icli.format.info(parameters.lambdaIdentifiers.length) + ' Lambdas:');
+    console.log('Deploying ' + icli.format.info(parameters.lambdaIdentifiers.length) + ' Lambda(s):');
     console.log('  AWS region: ' + icli.format.info(parameters.region));
     console.log('  Lager environement (prefix for Lambdas names): ' + icli.format.info(parameters.environment));
-    console.log('  Lager stage (aka Lambda alias): ' + icli.format.info(parameters.stage));
+    console.log('  Lager stage (used as Lambda alias): ' + icli.format.info(parameters.stage));
     console.log();
     console.log('This operation may last a little');
 
@@ -144,23 +144,8 @@ module.exports = (icli) => {
         return lambda.deploy(parameters.region, context);
       });
     })
-    .then(results => {
-      const t = new Table();
-      _.forEach(results, report => {
-        t.cell('Name', report.name);
-        t.cell('Operation', report.operation);
-        t.cell('Version', report.publishedVersion);
-        t.cell('Alias', report.aliasExisted === undefined ? '' : (report.aliasExisted ? 'Updated' : 'Created'));
-        t.cell('ARN', report.arn);
-        t.cell('Zip build time', formatHrTime(report.packageBuildTime));
-        t.cell('Deploy time', formatHrTime(report.deployTime));
-        t.newRow();
-      });
-      console.log();
-      console.log('Lambda functions deployed');
-      console.log();
-      console.log(t.toString());
-      return results;
+    .then(reports => {
+      showReports(reports);
     })
     .catch(e => {
       if (e.code === 'AccessDeniedException' && e.cause && e.cause.message) {
@@ -175,12 +160,3 @@ module.exports = (icli) => {
   }
 
 };
-
-/**
- * Format the result of process.hrtime() into numeric with 3 decimals
- * @param  {Array} hrTime
- * @return {numeric}
- */
-function formatHrTime(hrTime) {
-  return (hrTime[0] + hrTime[1] / 1000000000).toFixed(3);
-}

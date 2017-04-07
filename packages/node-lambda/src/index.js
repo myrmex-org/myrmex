@@ -196,6 +196,11 @@ const plugin = {
 
   hooks: {
 
+    afterInit: function afterInitHook() {
+      plugin.config.environment = plugin.config.environment || plugin.lager.getConfig('environment');
+      plugin.config.stage = plugin.config.stage || plugin.lager.getConfig('stage');
+    },
+
     /**
      * Register plugin commands
      * @returns {Promise} - a promise that resolves when all commands are registered
