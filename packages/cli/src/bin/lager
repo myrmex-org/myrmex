@@ -13,7 +13,6 @@ icli.getProgram().commandHelp = require('../commander-help-override');
 module.exports = require('../load-lager-project')(icli)
 .then(lager => {
   if (lager) {
-    console.log(lager);
     // If a Lager instance is found, we add the "show-config" command
     require('../cli/show-config')(icli, lager);
   } else {
