@@ -79,7 +79,7 @@ module.exports = (icli) => {
   const choicesLists = getChoices();
 
   const config = {
-    section: 'Core plugin',
+    section: 'CLI core',
     cmd: 'please',
     description: 'Have a beer! You deserve it',
     options: { noHelp: true },

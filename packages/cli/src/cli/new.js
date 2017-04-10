@@ -14,6 +14,7 @@ module.exports = (icli) => {
   const choicesLists = getChoices();
 
   const config = {
+    section: 'CLI core',
     cmd: 'new',
     description: 'create a new project',
     parameters: [{
@@ -65,7 +66,7 @@ module.exports = (icli) => {
    * @param {Object} parameters - the parameters provided in the command and in the prompt
    * @returns {Promise<null>} - The execution stops here
    */
-  function executeCommand(parameters) {
+  function executeCommand(parameters, done) {
     // If a name has been provided, we create the project directory
     // Otherwise, the project will ne created in the current directory
     let configFilePath = process.cwd();
@@ -120,6 +121,7 @@ module.exports = (icli) => {
       }
       msg += '  Execute ' + icli.format.cmd('lager -h') + ' in the root folder of the project to see available commands\n';
       console.log(msg);
+      done();
     });
   }
 

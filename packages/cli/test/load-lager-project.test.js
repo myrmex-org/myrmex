@@ -14,7 +14,7 @@ describe('The load-lager-project module', function() {
   it('should work even if no lager project is found', () => {
     return loadLagerProject(icli)
     .then(result => {
-      assert.equal(result, true);
+      assert.equal(result, null);
     });
   });
 

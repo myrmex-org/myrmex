@@ -10,7 +10,7 @@ describe('The command help override', function() {
 
   it('should organize sub-commands in sections', () => {
     icli.getProgram().commandHelp = commandHelpOverride;
-    assert.ok(/Lager CLI core:/.test(icli.getProgram().helpInformation()));
+    assert.ok(/CLI core:/.test(icli.getProgram().helpInformation()));
   });
 
 });
