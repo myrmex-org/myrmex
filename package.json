@@ -1,10 +1,14 @@
 {
   "devDependencies": {
-    "lerna": "2.0.0-beta.38"
+    "istanbul": "^0.4.5",
+    "lerna": "2.0.0-beta.38",
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "lerna": "lerna",
     "test": "lerna run test",
-    "test-ci": "lerna run test-ci"
+    "test-ci": "lerna run test-ci",
+    "test-integration": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- $(find . -name '*.integ.js' ! -ipath '*node_modules*')",
+    "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find . -name '*.integ.js' ! -ipath '*node_modules*') && codecov"
   }
 }

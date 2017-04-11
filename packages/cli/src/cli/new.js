@@ -66,7 +66,7 @@ module.exports = (icli) => {
    * @param {Object} parameters - the parameters provided in the command and in the prompt
    * @returns {Promise<null>} - The execution stops here
    */
-  function executeCommand(parameters, done) {
+  function executeCommand(parameters) {
     // If a name has been provided, we create the project directory
     // Otherwise, the project will ne created in the current directory
     let configFilePath = process.cwd();
@@ -78,7 +78,7 @@ module.exports = (icli) => {
         // Fail silently if the directory already exists
       });
     }
-    p.then(() => {
+    return p.then(() => {
       console.log('\n  Creating Lager config file (' + icli.format.info('lager.json') + ')');
       const projectConfig = {
         name: parameters.projectName || 'A Lager project',
@@ -121,7 +121,7 @@ module.exports = (icli) => {
       }
       msg += '  Execute ' + icli.format.cmd('lager -h') + ' in the root folder of the project to see available commands\n';
       console.log(msg);
-      done();
+      return true;
     });
   }
 

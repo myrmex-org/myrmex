@@ -1,0 +1,17 @@
+{
+  "name": "lambda-profiling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@lager/iam": "../../packages/iam",
+    "@lager/lager": "../../packages/lager",
+    "@lager/node-lambda": "../../packages/node-lambda"
+  }
+}
