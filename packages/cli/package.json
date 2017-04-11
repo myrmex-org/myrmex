@@ -1,6 +1,6 @@
 {
   "name": "@lager/cli",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "The lager CLI",
   "main": "index.js",
   "scripts": {
@@ -40,8 +40,5 @@
     "mocha": "^3.1.2",
     "remark-cli": "^3.0.0",
     "remark-lint": "^6.0.0"
-  },
-  "peerDependencies": {
-    "@lager/lager": "^0.0.33"
   }
 }
