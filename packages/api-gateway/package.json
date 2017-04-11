@@ -46,5 +46,8 @@
     "mocha": "^2.5.3",
     "remark-cli": "^1.0.0",
     "remark-lint": "^4.0.1"
+  },
+  "peerDependencies": {
+    "@lager/lager": "^0.0.33"
   }
 }

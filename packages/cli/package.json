@@ -29,7 +29,7 @@
   "homepage": "https://github.com/lagerjs/cli#readme",
   "dependencies": {
     "bluebird": "^3.4.1",
-    "comquirer": "0.0.8",
+    "comquirer": "0.0.10",
     "lodash": "^4.13.1"
   },
   "devDependencies": {
@@ -40,5 +40,8 @@
     "mocha": "^3.1.2",
     "remark-cli": "^2.0.0",
     "remark-lint": "^5.1.0"
+  },
+  "peerDependencies": {
+    "@lager/lager": "^0.0.33"
   }
 }
