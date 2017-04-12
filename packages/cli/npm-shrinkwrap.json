@@ -1,6 +1,6 @@
 {
   "name": "@lager/cli",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "dependencies": {
     "bluebird": {
       "version": "3.5.0",

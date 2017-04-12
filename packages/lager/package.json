@@ -1,23 +1,23 @@
 {
   "name": "@lager/lager",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "files": [
     "src"
   ],
   "main": "./src/lib/lager.js",
   "dependencies": {
-    "bluebird": "^3.4.0",
-    "bunyan": "^1.8.3",
-    "lodash": "^4.13.1",
+    "bluebird": "^3.5.0",
+    "bunyan": "^1.8.10",
+    "lodash": "^4.17.4",
     "pebo": "0.0.2"
   },
   "devDependencies": {
-    "bithound": "^1.3.0",
+    "bithound": "^1.7.0",
     "codecov": "^2.1.0",
     "comquirer": "0.0.12",
-    "eslint": "^3.1.1",
-    "istanbul": "^0.4.4",
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "remark-cli": "^3.0.0",
     "remark-lint": "^6.0.0"
