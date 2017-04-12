@@ -7,7 +7,7 @@ const Pebo = require('pebo');
 Pebo.setPromise(Promise);
 const log = require('./log');
 
-if (['test', 'dev', 'development', 'debug'].indexOf(process.env.NODE_ENV) > -1) {
+if (['dev', 'development', 'debug'].indexOf(process.env.NODE_ENV) > -1) {
   Promise.config({
     longStackTraces: true
   });
