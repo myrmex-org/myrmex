@@ -1,7 +1,11 @@
 /*eslint-env mocha */
 'use strict';
 
+const path = require('path');
 const assert = require('assert');
+const Promise = require('bluebird');
+const fs = require('fs-extra');
+const remove = Promise.promisify(fs.remove);
 
 describe('Creation of a new project', () => {
 
@@ -14,6 +18,10 @@ describe('Creation of a new project', () => {
     .then(lagerCli => {
       icli = lagerCli;
     });
+  });
+
+  after(() => {
+    return remove(path.join(__dirname, 'my-project'));
   });
 
   it('should be done via the sub-command "new"', () => {

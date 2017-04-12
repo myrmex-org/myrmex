@@ -8,10 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@lager/iam": "../../packages/iam",
     "@lager/lager": "../../packages/lager",
-    "@lager/node-lambda": "../../packages/node-lambda"
+    "@lager/node-lambda": "../../packages/node-lambda",
+    "fs-extra": "^2.1.2"
   }
 }

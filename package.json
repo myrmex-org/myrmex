@@ -1,8 +1,19 @@
 {
+  "name": "lager",
+  "description": "<img align=\"right\" alt=\"lager logo\" src=\"https://raw.githubusercontent.com/lagerjs/lager/master/img/lager-logo2.png\" />",
+  "version": "0.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {},
   "devDependencies": {
+    "bluebird": "^3.5.0",
     "istanbul": "^0.4.5",
     "lerna": "2.0.0-rc.1",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "ncp": "^2.0.0"
   },
   "scripts": {
     "lerna": "lerna",
@@ -10,5 +21,15 @@
     "test-ci": "lerna run test-ci",
     "test-integration": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- $(find . -name '*.integ.js' ! -ipath '*node_modules*')",
     "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find . -name '*.integ.js' ! -ipath '*node_modules*') && codecov"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lagerjs/lager.git"
+  },
+  "author": "Alexis Henaut",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lagerjs/lager/issues"
+  },
+  "homepage": "https://github.com/lagerjs/lager#readme"
 }

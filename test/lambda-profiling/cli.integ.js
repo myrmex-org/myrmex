@@ -1,7 +1,12 @@
 /*eslint-env mocha */
 'use strict';
 
+const path = require('path');
 const assert = require('assert');
+const Promise = require('bluebird');
+const fs = require('fs-extra');
+const copy = Promise.promisify(fs.copy);
+const remove = Promise.promisify(fs.remove);
 
 describe('Creation and deployment of a Lambda project', () => {
 
@@ -14,6 +19,14 @@ describe('Creation and deployment of a Lambda project', () => {
     .then(lagerCli => {
       icli = lagerCli;
     });
+  });
+
+  after(() => {
+    return Promise.all([
+      remove(path.join(__dirname, 'node-lambda')),
+      remove(path.join(__dirname, 'iam')),
+      remove(path.join(__dirname, 'lager.log'))
+    ]);
   });
 
   describe('Creation of an execution role', () => {
@@ -29,7 +42,10 @@ describe('Creation and deployment of a Lambda project', () => {
     it('should be done via the sub-command "create-node-module"', () => {
       return icli.parse('node script.js create-node-module inspection'.split(' '))
       .then(res => {
-        assert.ok(true);
+        // Create the main file of the module
+        const src = path.join(__dirname, 'assets', 'inspection.js');
+        const dest = path.join(__dirname, 'node-lambda', 'modules', 'inspection', 'index.js');
+        return copy(src, dest);
       });
     });
   });
@@ -44,7 +60,16 @@ describe('Creation and deployment of a Lambda project', () => {
         return icli.parse('node script.js create-node-lambda config-1536 -t 30 -m 1536 --dependencies inspection -r LambdaInspection'.split(' '));
       })
       .then(res => {
-        assert.ok(true);
+        // Create the main file of the module
+        const src = path.join(__dirname, 'assets', 'lambda.js');
+        const dest128 = path.join(__dirname, 'node-lambda', 'lambdas', 'config-128', 'index.js');
+        const dest512 = path.join(__dirname, 'node-lambda', 'lambdas', 'config-512', 'index.js');
+        const dest1536 = path.join(__dirname, 'node-lambda', 'lambdas', 'config-1536', 'index.js');
+        return Promise.all([
+          copy(src, dest128),
+          copy(src, dest512),
+          copy(src, dest1536),
+        ]);
       });
     });
   });
