@@ -5,10 +5,12 @@ cache:
     - node_modules
 install:
   - npm install
+  - npm run lerna bootstrap
+  - lerna exec npm install --only=dev
 # Matrix begin
 node_js:
-- "6"
-- "4"
+  - "6"
+  - "4"
 env:
   - TEST_PKG=lager
   - TEST_PKG=cli
