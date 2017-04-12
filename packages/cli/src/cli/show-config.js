@@ -16,7 +16,10 @@ module.exports = (icli, lager) => {
       type: 'confirm',
       default: true,
       question: {
-        message: 'Do you want to use syntax highlighting?'
+        message: 'Do you want to use syntax highlighting?',
+        when: () => {
+          return lager.getConfig('colors') === undefined;
+        }
       }
     }]
   };
@@ -28,6 +31,9 @@ module.exports = (icli, lager) => {
    * @returns {Promise<null>} - The execution stops here
    */
   function executeCommand(parameters) {
+    if (parameters.colors === undefined) {
+      parameters.colors = lager.getConfig('colors');
+    }
     let config = JSON.stringify(lager.getConfig(), null, 2);
     if (parameters.colors) {
       config = icli.highlight(config, { json: true });

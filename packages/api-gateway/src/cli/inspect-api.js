@@ -31,7 +31,10 @@ module.exports = (icli) => {
       type: 'confirm',
       default: true,
       question: {
-        message: 'Do you want to use syntax highlighting?'
+        message: 'Do you want to use syntax highlighting?',
+        when: () => {
+          return plugin.lager.getConfig('colors') === undefined;
+        }
       }
     }, {
       cmdSpec: '-s, --spec-version <version>',
@@ -59,6 +62,10 @@ module.exports = (icli) => {
       apiIdentifiers: () => {
         return plugin.loadApis()
         .then(apis => {
+          if (!apis.length) {
+            console.log(icli.format.error('This project does not contain any API.'));
+            process.exit(1);
+          }
           return _.map(apis, api => {
             return {
               value: api.getIdentifier(),
@@ -82,6 +89,9 @@ module.exports = (icli) => {
    * @returns {Promise<null>} - The execution stops here
    */
   function executeCommand(parameters) {
+    if (parameters.colors === undefined) {
+      parameters.colors = plugin.lager.getConfig('colors');
+    }
     return plugin.findApi(parameters.apiIdentifier)
     .then(api => {
       return api.generateSpec(parameters.specVersion);

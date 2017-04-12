@@ -78,6 +78,10 @@ module.exports = (icli) => {
       apiIdentifiers: () => {
         return plugin.loadApis()
         .then(apis => {
+          if (!apis.length) {
+            console.log(icli.format.error('This project does not contain any API.'));
+            process.exit(1);
+          }
           return _.map(apis, api => {
             return {
               value: api.getIdentifier(),

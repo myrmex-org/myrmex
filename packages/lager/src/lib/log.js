@@ -9,10 +9,14 @@ const stderrStream = {
   type: 'raw',
   stream: {
     write: (obj) => {
-      if (obj.er && obj.err.code && obj.err.message) {
+      if (obj.err && obj.err.code && obj.err.message) {
         process.stderr.write(eol + obj.err.code + eol + obj.err.message + eol);
-        process.stderr.write(eol + 'More information in lager.log' + eol);
+      } else if (obj.promise && obj.reason && obj.reason.code) {
+        process.stderr.write(eol + obj.reason.code + eol + JSON.stringify(obj.reason, null, 2) + eol);
+      } else {
+        process.stderr.write(eol + JSON.stringify(obj, null, 2) + eol);
       }
+      process.stderr.write(eol + 'More information in lager.log' + eol);
     }
   }
 };

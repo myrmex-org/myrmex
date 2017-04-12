@@ -39,7 +39,10 @@ module.exports = (icli) => {
       type: 'confirm',
       default: true,
       question: {
-        message: 'Do you want to use syntax highlighting?'
+        message: 'Do you want to use syntax highlighting?',
+        when: () => {
+          return plugin.lager.getConfig('colors') === undefined;
+        }
       }
     }, {
       cmdSpec: '-s, --spec-version <version>',
@@ -76,6 +79,10 @@ module.exports = (icli) => {
     choicesLists.resourcePath = () => {
       return plugin.loadEndpoints()
       .then(endpoints => {
+        if (!endpoints.length) {
+          console.log(icli.format.error('This project does not contain any endpoint.'));
+          process.exit(1);
+        }
         const resourcePaths = [];
         _.forEach(endpoints, endpoint => {
           if (_.findIndex(resourcePaths, rp => { return rp.value === endpoint.getResourcePath(); }) === -1) {
@@ -114,6 +121,9 @@ module.exports = (icli) => {
    * @returns {Promise<null>} - The execution stops here
    */
   function executeCommand(parameters) {
+    if (parameters.colors === undefined) {
+      parameters.colors = plugin.lager.getConfig('colors');
+    }
     return plugin.findEndpoint(parameters.resourcePath, parameters.httpMethod)
     .then(endpoint => {
       let spec = JSON.stringify(endpoint.generateSpec(parameters.specVersion), null, 2);

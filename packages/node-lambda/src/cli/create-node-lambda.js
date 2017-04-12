@@ -124,16 +124,20 @@ module.exports = (icli) => {
       },
       roleOrigins: () => {
         if (plugin.lager.isPluginRegistered('iam')) {
-          return [{
+          const choices = [];
+          choices.push({
             value: 'lager',
             name: 'Select a role managed by the plugin @lager/iam'
-          }, {
+          });
+          choices.push({
             value: 'aws',
             name: 'Select a role in your AWS account'
-          }, {
+          });
+          choices.push({
             value: '',
             name: 'Enter the value manually'
-          }];
+          });
+          return choices;
         }
         return [];
       },

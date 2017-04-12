@@ -106,7 +106,7 @@ module.exports = (icli) => {
       console.log('\n  Installing Lager and Lager plugins');
       const cmdArgs = parameters.plugins;
       cmdArgs.unshift('@lager/lager');
-      cmdArgs.unshift('--save');
+      cmdArgs.unshift('--save-dev');
       cmdArgs.unshift('install');
       console.log('  Running ' + icli.format.cmd('npm ' + cmdArgs.join(' ') + '\n'));
       console.log('  Please wait...');

@@ -7,6 +7,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 
 module.exports = function loadLagerProject(icli) {
   const projectRoot = getProjectRootDirectory();
@@ -47,7 +48,8 @@ function getProjectRootDirectory() {
   do {
     try {
       packageJson = require(path.join(cwd, 'package.json'));
-      if (packageJson.dependencies && packageJson.dependencies['@lager/lager']) {
+      if ((packageJson.dependencies && packageJson.dependencies['@lager/lager'])
+        || (packageJson.devDependencies && packageJson.devDependencies['@lager/lager'])) {
         found = true;
       } else {
         cwd = path.dirname(cwd);
@@ -109,7 +111,7 @@ function getConfig() {
     const parse = path.parse(file);
     // We load all .js and .json files in the configuration directory
     if (['.js', '.json'].indexOf(parse.ext) !== -1) {
-      config.config[parse.name] = require(path.join(configPath, file));
+      config.config[parse.name] = _.merge(config.config[parse.name] || {}, require(path.join(configPath, file)));
     }
   });
 

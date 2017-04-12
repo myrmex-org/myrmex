@@ -40,6 +40,10 @@ module.exports = (icli) => {
       lambdaIdentifiers: () => {
         return plugin.loadLambdas()
         .then(lambdas => {
+          if (!lambdas.length) {
+            console.log(icli.format.error('This project does not contain any Lambda.'));
+            process.exit(1);
+          }
           return _.map(lambdas, lambda => {
             return {
               value: lambda.getIdentifier(),
