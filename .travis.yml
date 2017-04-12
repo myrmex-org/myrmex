@@ -5,6 +5,7 @@ cache:
     - node_modules
 install:
   - npm install
+  - npm install --only=dev
   - npm run lerna bootstrap
 # Matrix begin
 node_js:
