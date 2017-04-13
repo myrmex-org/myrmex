@@ -13,7 +13,7 @@
     "istanbul": "^0.4.5",
     "lerna": "2.0.0-rc.1",
     "mocha": "^3.2.0",
-    "ncp": "^2.0.0"
+    "fs-extra": "^2.1.2"
   },
   "scripts": {
     "lerna": "lerna",
