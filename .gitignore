@@ -1,6 +1,7 @@
 dev-app/docker-compose.env
 reports
 node_modules
+!test/lambda-profiling/node_modules
 npm-debug.log
 lerna-debug.log
 lager.log
