@@ -161,8 +161,14 @@ class Lager extends Pebo {
           requireArg = path.join(process.cwd(), pluginIdentifier);
           require.resolve(requireArg);
         } catch (e) {
-          requireArg = false;
-          lager.log.warn('Lager could not find the plugin "' + pluginIdentifier + '"');
+          try {
+            // Hack to use symbolink link to the repo for integration tests
+            requireArg = path.join(process.cwd(), 'node_modules', pluginIdentifier);
+            require.resolve(requireArg);
+          } catch (e) {
+            requireArg = false;
+            lager.log.warn('Lager could not find the plugin "' + pluginIdentifier + '"');
+          }
         }
       }
       if (requireArg) {

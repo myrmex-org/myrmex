@@ -24,7 +24,8 @@ describe('Creation of a new project', () => {
     return remove(path.join(__dirname, 'my-project'));
   });
 
-  it('should be done via the sub-command "new"', () => {
+  it('should be done via the sub-command "new"', function() {
+    this.timeout(600000);
     return icli.parse('node script.js new my-project @lager/iam @lager/node-lambda'.split(' '))
     .then(res => {
       assert.ok(true);
