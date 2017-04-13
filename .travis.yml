@@ -17,6 +17,7 @@ env:
   - TEST_PKG=iam
   - TEST_PKG=node-lambda
   - TEST_PKG=api-gateway
+  - TEST_PKG=test-integration
 # Matrix end
 script:
   - cd packages/$TEST_PKG && npm run test-ci
