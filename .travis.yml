@@ -4,21 +4,18 @@ cache:
   directories:
     - node_modules
 install:
-  - npm install
-  - npm run lerna bootstrap
-  - lerna exec npm install --only=dev
+  - bash travis-install.sh
 # Matrix begin
 node_js:
   - "6"
   - "4"
 env:
-  - TEST_PKG=lager
-  - TEST_PKG=cli
-  - TEST_PKG=iam
-  - TEST_PKG=node-lambda
-  - TEST_PKG=api-gateway
-  - TEST_PKG=test-integration
+  - TEST_SUITE=lager
+  - TEST_SUITE=cli
+  - TEST_SUITE=iam
+  - TEST_SUITE=node-lambda
+  - TEST_SUITE=api-gateway
+  - TEST_SUITE=integration
 # Matrix end
 script:
-  - cd packages/$TEST_PKG && npm run test-ci
-  # - bithound check git@github.com:lagerjs/lager.git
+  - bash travis-run.sh

@@ -1,27 +1,20 @@
 {
   "name": "lager",
-  "description": "<img align=\"right\" alt=\"lager logo\" src=\"https://raw.githubusercontent.com/lagerjs/lager/master/img/lager-logo2.png\" />",
   "version": "0.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "test"
-  },
   "dependencies": {},
   "devDependencies": {
+    "lerna": "2.0.0-rc.1",
     "bluebird": "^3.5.0",
     "codecov": "^2.1.0",
     "fs-extra": "^2.1.2",
     "istanbul": "^0.4.5",
-    "lerna": "2.0.0-rc.1",
     "mocha": "^3.2.0"
   },
   "scripts": {
     "lerna": "lerna",
     "test": "lerna run test",
-    "test-ci": "lerna run test-ci",
-    "test-integration": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- $(find . -name '*.integ.js' ! -ipath '*node_modules*')",
-    "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find . -name '*.integ.js' ! -ipath '*node_modules*') && codecov"
+    "test-integration": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- $(find test -name '*.integ.js' ! -ipath '*node_modules*')",
+    "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find test -name '*.integ.js' ! -ipath '*node_modules*') && codecov"
   },
   "repository": {
     "type": "git",

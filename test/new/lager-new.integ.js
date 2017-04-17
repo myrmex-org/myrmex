@@ -13,8 +13,8 @@ describe('Creation of a new project', () => {
 
   before(() => {
     process.chdir(__dirname);
-    delete require.cache[require.resolve('../packages/cli/src/bin/lager')];
-    return require('../packages/cli/src/bin/lager')
+    delete require.cache[require.resolve('../../packages/cli/src/bin/lager')];
+    return require('../../packages/cli/src/bin/lager')
     .then(lagerCli => {
       icli = lagerCli;
     });
@@ -26,7 +26,7 @@ describe('Creation of a new project', () => {
 
   it('should be done via the sub-command "new"', function() {
     this.timeout(600000);
-    return icli.parse('node script.js new my-project @lager/iam @lager/node-lambda'.split(' '))
+    return icli.parse('node script.js new my-project @lager/iam'.split(' '))
     .then(res => {
       assert.ok(true);
     });
