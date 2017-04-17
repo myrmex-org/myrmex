@@ -74,7 +74,6 @@ module.exports = (icli) => {
     };
   }
 
-  /* istanbul ignore next */
   /**
    * Create the new lambda
    * @param {Object} parameters - the parameters provided in the command and in the prompt

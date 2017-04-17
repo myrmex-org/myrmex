@@ -60,7 +60,6 @@ module.exports = (icli) => {
     };
   }
 
-  /* istanbul ignore next */
   /**
    * Create the new project
    * @param {Object} parameters - the parameters provided in the command and in the prompt

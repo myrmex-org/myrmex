@@ -195,7 +195,6 @@ module.exports = (icli) => {
     return choicesLists;
   }
 
-  /* istanbul ignore next */
   /**
    * Create the new endpoint
    * @param {Object} parameters - the parameters provided in the command and in the prompt

@@ -28,7 +28,6 @@ function getPolicyByName(awsIAM, name, listParams, marker) {
 }
 
 
-/* istanbul ignore next */
 /**
  * Retrieve a policy Arn from a identifier that can be either the ARN or the name
  * @param {[type]} awsIAM       [description]

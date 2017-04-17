@@ -152,7 +152,6 @@ module.exports = (icli) => {
     };
   }
 
-  /* istanbul ignore next */
   /**
    * Execute the deployment
    * @param {Object} parameters - the parameters provided in the command and in the prompt

@@ -405,7 +405,6 @@ Lambda.prototype.createAlias = function createAlias(awsLambda, version, alias) {
   return Promise.promisify(awsLambda.createAlias.bind(awsLambda))(params);
 };
 
-/* istanbul ignore next */
 /**
  * [updateAlias description]
  * @param  {[type]} awsLambda [description]

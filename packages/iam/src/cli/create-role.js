@@ -96,7 +96,6 @@ module.exports = (icli) => {
     return choicesLists;
   }
 
-  /* istanbul ignore next */
   /**
    * Create the new role
    * @param {Object} parameters - the parameters provided in the command and in the prompt

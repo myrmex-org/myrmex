@@ -117,7 +117,6 @@ module.exports = (icli) => {
    * The following code cannot be correcltly tested because icli.getProgram().parse() fire an event to execute it and we cannot
    * know when its execution is finished. Pebo could gracefully handle this kind of behavior.
    */
-  /* istanbul ignore next */
   /**
    * Create the new project
    * @param {Object} parameters - the parameters provided in the command and in the prompt

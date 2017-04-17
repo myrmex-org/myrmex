@@ -82,7 +82,6 @@ module.exports = (icli) => {
     };
   }
 
-  /* istanbul ignore next */
   /**
    * Output API specification
    * @param {Object} parameters - the parameters provided in the command and in the prompt
