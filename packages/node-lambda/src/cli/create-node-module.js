@@ -96,12 +96,12 @@ module.exports = (icli) => {
       return fs.writeFileAsync(configFilePath + path.sep + 'package.json', JSON.stringify(packageJson, null, 2));
     })
     .then(() => {
-      const msg = '\n  The node module ' + icli.format.info(parameters.name) + ' has been created\n\n'
-                + '  It is located in ' + icli.format.info(configFilePath) + ' you can start to implement it there.\n\n'
+      const msg = '\n  The node module ' + icli.format.info(parameters.name) + ' has been created\n'
+                + '  It is located in ' + icli.format.info(configFilePath) + ' you can start to implement it there.\n'
                 + '  To import it in an existing Lambda, edit the file '
-                + icli.format.info(path.join(process.cwd(), plugin.config.modulesPath, '<lambda-identifier>', 'package.json'))
-                + ' and add "' + icli.format.info(parameters.name) + '": "../' + icli.format.info(parameters.name) + '"'
-                + 'in the section ' + icli.format.info('dpendencies') + '\n';
+                + icli.format.info(path.join(process.cwd(), plugin.config.lambdasPath, '<lambda-identifier>', 'package.json'))
+                + ' and add ' + icli.format.info('"' + parameters.name + '": "../modules/' + parameters.name + '"')
+                + ' in the section ' + icli.format.info('dependencies') + '\n';
       console.log(msg);
     });
   }

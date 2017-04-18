@@ -29,7 +29,7 @@
   "homepage": "https://github.com/lagerjs/cli#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "comquirer": "0.0.12",
+    "comquirer": "^0.0.13",
     "lodash": "^4.17.4"
   },
   "devDependencies": {

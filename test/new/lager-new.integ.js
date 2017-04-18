@@ -6,18 +6,16 @@ const assert = require('assert');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const remove = Promise.promisify(fs.remove);
+const icli = require('../../packages/cli/src/bin/lager');
 
 describe('Creation of a new project', () => {
 
-  let icli;
-
   before(() => {
     process.chdir(__dirname);
-    delete require.cache[require.resolve('../../packages/cli/src/bin/lager')];
-    return require('../../packages/cli/src/bin/lager')
-    .then(lagerCli => {
-      icli = lagerCli;
-    });
+  });
+
+  beforeEach(() => {
+    return icli.init();
   });
 
   after(() => {
@@ -25,7 +23,7 @@ describe('Creation of a new project', () => {
   });
 
   it('should be done via the sub-command "new"', function() {
-    this.timeout(600000);
+    this.timeout(120000);
     return icli.parse('node script.js new my-project @lager/iam'.split(' '))
     .then(res => {
       assert.ok(true);

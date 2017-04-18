@@ -9,23 +9,28 @@ require('../cli/please')(icli);
 
 icli.getProgram().commandHelp = require('../commander-help-override');
 
-// Check if the user calls the command from a lager project
-module.exports = require('../load-lager-project')(icli)
-.then(lager => {
-  if (lager) {
-    // If a Lager instance is found, we add the "show-config" command
-    require('../cli/show-config')(icli, lager);
-  } else {
-    // If no Lager instance is found, we add the "new" command
-    require('../cli/new')(icli);
-  }
-  return Promise.resolve(icli);
-});
+icli.init = function() {
+  Object.keys(require.cache).forEach(function(key) { delete require.cache[key]; });
+  icli.reset();
+  // Check if the user calls the command from a lager project
+  return require('../load-lager-project')(icli)
+  .then(lager => {
+    if (lager) {
+      // If a Lager instance is found, we add the "show-config" command
+      require('../cli/show-config')(icli, lager);
+    } else {
+      // If no Lager instance is found, we add the "new" command
+      require('../cli/new')(icli);
+    }
+    return Promise.resolve(icli);
+  });
+};
 
+module.exports = icli;
 
 if (require.main === module) {
   // If the module is called directly, we parse the command line
-  module.exports.then(icli => {
+  icli.init().then(icli => {
     if (!process.argv.slice(2).length) {
       // If no arguments where provided, we call the help option
       icli.getProgram().outputHelp();

@@ -7,18 +7,16 @@ const Promise = require('bluebird');
 const fs = require('fs-extra');
 const copy = Promise.promisify(fs.copy);
 const remove = Promise.promisify(fs.remove);
+const icli = require('../../packages/cli/src/bin/lager');
 
 describe('Creation and deployment of a Lambda project', () => {
 
-  let icli;
-
   before(() => {
     process.chdir(__dirname);
-    delete require.cache[require.resolve('../../packages/cli/src/bin/lager')];
-    return require('../../packages/cli/src/bin/lager')
-    .then(lagerCli => {
-      icli = lagerCli;
-    });
+  });
+
+  beforeEach(() => {
+    return icli.init();
   });
 
   after(() => {
@@ -84,7 +82,8 @@ describe('Creation and deployment of a Lambda project', () => {
   });
 
   describe('Deployment of node Lambdas', () => {
-    it('should be done via the sub-command "deploy-node-lambdas"', () => {
+    it('should be done via the sub-command "deploy-node-lambdas"', function() {
+      this.timeout(30000);
       return icli.parse('node script.js deploy-node-lambdas config-128 config-1536 config-512 config-1536 -r us-east-1 -e DEV -s v0'.split(' '))
       .then(res => {
         assert.ok(true);
@@ -94,7 +93,7 @@ describe('Creation and deployment of a Lambda project', () => {
 
 
   describe('Execution of node Lambdas in AWS', () => {
-    it('should be done via the sub-command "deploy-node-lambdas"', () => {
+    it('should be done via the sub-command "test-node-lambda"', () => {
       return icli.parse('node script.js test-node-lambda config-128 -r us-east-1 -e DEV -s v0'.split(' '))
       .then(res => {
         return icli.parse('node script.js test-node-lambda config-512 -r us-east-1 -e DEV -s v0'.split(' '));
