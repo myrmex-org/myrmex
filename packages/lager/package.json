@@ -15,7 +15,7 @@
   "devDependencies": {
     "bithound": "^1.7.0",
     "codecov": "^2.1.0",
-    "comquirer": "0.0.12",
+    "comquirer": "0.0.13",
     "eslint": "^3.19.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",

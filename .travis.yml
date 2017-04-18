@@ -15,12 +15,12 @@ node_js:
   - "6"
   - "4"
 env:
+  - TEST_SUITE=integration
   - TEST_SUITE=lager
   - TEST_SUITE=cli
   - TEST_SUITE=iam
   - TEST_SUITE=node-lambda
   - TEST_SUITE=api-gateway
-  - TEST_SUITE=integration
 # Matrix end
 script:
   - bash travis-run.sh
