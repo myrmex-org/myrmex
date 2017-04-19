@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "bithound": "^1.7.0",
+    "codacy-coverage": "^2.0.1",
     "codecov": "^2.1.0",
     "comquirer": "0.0.13",
     "eslint": "^3.19.0",
@@ -45,7 +46,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- --recursive",
-    "test-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive && codecov",
+    "test-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive && codecov && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
     "eslint": "eslint --ignore-path .gitignore **/*.js && echo \"  JS lint passed\n\"; exit 0",
     "mdlint": "remark -qf . && echo \"  Markdown lint passed\n\"; exit 0",
     "lint": "eslint --ignore-path .gitignore **/*.js && remark -qf . && echo \"  JS lint and markdown lint passed\n\"; exit 0"
