@@ -111,9 +111,9 @@ describe('Creation and deployment of the Planet Express project', () => {
   });
 
   describe('Deployment of APIs in AWS', function() {
-    this.timeout(120000);
+    this.timeout(60000);
     it('should be done via the sub-command "deploy-apis"', () => {
-      return icli.parse('node script.js deploy-apis back-office sender recipient -r us-east-1 -s v0 -e DEV --deploy-lambdas all'.split(' '))
+      return icli.parse('node script.js deploy-apis back-office -r us-east-1 -s v0 -e DEV --deploy-lambdas all'.split(' '))
       .then(res => {
         assert.ok(true);
       });
