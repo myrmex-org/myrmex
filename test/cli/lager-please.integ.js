@@ -4,7 +4,7 @@
 const assert = require('assert');
 const catchStdout = require('../catch-stdout');
 const icli = require('../../packages/cli/src/bin/lager');
-const showStdout = !process.env.LAGER_SHOW_STDOUT;
+const showStdout = !!process.env.LAGER_SHOW_STDOUT;
 
 describe('The "please" sub-command', () => {
 
