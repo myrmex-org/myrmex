@@ -29,9 +29,9 @@
       }
     },
     "ajv": {
-      "version": "4.11.6",
+      "version": "4.11.7",
       "from": "ajv@>=4.9.1 <5.0.0",
-      "resolved": "https://registry.npmjs.org/ajv/-/ajv-4.11.6.tgz",
+      "resolved": "https://registry.npmjs.org/ajv/-/ajv-4.11.7.tgz",
       "dev": true
     },
     "ajv-keywords": {
@@ -95,9 +95,9 @@
       "dev": true
     },
     "arr-flatten": {
-      "version": "1.0.1",
+      "version": "1.0.3",
       "from": "arr-flatten@>=1.0.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/arr-flatten/-/arr-flatten-1.0.1.tgz",
+      "resolved": "https://registry.npmjs.org/arr-flatten/-/arr-flatten-1.0.3.tgz",
       "dev": true
     },
     "array-iterate": {
@@ -211,7 +211,7 @@
     },
     "bluebird": {
       "version": "3.5.0",
-      "from": "bluebird@>=3.4.1 <4.0.0",
+      "from": "bluebird@>=3.5.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.5.0.tgz"
     },
     "boom": {
@@ -421,9 +421,9 @@
       "dev": true
     },
     "comquirer": {
-      "version": "0.0.12",
-      "from": "comquirer@0.0.12",
-      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.12.tgz",
+      "version": "0.0.13",
+      "from": "comquirer@>=0.0.13 <0.0.14",
+      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.13.tgz",
       "dependencies": {
         "ansi-escapes": {
           "version": "1.4.0",
@@ -1143,9 +1143,9 @@
       "dev": true
     },
     "interpret": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "from": "interpret@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/interpret/-/interpret-1.0.2.tgz",
+      "resolved": "https://registry.npmjs.org/interpret/-/interpret-1.0.3.tgz",
       "dev": true
     },
     "irregular-plurals": {
@@ -1507,7 +1507,7 @@
     },
     "lodash": {
       "version": "4.17.4",
-      "from": "lodash@>=4.13.1 <5.0.0",
+      "from": "lodash@>=4.17.4 <5.0.0",
       "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz"
     },
     "lodash._baseassign": {
@@ -2107,9 +2107,9 @@
       "dev": true
     },
     "sshpk": {
-      "version": "1.11.0",
+      "version": "1.13.0",
       "from": "sshpk@>=1.7.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/sshpk/-/sshpk-1.11.0.tgz",
+      "resolved": "https://registry.npmjs.org/sshpk/-/sshpk-1.13.0.tgz",
       "dev": true,
       "dependencies": {
         "assert-plus": {
@@ -2331,9 +2331,9 @@
       }
     },
     "unified-engine": {
-      "version": "3.0.3",
+      "version": "3.1.0",
       "from": "unified-engine@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/unified-engine/-/unified-engine-3.0.3.tgz",
+      "resolved": "https://registry.npmjs.org/unified-engine/-/unified-engine-3.1.0.tgz",
       "dev": true,
       "dependencies": {
         "isarray": {
