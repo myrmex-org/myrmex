@@ -3,8 +3,20 @@
     "**/node_modules/**",
     "packages/cli/src/cli/figlet/**",
     "docs/**"
+    "demo/**"
   ],
   "test": [
-    "test/**"
+    "**/test/**",
+    "**/tests/**",
+    "**/spec/**",
+    "**/specs/**"
+  ],
+  "packageJsonLocation": [
+    "package.json",
+    "packages/api-gateway/package.json",
+    "packages/cli/package.json",
+    "packages/iam/package.json",
+    "packages/lager/package.json",
+    "packages/node-lambda/package.json"
   ]
 }
