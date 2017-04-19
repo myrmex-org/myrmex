@@ -15,5 +15,5 @@ else
     npm --prefix ./packages/lager install ./packages/lager --production
     # Install dependencies of the tested package itself
     cd packages/$TEST_SUITE
-    npm install
+    npm update
 fi
