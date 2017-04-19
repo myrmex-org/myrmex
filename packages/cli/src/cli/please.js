@@ -165,8 +165,8 @@ module.exports = (icli) => {
       const termWidth = process.stdout.columns;
       const cheersWidth = _.max(_.map(cheers, (o) => { return o.length; }));
       const beerWidth = _.max(_.map(beer, (o) => { return o.length; }));
-      console.log(beerWidth, cheersWidth, termWidth);
-      if (!process.stdout.isTTY || (beerWidth + cheersWidth < termWidth)) {
+      // The test "termWidth === 0" is useful in the travis environment
+      if (termWidth === 0 || (beerWidth + cheersWidth < termWidth)) {
         const top = Math.round((beer.length - cheers.length) / 2);
         for (let i = 0; i < cheers.length; i++) {
           beer[top + i + 1] += '   ' + cheers[i];
