@@ -4,6 +4,7 @@
 const assert = require('assert');
 const catchStdout = require('../catch-stdout');
 const icli = require('../../packages/cli/src/bin/lager');
+const showStdout = !process.env.LAGER_SHOW_STDOUT;
 
 describe('The "please" sub-command', () => {
 
@@ -16,7 +17,7 @@ describe('The "please" sub-command', () => {
   });
 
   it('should display a beer', () => {
-    catchStdout.start(true);
+    catchStdout.start(showStdout);
     return icli.parse('node script.js please'.split(' '))
     .then(res => {
       const stdout = catchStdout.stop();
@@ -26,7 +27,7 @@ describe('The "please" sub-command', () => {
   });
 
   it('should allow to select a language and a font', () => {
-    catchStdout.start(true);
+    catchStdout.start(showStdout);
     return icli.parse('node script.js please -l french -f Binary'.split(' '))
     .then(res => {
       const stdout = catchStdout.stop();

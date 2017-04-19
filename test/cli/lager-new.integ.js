@@ -8,6 +8,7 @@ const fs = require('fs-extra');
 const remove = Promise.promisify(fs.remove);
 const catchStdout = require('../catch-stdout');
 const icli = require('../../packages/cli/src/bin/lager');
+const showStdout = !process.env.LAGER_SHOW_STDOUT;
 
 describe('Creation of a new project', () => {
 
@@ -25,7 +26,7 @@ describe('Creation of a new project', () => {
 
   it('should be done via the sub-command "new"', function() {
     this.timeout(120000);
-    catchStdout.start(true);
+    catchStdout.start(showStdout);
     return icli.parse('node script.js new my-project @lager/iam'.split(' '))
     .then(res => {
       const stdout = catchStdout.stop();
