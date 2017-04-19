@@ -165,6 +165,7 @@ module.exports = (icli) => {
       const termWidth = process.stdout.columns;
       const cheersWidth = _.max(_.map(cheers, (o) => { return o.length; }));
       const beerWidth = _.max(_.map(beer, (o) => { return o.length; }));
+      console.log(beerWidth, cheersWidth, termWidth);
       if (!process.stdout.isTTY || (beerWidth + cheersWidth < termWidth)) {
         const top = Math.round((beer.length - cheers.length) / 2);
         for (let i = 0; i < cheers.length; i++) {
