@@ -33,6 +33,8 @@ icli.init = function() {
     if (lager) {
       // If a Lager instance is found, we add the "show-config" command
       require('../cli/show-config')(icli, lager);
+      // Inject lager in the cli, it will be used by integration tests to retrieve the configuration
+      icli.lager = lager;
     } else {
       // If no Lager instance is found, we add the "new" command
       require('../cli/new')(icli);
