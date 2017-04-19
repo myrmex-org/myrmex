@@ -72,19 +72,29 @@ describe('Creation and deployment of a Lambda project', () => {
     });
   });
 
-  describe('Local execution of node Lambdas', () => {
-    it('should be done via the sub-command "test-node-lambda"', () => {
-      return icli.parse('node script.js test-node-lambda config-128 -r us-east-1 -e DEV -s v0 --event test'.split(' '))
+  describe('Local installation of node Lambdas', () => {
+    it('should be done via the sub-command "install-node-lambdas-locally"', () => {
+      return icli.parse('node script.js install-node-lambdas-locally config-128'.split(' '))
       .then(res => {
         assert.ok(true);
       });
     });
   });
 
+  describe('Local execution of node Lambdas', () => {
+    it('should be done via the sub-command "test-node-lambda-locally"', () => {
+      return icli.parse('node script.js test-node-lambda-locally config-128 --event test'.split(' '))
+      .then(res => {
+        assert.ok(true);
+      });
+    });
+  });
+
+
   describe('Deployment of node Lambdas', () => {
     it('should be done via the sub-command "deploy-node-lambdas"', function() {
       this.timeout(30000);
-      return icli.parse('node script.js deploy-node-lambdas config-128 config-1536 config-512 config-1536 -r us-east-1 -e DEV -s v0'.split(' '))
+      return icli.parse('node script.js deploy-node-lambdas config-128 config-512 config-1536 -r us-east-1 -e DEV -s v0'.split(' '))
       .then(res => {
         assert.ok(true);
       });

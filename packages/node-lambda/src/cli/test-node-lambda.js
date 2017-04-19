@@ -169,6 +169,7 @@ module.exports = (icli) => {
       return lambda.execute(parameters.region, context, parameters.event ? lambda.loadEventExample(parameters.event) : {});
     })
     .then(result => {
+      result.Payload = JSON.parse(result.Payload);
       console.log('Success result:');
       console.log(JSON.stringify(result, null, 2));
       console.log();
