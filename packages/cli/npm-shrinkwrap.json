@@ -1,6 +1,6 @@
 {
   "name": "@lager/cli",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "dependencies": {
     "abbrev": {
       "version": "1.0.9",

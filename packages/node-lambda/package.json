@@ -1,6 +1,6 @@
 {
   "name": "@lager/node-lambda",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A Lager plugin to manage AWS lambda functions and deploy them.",
   "main": "src/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/lagerjs/lager#readme",
   "dependencies": {
     "archiver": "^1.3.0",
-    "aws-sdk": "^2.41.0",
+    "aws-sdk": "^2.42.0",
     "bluebird": "^3.5.0",
     "easy-table": "^1.1.0",
     "lodash": "^4.17.4",
@@ -49,6 +49,6 @@
     "remark-lint": "^6.0.0"
   },
   "peerDependencies": {
-    "@lager/lager": "^0.0.36"
+    "@lager/lager": "^0.0.37"
   }
 }

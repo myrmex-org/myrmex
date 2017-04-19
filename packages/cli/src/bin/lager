@@ -1,17 +1,32 @@
 #!/usr/bin/env node
 'use strict';
 
+
+if (['dev', 'development', 'debug'].indexOf(process.env.NODE_ENV) > -1) {
+  process.on('uncaughtException', (e) => {
+    console.log(e, 'Unhandled Exception');
+    process.exit(1);
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.log({promise: promise, reason: reason}, 'Unhandled Rejection');
+    process.exit(1);
+  });
+}
+
+
 const icli = require('comquirer');
 
-// Add base commands
-require('../cli/disable-default')(icli);
-require('../cli/please')(icli);
-
-icli.getProgram().commandHelp = require('../commander-help-override');
-
 icli.init = function() {
+  // Useful to reinit the cli for integration tests
   Object.keys(require.cache).forEach(function(key) { delete require.cache[key]; });
   icli.reset();
+  icli.getProgram().commandHelp = require('../commander-help-override');
+
+  // Add base commands
+  require('../cli/disable-default')(icli);
+  require('../cli/please')(icli);
+
   // Check if the user calls the command from a lager project
   return require('../load-lager-project')(icli)
   .then(lager => {

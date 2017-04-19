@@ -1,5 +1,5 @@
 lerna publish --skip-git --skip-npm
-lerna clean
+lerna clean --yes
 lerna exec rm npm-shrinkwrap.json
 lerna exec ncu -- -u
 lerna exec npm install

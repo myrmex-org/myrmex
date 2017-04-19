@@ -1,6 +1,6 @@
 {
   "name": "@lager/node-lambda",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "dependencies": {
     "abbrev": {
       "version": "1.0.9",
@@ -171,7 +171,7 @@
     },
     "aws-sdk": {
       "version": "2.42.0",
-      "from": "aws-sdk@>=2.41.0 <3.0.0",
+      "from": "aws-sdk@>=2.42.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.42.0.tgz"
     },
     "aws-sdk-mock": {

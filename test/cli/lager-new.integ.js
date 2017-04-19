@@ -6,6 +6,7 @@ const assert = require('assert');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const remove = Promise.promisify(fs.remove);
+const catchStdout = require('../catch-stdout');
 const icli = require('../../packages/cli/src/bin/lager');
 
 describe('Creation of a new project', () => {
@@ -24,9 +25,17 @@ describe('Creation of a new project', () => {
 
   it('should be done via the sub-command "new"', function() {
     this.timeout(120000);
+    catchStdout.start(true);
     return icli.parse('node script.js new my-project @lager/iam'.split(' '))
     .then(res => {
-      assert.ok(true);
+      const stdout = catchStdout.stop();
+      assert.ok(stdout.indexOf('Creating a node project') > -1);
+      assert.ok(stdout.indexOf('Installing Lager and Lager plugins') > -1);
+      assert.ok(stdout.indexOf('A new lager project has been created!') > -1);
+      assert.ok(stdout.indexOf('You should now enter in the \x1b[36mmy-project\x1b[0m folder to start working') > -1);
+      const lagerConfig = require('./my-project/lager');
+      assert.equal(lagerConfig.plugins.length, 1);
+      assert.equal(lagerConfig.plugins[0], '@lager/iam');
     });
   });
 

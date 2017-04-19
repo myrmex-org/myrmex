@@ -95,11 +95,6 @@ module.exports = (icli) => {
   };
 
   /**
-   * Create the command and the prompt
-   */
-  return icli.createSubCommand(config, executeCommand);
-
-  /**
    * Build the choices for "list" and "checkbox" parameters
    * @param {Array} endpoints - the list o available endpoint specifications
    * @returns {Object} - collection of lists of choices for "list" and "checkbox" parameters
@@ -125,7 +120,7 @@ module.exports = (icli) => {
   function executeCommand(parameters) {
     const language = parameters.language || _.sample(_.keys(cheers));
     let word = cheers[language];
-    figlet.fonts()
+    return figlet.fonts()
     .then(fonts => {
       const font = parameters.font ? parameters.font : _.sample(fonts);
       if (latinFonts.indexOf(font) === -1) { word = _.deburr(word); }
@@ -179,7 +174,12 @@ module.exports = (icli) => {
         beer = _.concat(beer, cheers);
       }
       console.log(beer.join('\n'));
+      return Promise.resolve(true);
     });
   }
 
+  /**
+   * Create the command and the prompt
+   */
+  return icli.createSubCommand(config, executeCommand);
 };

@@ -1,6 +1,6 @@
 {
   "name": "@lager/iam",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A Lager plugin to manage AWS policies and roles",
   "main": "src/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/lagerjs/lager#readme",
   "dependencies": {
-    "aws-sdk": "^2.41.0",
+    "aws-sdk": "^2.42.0",
     "bluebird": "^3.5.0",
     "easy-table": "^1.1.0",
     "lodash": "^4.17.4",
@@ -47,6 +47,6 @@
     "remark-lint": "^6.0.0"
   },
   "peerDependencies": {
-    "@lager/lager": "^0.0.36"
+    "@lager/lager": "^0.0.37"
   }
 }
