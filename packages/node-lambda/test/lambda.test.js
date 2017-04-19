@@ -125,17 +125,15 @@ describe('A Lambda', () => {
   });
 
   it('should load an event example', () => {
-    const example = lambda.loadEventExample('test-a');
-    assert.equal(example.key1, 'value1');
-    assert.equal(example.key2, 'value2');
-    assert.equal(example.key3, 'value3');
+    assert.equal(lambda.loadEventExample('test-a').id, 123);
+    assert.equal(lambda.loadEventExample('test-b').id, 'ABC');
   });
 
   it('should be executed locally', () => {
-    return lambda.executeLocally({ a: 'b' })
+    return lambda.executeLocally({ id: 42 })
     .then(res => {
-      assert.equal(res.msg, 'This Lambda is not implemented!');
-      assert.equal(res.input.a, 'b');
+      assert.equal(res.id, 42);
+      assert.equal(res.content, 'fake');
     });
   });
 

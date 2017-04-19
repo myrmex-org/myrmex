@@ -66,8 +66,9 @@ describe('An API', () => {
       id: 'cccccccccc',
       name: 'an-api-not-created-by-lager',
       createdDate: new Date()
-    }
-  ]};
+    }]
+  };
+
   const importRestApi = {
     id: 'dddddddddd',
     name: 'TEST my-api - my-api',

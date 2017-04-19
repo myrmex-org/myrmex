@@ -11,7 +11,8 @@ describe('The node-lambda plugin', () => {
     return nodeLambdaPlugin.loadLambdas()
     .then(lambdas => {
       assert.equal(lambdas.length, 2);
-      assert.equal(lambdas[0].getIdentifier(), 'api-generic');
+      assert.equal(lambdas[0].getIdentifier(), 'empty-lambda');
+      assert.equal(lambdas[1].getIdentifier(), 'my-lambda');
     });
   });
 

@@ -1,9 +1,7 @@
 'use strict';
 
-const Promise = require('bluebird');
-const _ = require('lodash');
-
 const path = require('path');
+const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 

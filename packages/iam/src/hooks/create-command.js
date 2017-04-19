@@ -26,7 +26,6 @@ module.exports.hook = function createCommandHook(commandConfig) {
     });
     const origExecute = commandConfig.execute;
     commandConfig.execute = parameters => {
-      const plugin = require('../index');
       return origExecute(parameters);
     };
   }

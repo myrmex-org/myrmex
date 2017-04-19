@@ -1,7 +1,15 @@
 'use strict';
 
-console.log('loading data-access package');
+// This node package should implement data access
 
 const log = require('log');
 
-module.exports = 'This node package should implement data access';
+module.exports = {
+  get(id) {
+    log('Call getData(' + id + ')');
+    return {
+      id: id,
+      content: 'fake'
+    };
+  }
+};

@@ -21,11 +21,4 @@ describe('The create-api sub-command', function() {
     );
   });
 
-  // To make this test work, icli.getProgram().parse() should return a Promise that resolve when the command finished its execution
-  // it('execute the command "cmd"', (done) => {
-  //   captureConsoleLog.begin();
-  //   icli.getProgram().parse(['/node/path', '/program/path', 'cmd']);
-  //   captureConsoleLog.end();
-  // });
-
 });

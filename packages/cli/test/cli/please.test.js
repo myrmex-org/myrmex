@@ -21,11 +21,4 @@ describe('The please sub-command', function() {
     );
   });
 
-  // To make this test work, icli.getProgram().parse() should return a Promise that resolve when the command finished its execution
-  // it('execute the command "please"', (done) => {
-  //   captureConsoleLog.begin();
-  //   icli.getProgram().parse(['/node/path', '/program/path', 'please']);
-  //   captureConsoleLog.end();
-  // });
-
 });

@@ -1,7 +1,8 @@
 'use strict';
 
-const fn = require('./exec.js');
+const dataAccess = require('data-access');
 
 module.exports.handler = function(event, context, cb) {
-  fn(event, cb);
+  const data = dataAccess.get(event.id);
+  cb(null, data);
 };

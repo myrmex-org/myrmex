@@ -1,5 +1,7 @@
 <img align="right" alt="lager logo" src="https://raw.githubusercontent.com/lagerjs/lager/master/img/lager-logo2.png" />
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/@lager/cli/badge.svg)](https://snyk.io/test/npm/@lager/cli)
+
 # Lager command line interface
 
 ```bash

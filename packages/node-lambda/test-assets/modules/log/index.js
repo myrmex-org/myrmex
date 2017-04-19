@@ -1,5 +1,7 @@
 'use strict';
 
-console.log('loading log package');
+// This node module should implement a logging system
 
-module.exports = 'This node package should implement a logging system';
+module.exports = (msg) => {
+  console.log();
+};
