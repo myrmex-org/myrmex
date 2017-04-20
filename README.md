@@ -2,6 +2,7 @@
 
 # Lager
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/954f7e9ff9d243e59dfb43d8c63f106c)](https://www.codacy.com/app/alexisno/lager?utm_source=github.com&utm_medium=referral&utm_content=lagerjs/lager&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/lagerjs/lager.svg)](https://travis-ci.org/lagerjs/lager)
 [![bitHound Code](https://www.bithound.io/github/lagerjs/lager/badges/code.svg)](https://www.bithound.io/github/lagerjs/lager)
 [![Codacy](https://api.codacy.com/project/badge/Grade/954f7e9ff9d243e59dfb43d8c63f106c)](https://www.codacy.com/app/alexisno/lager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lagerjs/lager&amp;utm_campaign=Badge_Grade)
