@@ -2,7 +2,7 @@
   "ignore": [
     "**/node_modules/**",
     "packages/cli/src/cli/figlet/**",
-    "docs/**"
+    "docs/**",
     "demo/**"
   ],
   "test": [
