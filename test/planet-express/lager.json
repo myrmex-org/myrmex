@@ -1,5 +1,5 @@
 {
-  "name": "lambda-profiling",
+  "name": "planet-express",
   "plugins": [
     "@lager/iam",
     "@lager/node-lambda",

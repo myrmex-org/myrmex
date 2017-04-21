@@ -19,7 +19,6 @@ describe('The integration data injector', () => {
         MemorySize: 256,
         Role: 'PlanetExpressLambdaExecution'
       },
-      includeEndpoints: true,
       modules: [
         'data-access',
         'log'

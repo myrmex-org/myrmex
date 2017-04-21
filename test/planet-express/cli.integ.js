@@ -63,7 +63,6 @@ describe('Creation and deployment of the Planet Express project', () => {
     });
   });
 
-
   describe('Creation of an invocation role', () => {
     it('should be done via the sub-command "create-role"', () => {
       return icli.parse('node script.js create-role PlanetExpressLambdaInvocation -m APIGatewayLambdaInvocation'.split(' '))
@@ -75,7 +74,7 @@ describe('Creation and deployment of the Planet Express project', () => {
 
   describe('Creation of APIs', () => {
     it('should be done via the sub-command "create-api"', () => {
-      return icli.parse('node script.js create-api back-office test -t "Back+Office" -d "Planet+Express+API+for+Back+Office"'.split(' '))
+      return icli.parse('node script.js create-api back-office -t "Back+Office" -d "Planet+Express+API+for+Back+Office"'.split(' '))
       .then(res => {
         return icli.parse('node script.js create-api sender -t "Sender" -d "Planet+Express+API+for+sender+application"'.split(' '));
       })
@@ -111,7 +110,6 @@ describe('Creation and deployment of the Planet Express project', () => {
   });
 
   describe('Deployment of APIs in AWS', function() {
-    this.timeout(60000);
     it('should be done via the sub-command "deploy-apis"', () => {
       return icli.parse('node script.js deploy-apis back-office -r us-east-1 -s v0 -e DEV --deploy-lambdas all'.split(' '))
       .then(res => {

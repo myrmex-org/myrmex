@@ -75,6 +75,8 @@ module.exports = (icli) => {
       description: 'select the execution role' + (plugin.lager.isPluginRegistered('iam') ? '' : ' (enter the ARN)'),
       type: 'list',
       choices: choicesLists.roles,
+      // We desactivate validation because the value can be set manually
+      validate: input => { return true; },
       question: {
         message: 'Choose the execution role',
         when(answers, cmdParameterValues) {
@@ -180,8 +182,7 @@ module.exports = (icli) => {
           Timeout: parameters.timeout,
           MemorySize: parameters.memory,
           Role: parameters.role
-        },
-        includeEndpoints: parameters.template === 'api-endpoints',
+        }
       };
       // We save the configuration in a json file
       return fs.writeFileAsync(configFilePath + path.sep + 'config.json', JSON.stringify(config, null, 2));
