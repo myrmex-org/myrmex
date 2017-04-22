@@ -3,7 +3,7 @@
 # Lager (beta)
 
 [![Build Status](https://travis-ci.org/lagerjs/lager.svg)](https://travis-ci.org/lagerjs/lager)
-[![Codacy](https://api.codacy.com/project/badge/Grade/954f7e9ff9d243e59dfb43d8c63f106c)](https://www.codacy.com/app/lagerjs/lager?utm_source=github.com&utm_medium=referral&utm_content=lagerjs/lager&utm_campaign=badger)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/249a9410043a43dca599d29f53a7bf98)](https://www.codacy.com/app/alexisno/lager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lagerjs/lager&amp;utm_campaign=Badge_Grade)
 [![Codecov](https://codecov.io/gh/lagerjs/lager/branch/master/graph/badge.svg)](https://codecov.io/gh/lagerjs/lager)
 [![Known Vulnerabilities](https://snyk.io/test/github/lagerjs/lager/badge.svg?targetFile=packages%2Flager%2Fpackage.json)](https://snyk.io/test/github/lagerjs/lager?targetFile=packages%2Flager%2Fpackage.json)
 
