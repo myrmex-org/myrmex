@@ -8,100 +8,122 @@ permalink: express.html
 folder: tutorials
 ---
 
+> This tutorial use `express-generator` to quickly create a sample application. This sample application is not an API and serves static content but we would not recommend to do that in a real case scenario. You should use `express` with API Gateway and Lambda only for APIs.
+
 Starting with an Express application
 ---
 
-We will start to create a basic Express application following [the documentation](https://expressjs.com/en/starter/generator.html).
+We will start by creating a basic Express application following [the documentation](https://expressjs.com/en/starter/generator.html).
 
 ```bash
-$ # Installation of the express generator
-$ npm install express-generator -g
-$ # Creation of a basic application
-$ express --view=pug myapp
-$ # Installation of dependencies
-$ cd myapp && npm install
+# Installation of the express generator
+npm install express-generator -g
+# Creation of a basic application
+express --view=pug express-app
+# Installation of dependencies
+cd express-app && npm install
 ```
 
 We start the application locally to check that everything works correctly.
 
 ```bash
-$ set DEBUG=myapp:* & npm start
+set DEBUG=express-app:* & npm start
 ```
 
-Visit ttp://127.0.0.1:3000/.
+Visit http://127.0.0.1:3000/ to check that the application runs correctly locally.
 
 Adding Lager to the project
 ---
 
-Be sure that the Lager cli is installed
+Be sure that the Lager cli is installed.
 
 ```bash
-$ npm install -g @lager/cli
+npm install -g @lager/cli
 ```
 
-Deploy Express in AWS Lambda and API Gateway
----
-
-Add the package lambda-express to the project
-===
-
-[lambda-express](https://www.npmjs.com/package/lambda-express) is a npm package that call Express with the data sent from API Gateway to a Lambda integration.  
+### Install Lager in the express project
 
 ```bash
-$ npm install --save lambda-express
-```
-
-Edit `app.js` to load `lambda-express` and expose a Lambda handler.
-
-```javascript
-var lambdaExpress = require('lambda-express');
-
-// original content of app.js
-
-exports.handler = lambdaExpress.appHandler(app);
-```
-
-The Express application can continue to work "normally".
-
-Install Lager in the project
-===
-
-```bash
-$ # For the prompt "What is your project name?", leave it empty, so Lager will be installed in the same directory that express
-$ # We will need the plugins @lager/iam @lager/api-gateway and @lager/node-lambda
-$ lager new @lager/iam @lager/api-gateway @lager/node-lambda
+# For the prompt "What is your project name?", leave it empty, so Lager will be installed in the same directory that express
+# We will need the plugins @lager/iam @lager/api-gateway and @lager/node-lambda
+lager new @lager/iam @lager/api-gateway @lager/node-lambda
 ```
 
 Lager and its plugins will be installed in the section `devDependencies` of the file `package.json`.
 
-Creation of IAM roles
-===
+### Creation of IAM roles
 
 We create two IAM roles: one to allow Lambda to write in cloudwatch and the other to allow API Gateway to invoke Lambda.
 
 ```bash
-$ lager create-role MyExpressAppLambdaExecution -m LambdaBasicExecutionRole
-$ lager create-role MyExpressAppLambdaInvocation -m APIGatewayLambdaInvocation
+lager create-role MyExpressAppLambdaExecution -m LambdaBasicExecutionRole
+lager create-role MyExpressAppLambdaInvocation -m APIGatewayLambdaInvocation
 ```
 
-Creation of the Lambda
-===
+### Creation of the Lambda
 
-lager create-node-lambda express -t 30 -m 256 -r MyExpressAppLambdaExecution
+We create a new Lambda managed by Lager.
+
+```bash
+lager create-node-lambda serverless-express -t 30 -m 256 -r MyExpressAppLambdaExecution
+```
+
+We have to do a small alteration to the `package.json` of the express application to tell node that `app.js` is the file that has to be loaded when
+`require()` is used.
 
 ```json
+// in /package.json
 {
-  "name": "express",
+  "name": "express-app",
   "version": "0.0.0",
-  "dependencies": {
-    "my-express-app": "../../.."
-  }
+  "main": "app.js",
+  ...
 }
 ```
 
-```javascript
-module.exports.handler = require('myExpressApp');
+In the `package.json` of the Lambda, we define the express application as a dependency
+
+```bash
+# in /node-lambda/lambdas/serverless-express
+npm install ../../.. --save
 ```
 
-Creation of the API
-===
+[aws-serverless-express](https://github.com/awslabs/aws-serverless-express) is a npm package that wrap an Express application to process requests from
+API Gateway with Lambda integration. We add it as a dependency of our Lambda.
+
+```bash
+# in /node-lambda/lambdas/serverless-express
+npm install aws-serverless-express --save
+```
+
+Then we can alter the code of `index.js` from the Lambda to correctly expose the handler.
+
+```javascript
+// in /node-lambda/lambdas/serverless-express/index.js
+'use strict';
+const awsServerlessExpress = require('aws-serverless-express');
+const app = require('express-app');
+const server = awsServerlessExpress.createServer(app);
+
+exports.handler = (event, context) => awsServerlessExpress.proxy(server, event, context);
+```
+
+### Creation of the API
+
+We create an API with two endpoints using `ANY` method and Lambda proxy integration: one to handle the root url, and another for the rest.
+
+```bash
+lager create-api serverless-express -t "Serverless Express" -d "An express application served by API GAteway and Lambda"
+lager create-endpoint / ANY -a serverless-express -s "Proxy to Lambda" --auth none -i lambda-proxy -l serverless-express -r MyExpressAppLambdaInvocation
+lager create-endpoint /{proxy+} ANY -a serverless-express -s "Proxy to Lambda" --auth none -i lambda-proxy -l serverless-express -r MyExpressAppLambdaInvocation
+```
+
+### Deployment
+
+```bash
+lager deploy-apis serverless-express -r us-east-1 -e DEV -s v0 --deploy-lambdas all
+```
+
+The deployment messages will give you the url of the application. It will have the form `https://{your-api-id}.execute-api.us-east-1.amazonaws.com/v0`.
+You can test the root url and the url `https://{your-api-id}.execute-api.us-east-1.amazonaws.com/v0/users` that is also declared in the sample application
+generated by `express-generator`. You can also test some bad urls and observe that you receive an error 404.

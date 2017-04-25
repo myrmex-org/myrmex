@@ -1,0 +1,8 @@
+{
+  "name": "serverless-express",
+  "version": "0.0.0",
+  "dependencies": {
+    "aws-serverless-express": "^2.2.0",
+    "express-app": "file:///home/alexis/Workspace/lager/demo/express-app"
+  }
+}

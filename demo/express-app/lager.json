@@ -4,5 +4,10 @@
     "@lager/iam",
     "@lager/api-gateway",
     "@lager/node-lambda"
-  ]
+  ],
+  "config": {
+    "nodeLambda": {
+      "lambdaPath": "node-lambda/lambdas"
+    }
+  }
 }

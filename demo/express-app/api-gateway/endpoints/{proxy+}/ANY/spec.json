@@ -1,0 +1,27 @@
+{
+  "x-lager": {
+    "apis": [
+      "serverless-express"
+    ],
+    "lambda": "serverless-express"
+  },
+  "summary": "Proxy to Lambda",
+  "responses": {
+    "200": {}
+  },
+  "x-amazon-apigateway-auth": {
+    "type": "none"
+  },
+  "x-amazon-apigateway-integration": {
+    "credentials": "MyExpressAppLambdaInvocation",
+    "responses": {
+      "default": {
+        "statusCode": 200
+      }
+    },
+    "type": "aws_proxy",
+    "contentHandling": "CONVERT_TO_TEXT",
+    "passthroughBehavior": "when_no_match",
+    "httpMethod": "POST"
+  }
+}

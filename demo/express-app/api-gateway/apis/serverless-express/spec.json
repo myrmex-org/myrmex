@@ -1,0 +1,13 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Serverless Express",
+    "description": "An express application served by API GAteway and Lambda"
+  },
+  "schemes": [
+    "https"
+  ],
+  "host": "API_ID.execute-api.REGION.amazonaws.com",
+  "paths": {},
+  "definitions": {}
+}

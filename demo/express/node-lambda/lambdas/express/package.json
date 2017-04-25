@@ -1,7 +1,0 @@
-{
-  "name": "express",
-  "version": "0.0.0",
-  "dependencies": {
-    "my-express-app": "../../.."
-  }
-}
