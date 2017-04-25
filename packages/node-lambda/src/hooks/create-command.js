@@ -5,7 +5,7 @@ const loadIntegrationHook = require('./load-integration');
 module.exports.hook = function createCommandHook(commandConfig) {
   if (commandConfig.cmd === 'deploy-apis') {
     commandConfig.parameters.push({
-      cmdSpec: '--deploy-lambdas [all|integration|none]',
+      cmdSpec: '--deploy-lambdas [all|partial|none]',
       description: 'perform the deployment of Lambdas',
       type: 'list',
       choices: [{

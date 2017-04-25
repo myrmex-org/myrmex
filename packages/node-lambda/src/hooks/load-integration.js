@@ -13,10 +13,6 @@ module.exports.setDeployMode = function setDeployMode(mode) {
 };
 
 module.exports.hook = function loadIntegrationsHook(region, context, endpoints, integrationResults) {
-  if (deployMode === 'none') {
-    return Promise.resolve();
-  }
-
   return plugin.loadLambdas()
   .then(lambdas => {
     // If the user does not want to deploy all lambdas, we filter the ones that are related to the endpoints
@@ -31,6 +27,11 @@ module.exports.hook = function loadIntegrationsHook(region, context, endpoints, 
       lambdas = _.filter(lambdas, lambda => {
         return lambdasIdentifiers.indexOf(lambda.getIdentifier()) > -1;
       });
+    }
+
+    // If the user does not want to deploy lambdas at all, we will just get integration data injectors
+    if (deployMode === 'none') {
+      return Promise.resolve(lambdas);
     }
 
     process.stdout.write(lambdas.length + ' Lambda(s) to deploy: ' + _.map(lambdas, l => l.getIdentifier()).join(', ') + '\n\n');
