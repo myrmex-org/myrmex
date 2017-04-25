@@ -1,14 +1,15 @@
 ---
-title: Deploying an express app in Lambda
+title: Deploying an Express application in Lambda
 keywords: lager, api-gateway, lambda, express
 tags: [getting_started, tutorial, api-gateway, lambda]
-summary: "In this tutorial, we will see how to deploy an existing express application in Lambda."
+summary: "In this tutorial, we will see how to deploy an existing Express application in API Gateway and Lambda."
 sidebar: home_sidebar
 permalink: express.html
 folder: tutorials
 ---
 
-> This tutorial use `express-generator` to quickly create a sample application. This sample application is not an API and serves static content but we would not recommend to do that in a real case scenario. You should use `express` with API Gateway and Lambda only for APIs.
+> This tutorial uses `express-generator` to quickly create a sample application. This sample application is not an API and serves static content but we do not
+recommend to do that in a real case scenario. You should use `Express` with API Gateway and Lambda only for APIs.
 
 Starting with an Express application
 ---
@@ -16,7 +17,7 @@ Starting with an Express application
 We will start by creating a basic Express application following [the documentation](https://expressjs.com/en/starter/generator.html).
 
 ```bash
-# Installation of the express generator
+# Installation of express-generator
 npm install express-generator -g
 # Creation of a basic application
 express --view=pug express-app
@@ -41,10 +42,10 @@ Be sure that the Lager cli is installed.
 npm install -g @lager/cli
 ```
 
-### Install Lager in the express project
+### Install Lager in the Express project
 
 ```bash
-# For the prompt "What is your project name?", leave it empty, so Lager will be installed in the same directory that express
+# For the prompt "What is your project name?", leave it empty, so Lager will be installed in the same directory that Express
 # We will need the plugins @lager/iam @lager/api-gateway and @lager/node-lambda
 lager new @lager/iam @lager/api-gateway @lager/node-lambda
 ```
@@ -68,7 +69,7 @@ We create a new Lambda managed by Lager.
 lager create-node-lambda serverless-express -t 30 -m 256 -r MyExpressAppLambdaExecution
 ```
 
-We have to do a small alteration to the `package.json` of the express application to tell node that `app.js` is the file that has to be loaded when
+We have to do a small alteration to the `package.json` of the Express application to tell node that `app.js` is the file that has to be loaded when
 `require()` is used.
 
 ```json
@@ -81,7 +82,7 @@ We have to do a small alteration to the `package.json` of the express applicatio
 }
 ```
 
-In the `package.json` of the Lambda, we define the express application as a dependency
+In the `package.json` of the Lambda, we define the Express application as a dependency
 
 ```bash
 # in /node-lambda/lambdas/serverless-express
@@ -113,7 +114,7 @@ exports.handler = (event, context) => awsServerlessExpress.proxy(server, event, 
 We create an API with two endpoints using `ANY` method and Lambda proxy integration: one to handle the root url, and another for the rest.
 
 ```bash
-lager create-api serverless-express -t "Serverless Express" -d "An express application served by API GAteway and Lambda"
+lager create-api serverless-express -t "Serverless Express" -d "An Express application served by API Gateway and Lambda"
 lager create-endpoint / ANY -a serverless-express -s "Proxy to Lambda" --auth none -i lambda-proxy -l serverless-express -r MyExpressAppLambdaInvocation
 lager create-endpoint /{proxy+} ANY -a serverless-express -s "Proxy to Lambda" --auth none -i lambda-proxy -l serverless-express -r MyExpressAppLambdaInvocation
 ```
