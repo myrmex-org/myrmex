@@ -1,0 +1,7 @@
+{
+  "params": {
+    "Timeout": 30,
+    "MemorySize": "256",
+    "Role": "MyExpressAppLambdaExecution"
+  }
+}
