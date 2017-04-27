@@ -1,0 +1,27 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "responses": {
+    "200": {
+      "description": "200 response",
+      "headers": {}
+    }
+  },
+  "x-amazon-apigateway-integration": {
+    "responses": {
+      "default": {
+        "statusCode": "200",
+        "responseParameters": {}
+      }
+    },
+    "requestTemplates": {
+      "application/json": "{\"statusCode\": 200}"
+    },
+    "passthroughBehavior": "when_no_match",
+    "type": "mock"
+  }
+}

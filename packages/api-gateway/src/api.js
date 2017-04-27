@@ -46,6 +46,14 @@ Api.prototype.toString = function toString() {
 };
 
 /**
+ * Returns the API's Swagger/OpenAPI specification
+ * @returns {Object} - a portion of Swagger/OpenAPI specification describing the API
+ */
+Api.prototype.getSpec = function getSpec() {
+  return this.spec;
+};
+
+/**
  * Check if an endpoint applies to an API
  * @param {Endpoint} endpoint
  * @returns {boolean}
@@ -68,9 +76,7 @@ Api.prototype.addEndpoints = function addEndpoints(endpoints, force) {
   return plugin.lager.fire('beforeAddEndpointsToApi', this, endpoints)
   .spread((api, endpoints) => {
     return Promise.map(endpoints, (endpoint) => {
-      if (this.doesExposeEndpoint(endpoint)) {
-        return this.addEndpoint(endpoint, force);
-      }
+      return this.addEndpoint(endpoint, force);
     });
   })
   .then(() => {
@@ -95,6 +101,15 @@ Api.prototype.addEndpoint = function addEndpoint(endpoint, force) {
 
   return plugin.lager.fire('beforeAddEndpointToApi', this, endpoint)
   .spread((api, endpoint) => {
+    // We add the API indentifier to the configuration of the endpoint
+    // in case "force" has been used
+    if (force) {
+      endpoint.getSpec()['x-lager'] = endpoint.getSpec()['x-lager'] || {};
+      endpoint.getSpec()['x-lager'].apis = endpoint.getSpec()['x-lager'].apis || [];
+      if (endpoint.getSpec()['x-lager'].apis.indexOf(this.getIdentifier()) === -1) {
+        endpoint.getSpec()['x-lager'].apis.push(this.getIdentifier());
+      }
+    }
     this.endpoints.push(endpoint);
     return endpoint.getReferencedModels();
   })

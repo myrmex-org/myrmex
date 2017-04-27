@@ -1,7 +1,7 @@
 {
-  "name": "@lager/api-gateway",
-  "version": "0.0.19",
-  "description": "A Lager plugin to manage APIs in AWS API Gateway",
+  "name": "@lager/cors",
+  "version": "0.0.1",
+  "description": "A Lager plugin to easily add CORS configuration to APIs in AWS API Gateway",
   "main": "src/index.js",
   "scripts": {
     "test": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- --recursive",
@@ -12,7 +12,8 @@
     "plugin",
     "aws",
     "api",
-    "gateway"
+    "gateway",
+    "cors"
   ],
   "author": "Alexis Hénaut",
   "repository": {
@@ -25,22 +26,15 @@
   },
   "homepage": "https://github.com/lagerjs/lager#readme",
   "dependencies": {
-    "aws-sdk": "^2.42.0",
-    "bluebird": "^3.5.0",
-    "easy-table": "^1.1.0",
-    "file": "^0.2.2",
-    "lodash": "^4.17.4",
-    "mkdirp": "^0.5.1",
-    "ncp": "^2.0.0"
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "aws-sdk-mock": "^1.6.1",
     "codecov": "^2.1.0",
-    "comquirer": "0.0.13",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0"
   },
   "peerDependencies": {
-    "@lager/lager": "*"
+    "@lager/lager": "*",
+    "@lager/api-gateway": "*"
   }
 }
