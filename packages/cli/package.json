@@ -1,6 +1,6 @@
 {
   "name": "@lager/cli",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "The lager CLI",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
   "devDependencies": {
     "codecov": "^2.1.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0"
+    "mocha": "^3.3.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@lager/api-gateway",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "A Lager plugin to manage APIs in AWS API Gateway",
   "main": "src/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/lagerjs/lager#readme",
   "dependencies": {
-    "aws-sdk": "^2.42.0",
+    "aws-sdk": "^2.48.0",
     "bluebird": "^3.5.0",
     "easy-table": "^1.1.0",
     "file": "^0.2.2",
@@ -34,11 +34,11 @@
     "ncp": "^2.0.0"
   },
   "devDependencies": {
-    "aws-sdk-mock": "^1.6.1",
+    "aws-sdk-mock": "^1.7.0",
     "codecov": "^2.1.0",
     "comquirer": "0.0.13",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0"
+    "mocha": "^3.3.0"
   },
   "peerDependencies": {
     "@lager/lager": "*"

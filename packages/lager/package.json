@@ -1,6 +1,6 @@
 {
   "name": "@lager/lager",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "AWS Lambda / API Gateway / Endpoint Router",
   "files": [
     "src"
@@ -16,7 +16,7 @@
     "codecov": "^2.1.0",
     "comquirer": "0.0.13",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0"
+    "mocha": "^3.3.0"
   },
   "keywords": [
     "AWS",
