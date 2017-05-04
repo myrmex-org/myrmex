@@ -1,6 +1,6 @@
 {
   "name": "@lager/cors",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Lager plugin to easily add CORS configuration to APIs in AWS API Gateway",
   "main": "src/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "mocha": "^3.2.0"
   },
   "peerDependencies": {
-    "@lager/lager": "*",
-    "@lager/api-gateway": "*"
+    "@lager/api-gateway": "*",
+    "@lager/lager": "*"
   }
 }
