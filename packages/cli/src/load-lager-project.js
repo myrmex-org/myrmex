@@ -101,8 +101,8 @@ function getConfig() {
   // Load the lager main configuration file
   let config = {};
   try {
-    // try to load a lager.json file
-    config = require(path.join(process.cwd(), 'lager.json'));
+    // try to load a lager.json or lager.js file
+    config = require(path.join(process.cwd(), 'lager'));
   } catch (e) {
     // Silently ignore if there is no configuration file
     return config;
