@@ -7,9 +7,9 @@ const Promise = require('bluebird');
 const rp = require('request-promise');
 const fs = require('fs-extra');
 const remove = Promise.promisify(fs.remove);
-const catchStdout = require('../catch-stdout');
 const icli = require('../../packages/cli/src/bin/lager');
 const showStdout = !!process.env.LAGER_SHOW_STDOUT;
+const apiDeployDelay = require('../api-deploy-delay');
 
 describe('Creation and deployment of a proxy integration with ANY http method', () => {
 
@@ -24,18 +24,18 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
   after(() => {
     return Promise.all([
       remove(path.join(__dirname, 'api-gateway')),
-      remove(path.join(__dirname, 'node-lambda')),
+      remove(path.join(__dirname, 'lambda')),
       remove(path.join(__dirname, 'lager.log'))
     ]);
   });
 
   describe('Creation of a node Lambda', () => {
-    it('should be done via the sub-command "create-node-lambda"', () => {
-      catchStdout.start(showStdout);
+    it('should be done via the sub-command "create-lambda"', () => {
+      icli.catchPrintStart(showStdout);
       // eslint-disable-next-line max-len
-      return icli.parse('node script.js create-node-lambda any-proxy -t 20 -m 128 -r arn:aws:iam::856019870963:role/LambdaExecutionLagerIntegrationTest'.split(' '))
+      return icli.parse('node script.js create-lambda any-proxy -r nodejs6.10 -t 20 -m 128 --role arn:aws:iam::856019870963:role/LambdaExecutionLagerIntegrationTest'.split(' '))
       .then(res => {
-        const stdout = catchStdout.stop();
+        const stdout = icli.catchPrintStop();
         assert.ok(stdout.indexOf('The Lambda \x1b[36many-proxy\x1b[0m has been created') > -1);
       });
     });
@@ -43,10 +43,10 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
 
   describe('Creation of an API', () => {
     it('should be done via the sub-command "create-api"', () => {
-      catchStdout.start(showStdout);
+      icli.catchPrintStart(showStdout);
       return icli.parse('node script.js create-api any-proxy -t Any+proxy -d Lambda+proxy+integration+for+any+http+request'.split(' '))
       .then(res => {
-        const stdout = catchStdout.stop();
+        const stdout = icli.catchPrintStop();
         assert.ok(stdout.indexOf('The API "\x1b[36many-proxy\x1b[0m" has been created') > -1);
       });
     });
@@ -54,7 +54,7 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
 
   describe('Creation of endpoints', () => {
     it('should be done via the sub-command "create-endpoint"', () => {
-      catchStdout.start(showStdout);
+      icli.catchPrintStart(showStdout);
       // eslint-disable-next-line max-len
       return icli.parse('node script.js create-endpoint /{proxy+} any -a any-proxy -s Catch+all+non+root+request -i lambda-proxy --auth none --role arn:aws:iam::856019870963:role/APIGatewayInvokeLambdaLagerIntegrationTest -l any-proxy'.split(' '))
       .then(res => {
@@ -62,7 +62,7 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
         return icli.parse('node script.js create-endpoint / any -a any-proxy -s Catch+all+root+request -i lambda-proxy --auth none --role arn:aws:iam::856019870963:role/APIGatewayInvokeLambdaLagerIntegrationTest -l any-proxy'.split(' '));
       })
       .then(res => {
-        const stdout = catchStdout.stop();
+        const stdout = icli.catchPrintStop();
         assert.ok(stdout.indexOf('The endpoint \x1b[36mANY /{proxy+}\x1b[0m has been created') > -1);
         assert.ok(stdout.indexOf('The endpoint \x1b[36mANY /\x1b[0m has been created') > -1);
       });
@@ -71,10 +71,10 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
 
   describe('Swagger API specification for documentation purpose', () => {
     it('should duplicate the ANY endpoint definition for each http method', () => {
-      catchStdout.start(showStdout);
+      icli.catchPrintStart(showStdout);
       return icli.parse('node script.js inspect-api any-proxy -s doc -c'.split(' '))
       .then(res => {
-        catchStdout.stop();
+        icli.catchPrintStop();
         assert.equal(res.paths['/{proxy+}'].get.summary, 'Catch+all+non+root+request');
         assert.equal(res.paths['/{proxy+}'].post.summary, 'Catch+all+non+root+request');
         assert.equal(res.paths['/{proxy+}'].put.summary, 'Catch+all+non+root+request');
@@ -88,11 +88,14 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
 
   describe('Deployment of an API in AWS', () => {
     it('should be done via the sub-command "deploy-apis"', function() {
-      this.timeout(30000);
-      catchStdout.start(showStdout);
-      return icli.parse('node script.js deploy-apis any-proxy -r us-east-1 -s v0 -e DEV --deploy-lambdas all'.split(' '))
+      this.timeout(60000);
+      icli.catchPrintStart(showStdout);
+      return apiDeployDelay()
       .then(res => {
-        const stdout = catchStdout.stop();
+        return icli.parse('node script.js deploy-apis any-proxy -r us-east-1 -s v0 -e DEV --deploy-lambdas all'.split(' '));
+      })
+      .then(res => {
+        const stdout = icli.catchPrintStop();
         assert.ok(stdout.indexOf('/          ANY     X') > -1);
         assert.ok(stdout.indexOf('/{proxy+}  ANY     X') > -1);
         assert.ok(stdout.indexOf('1 Lambda(s) to deploy: any-proxy') > -1);

@@ -1,7 +1,0 @@
-{
-  "name": "my-lambda",
-  "version": "0.0.0",
-  "dependencies": {
-    "data-access": "../../modules/data-access"
-  }
-}
