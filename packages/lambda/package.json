@@ -1,6 +1,6 @@
 {
   "name": "@lager/lambda",
-  "version": "0.0.23",
+  "version": "0.1.0",
   "description": "A Lager plugin to manage AWS lambda functions and deploy them.",
   "main": "src/index.js",
   "scripts": {
@@ -11,8 +11,7 @@
     "Lager",
     "plugin",
     "aws",
-    "role",
-    "policy"
+    "lambda"
   ],
   "author": "Alexis Hénaut",
   "repository": {

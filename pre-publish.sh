@@ -1,3 +1,4 @@
+#!/bin/bash
 lerna clean --yes
 lerna exec rm npm-shrinkwrap.json
 lerna exec ncu -- -u

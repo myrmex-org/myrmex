@@ -52,9 +52,9 @@ module.exports = (icli) => {
         short: 'api-gateway',
         checked: true
       }, {
-        value: '@lager/node-lambda',
-        name: icli.format.info('@lager/node-lambda') + ' - deploy nodejs Lambda in AWS and associate them to API endpoints',
-        short: 'node-lambda',
+        value: '@lager/lambda',
+        name: icli.format.info('@lager/lambda') + ' - deploy Lambda in AWS and associate them to API endpoints',
+        short: 'lambda',
         checked: true
       }]
     };
