@@ -1,0 +1,17 @@
+{
+  "source": "./packages",
+  "destination": "./doc",
+  "excludes": ["node_modules"],
+  "includeSource": false,
+  "coverage": false,
+  "manual": {
+    "globalIndex": true,
+    "tutorial": [
+      "./manual/getting-started.md",
+      "./manual/iam-plugin.md",
+      "./manual/lambda-plugin.md",
+      "./manual/api-gateway-plugin.md",
+      "./manual/cors-plugin.md"
+    ]
+  }
+}
