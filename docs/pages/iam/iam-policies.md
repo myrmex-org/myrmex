@@ -8,6 +8,7 @@ permalink: iam-policies.html
 folder: iam
 ---
 
+
 The policies managed by Lager are nothing more than IAM policy definitions stored as JSON file. This allows to manage the permissions needed by your
 application alongside the code.
 
