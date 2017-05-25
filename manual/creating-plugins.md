@@ -1,10 +1,10 @@
 ## Plugin definition
 
-The Lager core is the node module `@lager/lager`. It exports an object (referred as the *Lager instance*) that is based on [Pebo](https://github.com/AlexisNo/pebo#readme)
-that is a kind of event emitter.
+The Lager core is the node module `@lager/lager`. It exports an object (referred as the *Lager instance*) that is based on
+[Pebo](https://github.com/AlexisNo/pebo#readme) that is a kind of event emitter.
 
-Lager plugins use the *Lager instance* to interact with each other. A Lager plugin can be published on npm to be used by anyone, or it can be a project
-specific plugin in the folder `plugins/my-plugin-identifier` of the project.
+Lager plugins use the *Lager instance* to interact with each other. A Lager plugin can be published on npm to be used by
+anyone, or it can be a project specific plugin in the folder `plugins/my-plugin-identifier` of the project.
 
 Lager plugins can make use of the following functionalities:
 
@@ -58,17 +58,18 @@ Here is a quick overview of an object exported by a Lager plugin.
 
 ### The Lager instance
 
-Before describing events and extensions, we should have a quick overview about the initialization of the *Lager instance* and the registration of plugins.
+Before describing events and extensions, we should have a quick overview about the initialization of the *Lager instance* and
+the registration of plugins.
 
 #### Initialization by the Lager command line
 
-When the Lager command line is called. It checks if it is called from a Lager project by searching for a `package.json` file containing a dependency to
-`@lager/lager` in the current path.
+When the Lager command line is called. It checks if it is called from a Lager project by searching for a `package.json` file
+containing a dependency to `@lager/lager` in the current path.
 
 Once a `@lager/lager` module have been found, the Lager command line loads it and receives an object: the *Lager instance*.
 
-The Lager command line then loads the project configuration (including the list of plugins) and applies it to the *Lager instance*. Each plugin is loaded and
-registered in the *Lager instance*.
+The Lager command line then loads the project configuration (including the list of plugins) and applies it to the *Lager
+instance*. Each plugin is loaded and registered in the *Lager instance*.
 
 #### Registration of plugins
 
@@ -78,18 +79,19 @@ When the *Lager instance* registers a plugin, it basically performs three operat
 *   Checks if it there are *extensions* and add them to the Lager instance.
 *   Create a reference of itself in a `lager` property that is added to the plugin.
 
-So, once a plugin has been registered by the *Lager instance*, it has a new `lager` property that contains the *Lager instance*. It can be used to fire events
-or call *extensions* that have been provided by other plugins.
+So, once a plugin has been registered by the *Lager instance*, it has a new `lager` property that contains the *Lager
+instance*. It can be used to fire events or call *extensions* that have been provided by other plugins.
 
 ### Events mecanism
 
 The event mecanism of Lager is designed to allow code injection and works with asynchronous operations.
 
-From the *event emitter* point of view, when the *Lager instance* fires an event, it returns a promise of an array containing the arguments of the event. These
-arguments have eventually been transformed by *event listeners*.
+From the *event emitter* point of view, when the *Lager instance* fires an event, it returns a promise of an array containing
+the arguments of the event. These arguments have eventually been transformed by *event listeners*.
 
-From the *event listener* point of view, when the listener function is called, it has the possibility to alter the parameters of the event. If the event
-listener has to perform asynchronous operations to alter theses parameters, it should return a Promise that resolves once the modification is done.
+From the *event listener* point of view, when the listener function is called, it has the possibility to alter the parameters
+of the event. If the event listener has to perform asynchronous operations to alter theses parameters, it should return a
+Promise that resolves once the modification is done.
 
 Therefore, an *emitter* can wait for all *listeners* to eventually alter the event parameters to continue its task.
 
@@ -132,18 +134,20 @@ lager.fire('MyEvent', eventArg1, eventArg2)
 });
 ```
 
-Using this mecanism, Lager plugins can create their own events and listen for other plugins events. Several plugins can listen for the same event and
-use and/or modify its arguments.
+Using this mecanism, Lager plugins can create their own events and listen for other plugins events. Several plugins can listen
+for the same event and use and/or modify its arguments.
 
-> For example, before configuring the integration request of API endpoints, the `@lager/api-gateway` plugin fires and event that allows other plugins to be
-> notified about it. Theses plugins have the opportunity to inject data in the event's argument so the plugin `@lager/api-gateway` can generate a compete API
-> specification.
+> For example, before configuring the integration request of API endpoints, the `@lager/api-gateway` plugin fires and event
+that allows other plugins to be notified about it. Theses plugins have the opportunity to inject data in the event's argument
+so the plugin `@lager/api-gateway` can generate a compete API specification.
 
-Note that we do not recommend to call `lager.when()` directly when writing a plugin. We prefer to use the `hooks` property of the object exported by the plugin
-to organize the code and be sure that the listeners are attached to the events during the registration of the plugin.
+Note that we do not recommend to call `lager.when()` directly when writing a plugin. We prefer to use the `hooks` property of
+the object exported by the plugin to organize the code and be sure that the listeners are attached to the events during the
+registration of the plugin.
 
-> Note that it is not possible to remove an event listener. That does not seems essential since Lager is always invoked by the command line and does not lives
-> in a long time running process but that is something that should be added later. Feel free to propose a pull request on [Pebo](https://github.com/AlexisNo/pebo) !
+> Note that it is not possible to remove an event listener. That does not seems essential since Lager is always invoked by the
+command line and does not lives in a long time running process but that is something that should be added later. Feel free to
+propose a pull request on [Pebo](https://github.com/AlexisNo/pebo) !
 
 
 ### Extensions

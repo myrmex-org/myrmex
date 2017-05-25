@@ -7,9 +7,9 @@ If you did not arrived here by mistake, thanks for contributing to Lager! :tada:
 Executing the `run.sh` script in this folder will open a shell inside a Docker :whale: container. There, you have access to a
 empty Lager :beers: project that can be used to test modifications applied to Lager modules hosted in this repository.
 
-The content of the `packages` folder of this repository in mounted in the `/home/lager/.node/lib/node_modules/` folder of the 
-container like if the packages had been installed globally. Inside the Lager project, the packages are available via a symbolic
-link, like if they had been installed in the project via `npm link`.
+The content of the `packages` folder of this repository in mounted in the `/home/lager/.node/lib/node_modules/` folder of the
+container like if the packages had been installed globally. Inside the Lager project, the packages are available via a
+symbolic link, like if they had been installed in the project via `npm link`.
 
 Therefore, altering the content of `packages/*` in the repository will affect the modules installed inside the container.    
 

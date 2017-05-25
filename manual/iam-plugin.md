@@ -58,9 +58,9 @@ Create a new IAM role. By default the location of roles is `iam/roles/<identifie
 
 Two predefined role configuration are available:
 
- *   `APIGatewayLambdaInvocation`: The `AWSLambdaRole` policy is attached to it and it can be associated to API Gateway
+*   `APIGatewayLambdaInvocation`: The `AWSLambdaRole` policy is attached to it and it can be associated to API Gateway
      endpoints.
- *   `LambdaBasicExecutionRole`: The `AWSLambdaBasicExecutionRole` is attached to it and it can be associated to Lambda
+*   `LambdaBasicExecutionRole`: The `AWSLambdaBasicExecutionRole` is attached to it and it can be associated to Lambda
      functions.
 
 It is possible to define custom policies and `trust-relationship` configuration. Is is also possible to reference

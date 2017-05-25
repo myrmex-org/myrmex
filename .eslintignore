@@ -1,4 +1,5 @@
 node_modules
 coverage
+doc
 docs
 packages/cli/src/cli/figlet
