@@ -1,6 +1,6 @@
 {
   "name": "@lager/lager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
     "abbrev": {
       "version": "1.0.9",
@@ -180,9 +180,9 @@
       "dev": true
     },
     "comquirer": {
-      "version": "0.0.13",
-      "from": "comquirer@0.0.13",
-      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.13.tgz",
+      "version": "0.0.15",
+      "from": "comquirer@0.0.15",
+      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.15.tgz",
       "dev": true,
       "dependencies": {
         "ansi-escapes": {
@@ -862,9 +862,9 @@
       "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz"
     },
     "mocha": {
-      "version": "3.4.1",
+      "version": "3.4.2",
       "from": "mocha@>=3.3.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/mocha/-/mocha-3.4.1.tgz",
+      "resolved": "https://registry.npmjs.org/mocha/-/mocha-3.4.2.tgz",
       "dev": true,
       "dependencies": {
         "glob": {

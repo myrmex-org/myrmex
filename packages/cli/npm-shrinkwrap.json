@@ -1,6 +1,6 @@
 {
   "name": "@lager/cli",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "dependencies": {
     "abbrev": {
       "version": "1.0.9",
@@ -177,9 +177,9 @@
       "dev": true
     },
     "comquirer": {
-      "version": "0.0.13",
-      "from": "comquirer@>=0.0.13 <0.0.14",
-      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.13.tgz",
+      "version": "0.0.15",
+      "from": "comquirer@>=0.0.15 <0.0.16",
+      "resolved": "https://registry.npmjs.org/comquirer/-/comquirer-0.0.15.tgz",
       "dependencies": {
         "ansi-escapes": {
           "version": "1.4.0",
@@ -827,9 +827,9 @@
       }
     },
     "mocha": {
-      "version": "3.4.1",
+      "version": "3.4.2",
       "from": "mocha@>=3.3.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/mocha/-/mocha-3.4.1.tgz",
+      "resolved": "https://registry.npmjs.org/mocha/-/mocha-3.4.2.tgz",
       "dev": true,
       "dependencies": {
         "glob": {
