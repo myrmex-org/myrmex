@@ -16,25 +16,12 @@ global.testRequire = function(name) {
 
 const assert = require('assert');
 const path = require('path');
-const Promise = require('bluebird');
 const _ = require('lodash');
-const lager = require('../../lager');
+const myrmex = require('../../core');
 const iamPlugin = testRequire('src/index');
 
-Promise.config({
-  longStackTraces: true
-});
-
-process.on('uncaughtException', (e) => {
-  console.log('Unhandled Exception at: ', e);
-});
-
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
-});
-
 /**
- * Before executiong the tests, register the plugin in a lager instance
+ * Before executiong the tests, register the plugin in a myrmex instance
  * @return Promise
  */
 before(function() {
@@ -42,11 +29,10 @@ before(function() {
     policiesPath: 'test-assets' + path.sep + 'policies',
     rolesPath: 'test-assets' + path.sep + 'roles'
   });
-  assert.equal(iamPlugin.lager, undefined);
-  lager.registerPlugin(iamPlugin);
-  assert.equal(iamPlugin.lager, lager);
+  assert.equal(iamPlugin.myrmex, undefined);
+  myrmex.registerPlugin(iamPlugin);
+  assert.equal(iamPlugin.myrmex, myrmex);
 });
-
 
 /**
  * Once the tests are finished
