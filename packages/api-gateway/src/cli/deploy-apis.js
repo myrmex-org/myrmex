@@ -60,14 +60,10 @@ module.exports = (icli) => {
     execute: executeCommand
   };
 
-  // Allow other plugin to complete the command
-  return plugin.myrmex.fire('createCommand', config)
-  .then(() => {
-    /**
-     * Create the command and the prompt
-     */
-    return icli.createSubCommand(config);
-  });
+  /**
+   * Create the command and the prompt
+   */
+  return icli.createSubCommand(config);
 
   /**
    * Build the choices for "list" and "checkbox" parameters

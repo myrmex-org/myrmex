@@ -67,22 +67,6 @@ module.exports = (icli) => {
         message: 'What is the type of integration of this endpoint?'
       }
     }, {
-      cmdSpec: '-l --lambda <lambda-name|lambda-arn>',
-      description: 'The Lambda to integrate with the endpoint',
-      type: 'list',
-      choices: choicesLists.lambdas,
-      question: {
-        message: 'What is the Lambda to integrate with the endpoint?',
-        when(answers, cmdParameterValues) {
-          if (cmdParameterValues.lambda) {
-            return false;
-          }
-          return choicesLists.lambdas().then(lambdas => {
-            return lambdas.length > 0;
-          });
-        }
-      }
-    }, {
       type: 'list',
       choices: choicesLists.roleOrigins,
       question: {
@@ -121,13 +105,15 @@ module.exports = (icli) => {
       // Uppercase the HTTP method
       if (arguments[1]) { arguments[1] = arguments[1].toUpperCase(); }
       return arguments;
-    }
+    },
+    specModifiers: [],
+    execute: executeCommand
   };
 
   /**
-   * Create the command and the promp
+   * Create the command and the prompt
    */
-  return icli.createSubCommand(config, executeCommand);
+  return icli.createSubCommand(config);
 
   /**
    * Build the choices for "list" and "checkbox" parameters
@@ -199,17 +185,6 @@ module.exports = (icli) => {
             return eligibleRoles;
           });
         }
-      },
-      lambdas: () => {
-        return plugin.myrmex.call('lambda:getLambdas', [])
-        .then(lambdas => {
-          return _.map(lambdas, lambda => {
-            return {
-              value: lambda.getIdentifier(),
-              name: icli.format.info(lambda.getIdentifier())
-            };
-          });
-        });
       }
     };
   }
@@ -271,9 +246,7 @@ module.exports = (icli) => {
           spec['x-amazon-apigateway-integration'].passthroughBehavior = 'when_no_match';
           break;
       }
-      if (parameters.lambda) {
-        spec['x-myrmex'].lambda = parameters.lambda;
-      }
+      config.specModifiers.forEach(fn => { fn(spec, parameters); });
 
       // We save the specification in a json file
       return fs.writeFileAsync(path.join(specFilePath, 'spec.json'), JSON.stringify(spec, null, 2));

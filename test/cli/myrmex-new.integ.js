@@ -7,7 +7,7 @@ const Promise = require('bluebird');
 const fs = require('fs-extra');
 const remove = Promise.promisify(fs.remove);
 const icli = require('../../packages/cli/src/bin/myrmex');
-const showStdout = !!process.env.LAGER_SHOW_STDOUT;
+const showStdout = !!process.env.MYRMEX_SHOW_STDOUT;
 
 describe('Creation of a new project', () => {
 
@@ -23,7 +23,7 @@ describe('Creation of a new project', () => {
     return remove(path.join(__dirname, 'my-project'));
   });
 
-  it.skip('should be done via the sub-command "new"', function() {
+  it('should be done via the sub-command "new"', function() {
     this.timeout(120000);
     icli.catchPrintStart(showStdout);
     return icli.parse('node script.js new my-project @myrmex/iam'.split(' '))
