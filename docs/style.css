@@ -1,0 +1,11 @@
+html {
+  font-family: 'Roboto', sans-serif
+}
+
+.manual-user-index img{
+  box-shadow: none !important;
+}
+
+.navigation li {
+    white-space: normal;
+}

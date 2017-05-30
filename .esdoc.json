@@ -1,19 +1,31 @@
 {
+  "title": " Myrmex | A serverless applications builder",
   "source": "./packages",
   "destination": "../myrmx.github.io/",
   "excludes": ["node_modules"],
   "includeSource": false,
   "coverage": false,
+  "badge": false,
+  "styles": ["./docs/style.css"],
   "manual": {
     "globalIndex": true,
+    "index": "./docs/index.md",
+    "asset": "./docs/images",
     "badge": false,
+    "usage": [
+      "./docs/usage/getting-started.md",
+      "./docs/usage/iam-plugin.md",
+      "./docs/usage/lambda-plugin.md",
+      "./docs/usage/api-gateway-plugin.md",
+      "./docs/usage/cors-plugin.md"
+    ],
     "tutorial": [
-      "./manual/getting-started.md",
-      "./manual/iam-plugin.md",
-      "./manual/lambda-plugin.md",
-      "./manual/api-gateway-plugin.md",
-      "./manual/creating-plugins.md",
-      "./manual/cors-plugin.md"
+      "./docs/tutorial/express.md",
+      "./docs/tutorial/lambda-profiling.md",
+      "./docs/tutorial/planet-express.md"
+    ],
+    "advanced": [
+      "./docs/advanced/creating-plugins.md"
     ]
   }
 }
