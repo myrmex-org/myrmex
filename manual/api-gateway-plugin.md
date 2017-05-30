@@ -85,7 +85,7 @@ This project contains 2 APIs:
 *   `GET /resource-b/resource-c`
 
 To associate an endpoint to one or more APIs, it is possible to enrich the endpoint specification (`spec.json` file) with a
-list of API identifiers, in a Myrmex extension for Swagger.
+list of API identifiers, in a Myrmex extension to Swagger.
 
 ```json
 {
@@ -115,7 +115,10 @@ create-api [options] [api-identifier]
     -d, --desc <description>  A description of the API
 ```
 
-Create a new API. By default the location of APIs is `api-gateway/apis/<api-dentifier>/`.
+Create a new API. By default the location of API definitions is `api-gateway/apis/<api-dentifier>/`. The API definition is a
+file named `spec.json` that contains a [Swagger object](http://swagger.io/specification/#swagger-object-14). The command line
+will to create a simple base configuration. It is possible to write a full Swagger definition here, but the plugin
+`@myrmex/api-gateway` is designed to separate API definitions into pieces and generate full definitions when needed.
 
 ### create-model
 
@@ -128,16 +131,86 @@ or output of API endpoints but are not mandatory.
 
 ### create-endpoint
 
+```
 create-endpoint [options] [resource-path] [http-method]
 
-  create a new API endpoint
-
   Options:
-
-    -h, --help                            output usage information
     -a, --apis <api-identifiers>          The identifiers of APIs that expose the endpoint separated by ","
     -s, --summary <endpoint summary>      A short summary of what the operation does
     --auth <authentication-type>          The type of authentication used to call the endpoint (aws_iam|none)
     -i --integration <integration-type>   The type of integration (lambda|http|mock|aws-service)
-    -l --lambda <lambda-name|lambda-arn>  The Lambda to integrate with the endpoint
     -r, --role <role>                     select the role to invoke integration
+```
+
+Create a new endpoint. By default the location of endpoints definitions is
+`api-gateway/endpoints/<resource-path>/<http-method>/`. The endpoint definition is a file named `spec.json` that contains a
+[Swagger path item object](http://swagger.io/specification/#path-item-object-32). The command line will help to create a
+simple base configuration. Then, the developer can complete the definition using the Swagger specification and the [API
+Gateway extentions to Swagger](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html).
+
+The definition of an endpoint can be added to one or more APIs using a Myrmex extention to Swagger:
+
+```json
+{
+  "x-myrmex": {
+    "apis": [
+      "<api-identifier-a>",
+      "<api-identifier-b>"
+    ]
+  }
+  ... rest of the endpoint specification
+}
+```
+
+### inspect-api
+
+```
+inspect-api [options] [api-identifier]
+
+  Options:
+    -c, --colors                  highlight output
+    -s, --spec-version <version>  select the type of specification to retrieve: doc|aws|complete
+```
+
+Generate the Swagger definition of an API and print it. There are three different versions of the specification:
+
+*   The `doc` version only contains parts of the definitions that belong to the Swagger specification.
+*   The `aws` version is the definition that is sent to AWS API gateway when performing a deployment.
+*   The `complete` version contains everything that is defined in the project, including the Myrmex extensions to Swagger.
+
+### inspect-endpoint
+
+```
+inspect-endpoint [options] [resource-path] [http-method]
+
+  Options:
+    -c, --colors                  highlight output
+    -s, --spec-version <version>  select the type of specification to retrieve: doc|aws|complete
+```
+
+Generate the Swagger definition of an endpoint and print it. There are three different versions of the specification:
+
+*   The `doc` version only contains parts of the definitions that belong to the Swagger specification.
+*   The `aws` version is the definition that is sent to AWS API gateway when performing a deployment.
+*   The `complete` version contains everything that is defined in the project, including the Myrmex extensions to Swagger.
+
+### deploy-apis
+
+```
+deploy-apis [options] [api-identifiers...]
+
+  Options:
+    -r, --region [region]            select the AWS region
+    -e, --environment [environment]  select the environment
+    -s, --stage [stage]              select the API stage
+```
+
+Deploy one or more APIs in API Gateway. The `--environment` option is used as a prefix to the API name in API Gateway. It can
+be useful to deploy APIs several time in the same AWS account. Values for `--environment` could be `PROD` or `DEV` or `JOHN`
+to be able to deploy the API for production, development or a developer environment.
+
+> The use of `--environment` can seem redundant with `--stage`, but when deploying an API Gateway stage, it is not to
+possible to access to the testing tools of the AWS console. These tools are available only for the ultimate version of the
+API. Using `--environment` can allow several developers to use the testing tools of the AWS console simultaneously.
+`--environment` also allows to use `--stage` for other purposes like API versioning (with values like `v1`, `v2`,
+`2017-01-01` ...).

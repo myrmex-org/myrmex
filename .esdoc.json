@@ -1,16 +1,18 @@
 {
   "source": "./packages",
-  "destination": "./doc",
+  "destination": "../myrmx.github.io/",
   "excludes": ["node_modules"],
   "includeSource": false,
   "coverage": false,
   "manual": {
     "globalIndex": true,
+    "badge": false,
     "tutorial": [
       "./manual/getting-started.md",
       "./manual/iam-plugin.md",
       "./manual/lambda-plugin.md",
       "./manual/api-gateway-plugin.md",
+      "./manual/creating-plugins.md",
       "./manual/cors-plugin.md"
     ]
   }

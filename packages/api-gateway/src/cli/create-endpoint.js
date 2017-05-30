@@ -60,7 +60,7 @@ module.exports = (icli) => {
       }
     }, {
       cmdSpec: '-i --integration <integration-type>',
-      description: 'The type of integration (lambda|http|mock|aws-service)',
+      description: 'The type of integration (lambda|lambda-proxy|http|mock|aws-service)',
       type: 'list',
       choices: choicesLists.integration,
       question: {

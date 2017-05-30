@@ -1,10 +1,12 @@
+# Creating plugins
+
 ## Plugin definition
 
 The Myrmex core is the node module `@myrmex/core`. It exports an object (referred as the *Myrmex instance*) that is based on
 [Pebo](https://github.com/AlexisNo/pebo#readme) that is a kind of event emitter.
 
 Myrmex plugins use the *Myrmex instance* to interact with each other. A Myrmex plugin can be published on npm to be used by
-anyone, or it can be a project specific plugin in the folder `plugins/my-plugin-identifier` of the project.
+anyone, or it can be a project specific plugin.
 
 Myrmex plugins can make use of the following functionalities:
 
@@ -22,6 +24,7 @@ Here is a quick overview of an object exported by a Myrmex plugin.
 {
   // An unique identifier that should be carefully chosen to not enter in conflict with other plugins
   name: `my-plugin-identifier`,
+  version: `0.0.0`,
 
   // If the plugin is configurable, this place is suggested to define default values
   // This configuration can be overwritten for a project in the file
@@ -134,21 +137,16 @@ myrmex.fire('MyEvent', eventArg1, eventArg2)
 });
 ```
 
-Using this mecanism, Myrmex plugins can create their own events and listen for other plugins events. Several plugins can listen
-for the same event and use and/or modify its arguments.
+Using this mecanism, Myrmex plugins can create their own events and listen for other plugins events. Several plugins can
+listen for the same event and use and/or modify its arguments.
 
 > For example, before configuring the integration request of API endpoints, the `@myrmex/api-gateway` plugin fires and event
 that allows other plugins to be notified about it. Theses plugins have the opportunity to inject data in the event's argument
 so the plugin `@myrmex/api-gateway` can generate a compete API specification.
 
-Note that we do not recommend to call `myrmex.when()` directly when writing a plugin. We prefer to use the `hooks` property of
-the object exported by the plugin to organize the code and be sure that the listeners are attached to the events during the
-registration of the plugin.
-
-> Note that it is not possible to remove an event listener. That does not seems essential since Myrmex is always invoked by the
-command line and does not lives in a long time running process but that is something that should be added later. Feel free to
-propose a pull request on [Pebo](https://github.com/AlexisNo/pebo) !
-
+Note that it is not recommended to call `myrmex.when()` directly when writing a plugin. We prefer to use the `hooks` property
+of the object exported by the plugin to organize the code and be sure that the listeners are attached to the events during
+the registration of the plugin.
 
 ### Extensions
 

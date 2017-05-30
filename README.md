@@ -42,12 +42,12 @@ Documentation available at [https://myrmx.github.io](https://myrmx.github.io).
 
 ## Dependencies vulnerabilities
 
-| NPM package         | Analysis                                                                                                                       |
-| -------------------:| ------------------------------------------------------------------------------------------------------------------------------ |
-|        @myrmex/core | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/core/badge.svg)](https://snyk.io/test/npm/@myrmex/core)             |
-|        myrmex (cli) | [![Known Vulnerabilities](https://snyk.io/test/npm/myrmex/badge.svg)](https://snyk.io/test/npm/myrmex)                 |
+| NPM package         | Analysis                                                                                                                         |
+| -------------------:| -------------------------------------------------------------------------------------------------------------------------------- |
+|        myrmex (cli) | [![Known Vulnerabilities](https://snyk.io/test/npm/myrmex/badge.svg)](https://snyk.io/test/npm/myrmex)                           |
+|        @myrmex/core | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/core/badge.svg)](https://snyk.io/test/npm/@myrmex/core)               |
 |         @myrmex/iam | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/iam/badge.svg)](https://snyk.io/test/npm/@myrmex/iam)                 |
-|      @myrmex/lambda | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/lambda/badge.svg)](https://snyk.io/test/npm/@myrmex/lambda) |
+|      @myrmex/lambda | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/lambda/badge.svg)](https://snyk.io/test/npm/@myrmex/lambda)           |
 | @myrmex/api-gateway | [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/api-gateway/badge.svg)](https://snyk.io/test/npm/@myrmex/api-gateway) |
 
 ---
