@@ -1,11 +1,12 @@
 {
   "x-myrmex": {
     "apis": [
-      "back-office"
+      "back-office",
+      "recipient"
     ],
     "lambda": "api-generic"
   },
-  "summary": "View a delivery",
+  "summary": "Delete a delivery",
   "responses": {
     "200": {}
   },

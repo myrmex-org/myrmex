@@ -8,11 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "dependencies": {
+  "license": "ISC",
+  "devDependencies": {
     "@myrmex/api-gateway": "*",
-    "@myrmex/iam": "*",
     "@myrmex/core": "*",
+    "@myrmex/iam": "*",
     "@myrmex/lambda": "*"
   }
 }

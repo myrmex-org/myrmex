@@ -175,6 +175,8 @@ deploy-lambdas [options] [lambda-identifiers...]
 Deploy one or more Lambdas in AWS. The `--environment` option is used as a prefix. The `--alias` option will publish a version
 in Amazon Lambda and apply an alias. Setting the option to an empty string (`--alias ""`) will skip this.
 
+> When deploying Node.js Lambdas, it is recommended to have a recent version of npm installed (>= 4)
+
 ### install-lambdas-locally
 
 ```

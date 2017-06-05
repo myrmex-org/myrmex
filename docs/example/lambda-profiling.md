@@ -96,6 +96,9 @@ module.exports.handler = function(event, context, cb) {
 We can execute the lambdas locally to test them.
 
 ```bash
+# Install dependencies of the Lambdas
+myrmex install-lambdas-locally config-128 config-512 config-1536
+# Execute Lambdas locally
 myrmex test-lambda-locally config-128
 myrmex test-lambda-locally config-512
 myrmex test-lambda-locally config-1536
@@ -118,7 +121,7 @@ myrmex test-lambda config-512 --region us-east-1 --environment DEV --alias v0
 myrmex test-lambda config-1536 --region us-east-1 --environment DEV --alias v0
 ```
 
-Check the result of the functions to have insights about the execution environment of Lambdas. Observe the variations when calling several times the same
-function.
+Check the result of the functions to have insights about the execution environment of Lambdas. Observe the variations
+when calling several times the same function.
 
 >>> TODO: explain results and add a module to profile the use of require() with/without warm up of a Lambda.

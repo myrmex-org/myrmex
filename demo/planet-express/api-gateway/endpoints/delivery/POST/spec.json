@@ -6,7 +6,7 @@
     ],
     "lambda": "api-generic"
   },
-  "summary": "View a delivery",
+  "summary": "Create a delivery",
   "responses": {
     "200": {}
   },

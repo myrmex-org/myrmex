@@ -9,3 +9,8 @@ html {
 .navigation li {
     white-space: normal;
 }
+
+.manual-color-tutorial {
+    color: #008f98;
+    background-color: #c0e1e6;
+}

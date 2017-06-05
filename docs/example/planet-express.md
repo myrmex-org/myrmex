@@ -93,7 +93,7 @@ module in its package too.
 
 ```bash
 myrmex create-node-module log
-myrmex create-node-module data-access --dependency log
+myrmex create-node-module data-access --dependencies log
 ```
 
 The implementation of the modules will not be detailed here, but they are "common" `node.js` modules that could be used in any execution environment.
@@ -159,7 +159,7 @@ cd planet-express
 myrmex create-role PlanetExpressLambdaExecution --model LambdaBasicExecutionRole
 
 myrmex create-node-module log
-myrmex create-node-module data-access --dependency log
+myrmex create-node-module data-access --dependencies log
 
 myrmex create-lambda api-generic --runtime nodejs6.10 --timeout 20 --memory 256 --role PlanetExpressLambdaExecution --dependencies data-access,log
 

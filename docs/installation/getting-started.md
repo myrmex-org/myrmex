@@ -16,8 +16,7 @@ Myrmex aims to experiment quickly, but to really be efficient, it is necessary t
 
 ### Permissions needed to deploy the project in AWS
 
-Myrmex plugins that manage AWS resources need to have permissions to execute commands that communicate with the AWS API. When a
-command needs these permissions, Myrmex will use the AWS credentials provided by the environment.
+Myrmex plugins that manage AWS resources need to have permissions to execute commands that communicate with the AWS API.
 
 To begin to work with Myrmex, the following policies can be used:
 
@@ -25,9 +24,12 @@ To begin to work with Myrmex, the following policies can be used:
 *  `AWSLambdaFullAccess`
 *  `AmazonAPIGatewayAdministrator`
 
+[The AWS credentials can be set following the documentation from the AWS SDK for
+Node.js](http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html)
+
 ## Installation
 
-**Prerequisites**: `node` (version 4 minimum) and `npm` (version 4 recommended) must be installed.
+**Prerequisites**: `node` (version 4 minimum) must be installed.
 
 ### Installing the Myrmex command line
 
@@ -45,7 +47,8 @@ myrmex -h
 ```
 
 At this point, there is only one sub-command available: `myrmex new`. When creating a project, other subcommands will be
-provided by Myrmex plugins.
+provided by Myrmex plugins. For every subcommand, every option that is not provided via the command line will provide a
+prompt to set its value. This way, every Myrmex command can be scripted and is completely interactive at the same time.
 
 ### Creating a new project
 

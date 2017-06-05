@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Serverless Express",
-    "description": "An express application served by API GAteway and Lambda"
+    "description": "An Express application served by API Gateway and Lambda"
   },
   "schemes": [
     "https"

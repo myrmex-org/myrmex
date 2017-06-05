@@ -2,7 +2,8 @@
   "name": "A Myrmex project",
   "plugins": [
     "@myrmex/api-gateway",
-    "@myrmex/cors"
+    "@myrmex/cors",
+    "@myrmex/lambda"
   ],
   "config": {
     "colors": true

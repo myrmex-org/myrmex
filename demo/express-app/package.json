@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@myrmex/api-gateway": "*",
-    "@myrmex/iam": "*",
     "@myrmex/core": "*",
+    "@myrmex/iam": "*",
     "@myrmex/lambda": "*"
   }
 }
