@@ -13,6 +13,11 @@ module.exports = function loadProject(icli) {
 
   const cliPlugin = {
     name: 'cli',
+    hooks: {
+      registerCommands: function registerCommandsHook(icli) {
+        return require('./cli/show-config')(icli, cliPlugin.myrmex);
+      }
+    },
     extensions: {
       print: function() { icli.print.apply(icli, arguments); }
     },

@@ -29,8 +29,6 @@ icli.init = function init() {
       // Fire the event that register commands from other plugins
       return fireRegisterCommandsEvent(myrmex)
       .then(() => {
-        // We add the "show-config" command
-        require('../cli/show-config')(icli, myrmex);
         return Promise.resolve(icli);
       });
     }
