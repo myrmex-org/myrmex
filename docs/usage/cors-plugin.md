@@ -66,8 +66,8 @@ Using `myrmex show-config`, it is possible to see the default values:
 ```
 
 By default, all methods, all origins and all headers are allowed. This configuration allows to quickly experiment, but it
-should overwritten to restrict the access to the maximum. To limit the access to the domain `www.example.com`, it is possible
-to set the configuration in the file `myrmex.json` at the root of the project:
+can be overwritten to restrict the access to the maximum. For example, to allow the access to the APIs only for the domain
+`www.example.com`, it is possible to set this configuration in the file `myrmex.json` at the root of the project:
 
 ```json
 {
@@ -84,7 +84,8 @@ to set the configuration in the file `myrmex.json` at the root of the project:
 }
 ```
 
-> There are [other ways](/manual/installation/getting-started.html#project-configuration) to set this kind of configuration.
+> There are [several ways](/manual/installation/getting-started.html#project-configuration) to set this kind of configuration
+in Myrmex.
 
 The command `myrmex show-config` shows the new configuration:
 
