@@ -130,6 +130,7 @@ module.exports = (icli) => {
    */
   function executeCommand(parameters) {
     if (parameters.environment === undefined) { parameters.environment = plugin.myrmex.getConfig('environment'); }
+    if (parameters.alias === undefined) { parameters.alias = plugin.myrmex.getConfig('lambda.alias'); }
 
     return plugin.loadLambdas()
     .then(lambdas => {
