@@ -200,7 +200,7 @@ Create a new Lambda. By default the location of Lambdas is `lambda/lambdas/<iden
 
 *For the Node.js runtime only.*
 
-```
+```text
 create-node-module [options] [name]
 
   Options:
