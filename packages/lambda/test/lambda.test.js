@@ -169,6 +169,7 @@ describe('A Lambda', () => {
 
   describe('deployment', () => {
     it('should create the Lambda for the first deployment', function() {
+      this.timeout(4000);
       return callbackLambda.deploy('us-east-1', context)
       .then(report => {
         assert.equal(report.name, 'TEST-callback-lambda');
@@ -180,6 +181,7 @@ describe('A Lambda', () => {
     });
 
     it('should update the Lambda for the second deployment', function() {
+      this.timeout(4000);
       getFunctionError = null;
       getAliasError = null;
       return callbackLambda.deploy('us-east-1', context)
