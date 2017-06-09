@@ -51,7 +51,7 @@ Role.prototype.deploy = function deploy(context) {
 
   return plugin.myrmex.fire('beforeDeployRole', this)
   .spread(() => {
-    return Promise.promisify(awsIAM.getRole.bind(awsIAM))({ RoleName: name })
+    return awsIAM.getRole({ RoleName: name }).promise()
     .catch(e => {
       // We silently ignore the error if the role is not found: we will have to create it
       if (e.code === 'NoSuchEntity') { return Promise.resolve(null); }
@@ -62,7 +62,7 @@ Role.prototype.deploy = function deploy(context) {
     if (data) {
       // If the role already exists, we update it
       report.arn = data.Role.Arn;
-      return this.update(awsIAM, data.Role, report);
+      return this.update(awsIAM, data.Role.RoleName, report);
     } else {
       // If the does not exists, we create it
       return this.create(awsIAM, name, report);
@@ -70,9 +70,7 @@ Role.prototype.deploy = function deploy(context) {
   })
   .then(data => {
     // @TODO allow to detach policies
-    if (data.Role && data.Role.Arn) {
-      report.arn = data.Role.Arn;
-    }
+    report.arn = data.Role.Arn;
     return this.attachPolicies(awsIAM, name, context);
   })
   .then(data => {
@@ -99,7 +97,13 @@ Role.prototype.create = function create(awsIAM, name, report) {
     RoleName: name,
     Path: this.pathPrefix
   };
-  return Promise.promisify(awsIAM.createRole.bind(awsIAM))(params);
+  return awsIAM.createRole(params).promise()
+  .catch(e => {
+    if (e.code === 'EntityAlreadyExists') {
+      return this.update(awsIAM, name, report);
+    }
+    return Promise.reject(e);
+  });
 };
 
 /**
@@ -108,14 +112,17 @@ Role.prototype.create = function create(awsIAM, name, report) {
 * @param {Object} report
 * @returns {Promise<Object>}
 */
-Role.prototype.update = function update(awsIAM, currentRole, report) {
+Role.prototype.update = function update(awsIAM, roleName, report) {
   report = report || {};
   report.operation = 'Update';
   var params = {
     PolicyDocument: JSON.stringify(this.config['trust-relationship']),
-    RoleName: currentRole.RoleName
+    RoleName: roleName
   };
-  return Promise.promisify(awsIAM.updateAssumeRolePolicy.bind(awsIAM))(params);
+  return awsIAM.updateAssumeRolePolicy(params).promise()
+  .then(() => {
+    return awsIAM.getRole({ RoleName: roleName }).promise();
+  });
 };
 
 /**
@@ -149,7 +156,7 @@ Role.prototype.attachManagedPolicy = function attachManagedPolicy(awsIAM, policy
       PolicyArn: policyArn,
       RoleName: roleName
     };
-    return Promise.promisify(awsIAM.attachRolePolicy.bind(awsIAM))(params);
+    return awsIAM.attachRolePolicy(params).promise();
   });
 };
 

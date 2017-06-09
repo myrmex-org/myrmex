@@ -133,7 +133,7 @@ Lambda.prototype.execute = function execute(region, context, event) {
   };
   if (context.alias) { params.Qualifier = context.alias; }
 
-  return Promise.promisify(awsLambda.invoke.bind(awsLambda))(params);
+  return awsLambda.invoke(params).promise();
 };
 
 /**
@@ -155,7 +155,7 @@ Lambda.prototype.getIntegrationDataInjector = function getIntegrationDataInjecto
   if (context.alias) {
     params.Qualifier = context.alias;
   }
-  return Promise.promisify(awsLambda.getFunction.bind(awsLambda))(params)
+  return awsLambda.getFunction(params).promise()
   .then(data => {
     return Promise.resolve(new IntegrationDataInjector(this, data));
   });
@@ -201,6 +201,11 @@ Lambda.prototype.deploy = function deploy(region, context) {
   })
   .then(data => {
     return report;
+  })
+  .catch(e => {
+    console.log('could not deploy ' + functionName);
+    console.log(e);
+    return Promise.reject(e);
   });
 };
 
@@ -259,7 +264,7 @@ Lambda.prototype.buildPackage = function buildPackage(report) {
  */
 Lambda.prototype.isDeployed = function isDeployed(awsLambda) {
   const params = { FunctionName: this.config.params.FunctionName };
-  return Promise.promisify(awsLambda.getFunction.bind(awsLambda))(params)
+  return awsLambda.getFunction(params).promise()
   .then((r) => {
     return Promise.resolve(true);
   })
@@ -282,13 +287,13 @@ Lambda.prototype.create = function create(awsLambda, context, report) {
   const params = _.cloneDeep(this.config.params);
   return Promise.all([
     this.buildPackage(report),
-    plugin.myrmex.call('iam:retrieveRoleArn', params.Role, context, params.Role)
+    retrieveRoleArn(params.Role, context)
   ])
   .spread((buffer, roleArn) => {
     initTime = process.hrtime();
     params.Code = { ZipFile: buffer };
     params.Role = roleArn;
-    return Promise.promisify(awsLambda.createFunction.bind(awsLambda))(params);
+    return awsLambda.createFunction(params).promise();
   })
   .then(r => {
     report.deployTime = process.hrtime(initTime);
@@ -314,8 +319,8 @@ Lambda.prototype.update = function update(awsLambda, context, report) {
       ZipFile: buffer
     };
     return Promise.all([
-      Promise.promisify(awsLambda.updateFunctionCode.bind(awsLambda))(codeParams),
-      plugin.myrmex.call('iam:retrieveRoleArn', this.config.params.Role, context, this.config.params.Role)
+      awsLambda.updateFunctionCode(codeParams).promise(),
+      retrieveRoleArn(this.config.params.Role, context)
     ]);
   })
   .spread((codeUpdateResponse, roleArn) => {
@@ -323,7 +328,7 @@ Lambda.prototype.update = function update(awsLambda, context, report) {
     const configParams = _.cloneDeep(this.config.params);
     delete configParams.Publish;
     configParams.Role = roleArn;
-    return Promise.promisify(awsLambda.updateFunctionConfiguration.bind(awsLambda))(configParams);
+    return awsLambda.updateFunctionConfiguration(configParams).promise();
   })
   .then(r => {
     report.deployTime = process.hrtime(initTime);
@@ -339,7 +344,7 @@ Lambda.prototype.publishVersion = function publishVersion(awsLambda) {
   const params = {
     FunctionName: this.config.params.FunctionName
   };
-  return Promise.promisify(awsLambda.publishVersion.bind(awsLambda))(params);
+  return awsLambda.publishVersion(params).promise();
 };
 
 /**
@@ -385,7 +390,7 @@ Lambda.prototype.aliasExists = function aliasExists(awsLambda, alias) {
     FunctionName: this.config.params.FunctionName,
     Name: alias
   };
-  return Promise.promisify(awsLambda.getAlias.bind(awsLambda))(params)
+  return awsLambda.getAlias(params).promise()
   .then(() => {
     return Promise.resolve(true);
   })
@@ -408,7 +413,7 @@ Lambda.prototype.createAlias = function createAlias(awsLambda, version, alias) {
     FunctionVersion: version,
     Name: alias
   };
-  return Promise.promisify(awsLambda.createAlias.bind(awsLambda))(params);
+  return awsLambda.createAlias(params).promise();
 };
 
 /**
@@ -424,8 +429,21 @@ Lambda.prototype.updateAlias = function updateAlias(awsLambda, version, alias) {
     Name: alias,
     FunctionVersion: version
   };
-  return Promise.promisify(awsLambda.updateAlias.bind(awsLambda))(params);
+  return awsLambda.updateAlias(params).promise();
 };
 
 
 module.exports = Lambda;
+
+
+function retrieveRoleArn(roleName, context) {
+  return plugin.myrmex.call('iam:retrieveRoleArn', roleName, context, roleName)
+  .then(arn => {
+    return new Promise(resolve => {
+      // HACK We delay the response because if the iam plugin has to deploy the role,
+      // it is possible to receive the following error when deploying a Lambda immediately after:
+      // InvalidParameterValueException: The role defined for the function cannot be assumed by Lambda.
+      setTimeout(() => { resolve(arn); }, 2000);
+    });
+  });
+}

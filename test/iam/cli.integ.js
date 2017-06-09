@@ -60,7 +60,8 @@ describe('Definition of IAM permissions', () => {
     });
   });
 
-  it('should allow to deploy roles', () => {
+  it('should allow to deploy roles', function() {
+    this.timeout(20000);
     icli.catchPrintStart(showStdout);
     return icli.parse('node script.js deploy-roles integration-test-role -e TEST -s x'.split(' '))
     .then(res => {

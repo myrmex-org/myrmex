@@ -17,7 +17,7 @@ function getPolicyByName(name, listParams, marker) {
     OnlyAttached: false,
     Scope: 'All'
   }, listParams);
-  return Promise.promisify(iam.listPolicies.bind(iam))(params)
+  return iam.listPolicies(params).promise()
   .then(policyList => {
     const policyFound = _.find(policyList.Policies, function(policy) { return policy.PolicyName === name; });
     if (policyFound) {
@@ -82,7 +82,7 @@ function retrievePolicyArn(identifier, context, searchParams) {
 
 function retrieveAWSRoles() {
   const iam = new AWS.IAM();
-  return Promise.promisify(iam.listRoles.bind(iam))({})
+  return iam.listRoles({}).promise()
   .then((data) => {
     return data.Roles;
   });
@@ -103,19 +103,19 @@ function retrieveRoleArn(identifier, context) {
     return Promise.resolve(identifier);
   }
   // Then, we check if a role exists with a name "ENVIRONMENT_identifier_stage"
-  return Promise.promisify(iam.getRole.bind(iam))({ RoleName: context.environment + '_' + identifier + '_' + context.stage })
+  return iam.getRole({ RoleName: context.environment + '_' + identifier + '_' + context.stage }).promise()
   .then((data) => {
     return Promise.resolve(data.Role.Arn);
   })
   .catch(e => {
     // If it failed, we check if a role exists with a name "ENVIRONMENT_identifier"
-    return Promise.promisify(iam.getRole.bind(iam))({ RoleName: context.environment + '_' + identifier })
+    return iam.getRole({ RoleName: context.environment + '_' + identifier }).promise()
     .then((data) => {
       return Promise.resolve(data.Role.Arn);
     })
     .catch(e => {
       // If it failed again, we check if a role exists with a name "identifier"
-      return Promise.promisify(iam.getRole.bind(iam))({ RoleName: identifier })
+      return iam.getRole({ RoleName: identifier }).promise()
       .then((data) => {
         return Promise.resolve(data.Role.Arn);
       })
@@ -126,7 +126,7 @@ function retrieveRoleArn(identifier, context) {
           if (roles.length === 1) {
             return roles[0].deploy(context)
             .then(report => {
-              return report.arn;
+              return Promise.resolve(report.arn);
             });
           }
           return Promise.reject(new Error('Could not find role ' + identifier));

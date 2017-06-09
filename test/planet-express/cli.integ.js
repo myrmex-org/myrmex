@@ -228,7 +228,7 @@ describe('Creation and deployment of the Planet Express project', () => {
   describe('Deployment of APIs in AWS', () => {
     it('should be done via the sub-command "deploy-apis"', function() {
       icli.catchPrintStart(showStdout);
-      this.timeout(60000);
+      this.timeout(90000);
       let address;
       return apiDeployDelay()
       .then(res => {
@@ -247,8 +247,14 @@ describe('Creation and deployment of the Planet Express project', () => {
         assert.ok(stdout.indexOf('back-office  DEV back-office - Back+Office') > -1);
         assert.ok(stdout.indexOf('APIs have been published') > -1);
 
+        // We delay the test of an endpoint because the IAM role can require some time to be effectively associated to the API
+        return new Promise(resolve => {
+          address = /https:\/\/.+\.execute-api\.us-east-1\.amazonaws\.com\/v0/.exec(stdout)[0];
+          setTimeout(() => { resolve(address); }, 5000);
+        });
+      })
+      .then(address => {
         // We call the deployed API and test the response
-        address = /https:\/\/.+\.execute-api\.us-east-1\.amazonaws\.com\/v0/.exec(stdout);
         return rp({ uri: address + '/delivery/123', json: true });
       })
       .then(res => {
