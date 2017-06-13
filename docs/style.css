@@ -2,6 +2,11 @@ html {
   font-family: 'Roboto', sans-serif
 }
 
+img[src$="centerme"] {
+  display:block;
+  margin: 0 auto;
+}
+
 .layout-container > header > a.myrmex-home {
   font-size: 0;
   display: inline-block;
