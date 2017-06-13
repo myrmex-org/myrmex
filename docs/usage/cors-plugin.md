@@ -8,7 +8,7 @@ The `@myrmex/cors` plugin gives the possibility to easily define CORS configurat
 
 Install the npm module in a Myrmex project:
 
-```bash
+```shell
 npm install @myrmex/cors
 ```
 

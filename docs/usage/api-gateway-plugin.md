@@ -11,7 +11,7 @@ Gateway](https://aws.amazon.com/api-gateway/) and the [Swagger v2.0](http://swag
 
 Install the npm module in a Myrmex project:
 
-```bash
+```shell
 npm install @myrmex/api-gateway
 ```
 
@@ -47,7 +47,7 @@ of its Swagger specification in a `spec.json` file.
 
 As an example is more easy to understand, that is what a project structure could looks like:
 
-```text
+```shell
 api-gateway
 ├── apis                              The APIs defined by the application
 |   ├── back-office                   The name of this directory is the identifier of an API
@@ -107,7 +107,7 @@ Swagger](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway
 
 ### create-api
 
-```
+```shell
 create-api [options] [api-identifier]
 
   Options:
@@ -122,7 +122,7 @@ will to create a simple base configuration. It is possible to write a full Swagg
 
 ### create-model
 
-```
+```shell
 create-model [name]
 ```
 
@@ -131,7 +131,7 @@ or output of API endpoints but are not mandatory.
 
 ### create-endpoint
 
-```
+```shell
 create-endpoint [options] [resource-path] [http-method]
 
   Options:
@@ -164,7 +164,7 @@ The definition of an endpoint can be added to one or more APIs using a Myrmex ex
 
 ### inspect-api
 
-```
+```shell
 inspect-api [options] [api-identifier]
 
   Options:
@@ -180,7 +180,7 @@ Generate the Swagger definition of an API and print it. There are three differen
 
 ### inspect-endpoint
 
-```
+```shell
 inspect-endpoint [options] [resource-path] [http-method]
 
   Options:
@@ -196,7 +196,7 @@ Generate the Swagger definition of an endpoint and print it. There are three dif
 
 ### deploy-apis
 
-```
+```shell
 deploy-apis [options] [api-identifiers...]
 
   Options:

@@ -7,7 +7,7 @@ recommend to do that in a real case scenario. You should use `Express` with API 
 
 We will start by creating a basic Express application following [the documentation](https://expressjs.com/en/starter/generator.html).
 
-```bash
+```shell
 # Installation of express-generator
 npm install express-generator -g
 # Creation of a basic application
@@ -18,7 +18,7 @@ cd express-app && npm install
 
 We start the application locally to check that everything works correctly.
 
-```bash
+```shell
 set DEBUG=express-app:* & npm start
 ```
 
@@ -28,13 +28,13 @@ Visit http://127.0.0.1:3000/ to check that the application runs correctly locall
 
 Be sure that the Myrmex cli is installed.
 
-```bash
+```shell
 npm install -g myrmex
 ```
 
 ### Install Myrmex in the Express project
 
-```bash
+```shell
 # For the prompt "What is your project name?", leave it empty, so Myrmex will be installed in the same directory that Express
 # We will need the plugins @myrmex/iam @myrmex/api-gateway and @myrmex/lambda
 myrmex new
@@ -46,7 +46,7 @@ Myrmex and its plugins will be installed in the section `devDependencies` of the
 
 We create two IAM roles: one to allow Lambda to write in cloudwatch and the other to allow API Gateway to invoke Lambda.
 
-```bash
+```shell
 myrmex create-role MyExpressAppLambdaExecution --model LambdaBasicExecutionRole
 myrmex create-role MyExpressAppLambdaInvocation --model APIGatewayLambdaInvocation
 ```
@@ -55,7 +55,7 @@ myrmex create-role MyExpressAppLambdaInvocation --model APIGatewayLambdaInvocati
 
 We create a new Lambda managed by Myrmex.
 
-```bash
+```shell
 myrmex create-lambda serverless-express --runtime nodejs6.10 --timeout 30 --memory 256 --role MyExpressAppLambdaExecution
 ```
 
@@ -74,7 +74,7 @@ has to be loaded when `require()` is used.
 
 In the `package.json` of the Lambda, we define the Express application as a dependency
 
-```bash
+```shell
 # in /lambda/lambdas/serverless-express
 npm install ../../.. --save
 ```
@@ -82,7 +82,7 @@ npm install ../../.. --save
 [aws-serverless-express](https://github.com/awslabs/aws-serverless-express) is a npm package that wrap an Express application
 to process requests from API Gateway with Lambda integration. We add it as a dependency of our Lambda.
 
-```bash
+```shell
 # in /lambda/lambdas/serverless-express
 npm install aws-serverless-express --save
 ```
@@ -104,7 +104,7 @@ exports.handler = (event, context) => awsServerlessExpress.proxy(server, event, 
 We create an API with two endpoints using `ANY` method and Lambda proxy integration: one to handle the root url, and another
 for the rest.
 
-```bash
+```shell
 myrmex create-api serverless-express --title "Serverless Express" --desc "An Express application served by API Gateway and Lambda"
 myrmex create-endpoint / ANY --apis serverless-express --summary "Proxy to Lambda" --auth none --integration lambda-proxy --lambda serverless-express --role MyExpressAppLambdaInvocation
 myrmex create-endpoint /{proxy+} ANY --apis serverless-express --summary "Proxy to Lambda" --auth none --integration lambda-proxy --lambda serverless-express --role MyExpressAppLambdaInvocation
@@ -112,7 +112,7 @@ myrmex create-endpoint /{proxy+} ANY --apis serverless-express --summary "Proxy 
 
 ### Deployment
 
-```bash
+```shell
 myrmex deploy-apis serverless-express --region us-east-1 --environment DEV --stage v0 --deploy-lambdas all --alias ""
 ```
 

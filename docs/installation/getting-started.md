@@ -35,13 +35,13 @@ Node.js](http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/settin
 
 The `myrmex` command line has its own npm module. Install it globally.
 
-```bash
+```shell
 npm install -g myrmex
 ```
 
 We can check that the `myrmex` command line is correctly installed.
 
-```bash
+```shell
 # This command will show the available options and sub-commands
 myrmex -h
 ```
@@ -55,7 +55,7 @@ prompt to set its value. This way, every Myrmex command can be scripted and is c
 `myrmex new` is the command that creates new projects. If it is called without argument and/or option, it will provide a prompt
 to define the configuration of the project.
 
-```bash
+```shell
 # Using the command without option and argument,
 # the user will be prompted to give information about the project configuration
 myrmex new
@@ -79,7 +79,7 @@ They are provided by plugins that have been installed in the project.
 `myrmex new` propose a selection of plugins to install but it is possible to install them or other plugins separately. Myrmex
 plugins are npm packages. So the following command will install the plugin `@myrmex/api-gateway`:
 
-```bash
+```shell
 npm install @myrmex/api-gateway --save-dev
 ```
 
@@ -171,7 +171,7 @@ named `config`.
 For the previous example, to define the same configuration that in the previous example, the directory structure will look
 like this:
 
-```text
+```shell
 project-root
 ├── myrmex.json
 └── config
@@ -243,7 +243,7 @@ is injected as a configuration key/value. An underscore is used to resolve neste
 For example, the configuration of `myNestedConfig.level1` can be overrided using the environment variable
 `MYRMEX_myNestedConfig_level1`:
 
-```
+```shell
 export MYRMEX_myNestedConfig_level1=43
 myrmex show-config
 ```
@@ -276,7 +276,7 @@ Result:
 }
 ```
 
-> Configuration values defined via an environment variable are always of type `String`  
+> Configuration values defined via an environment variable are always of type `String`
 
 ### Defining the configuration programmatically
 

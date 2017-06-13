@@ -14,7 +14,7 @@ gives all necessary permissions.
 
 Install the npm module in a Myrmex project:
 
-```bash
+```shell
 npm install @myrmex/iam --save-dev
 ```
 
@@ -35,7 +35,7 @@ Then enable the plugin in the `myrmex.json` file:
 
 Usage:
 
-```
+```shell
 create-policy [identifier]
 ```
 
@@ -46,7 +46,7 @@ file in the right place. By default it is `iam/policies/<identifier>.json`.
 
 Usage:
 
-```
+```shell
 create-role [options] [identifier]
 
   Options:
@@ -58,10 +58,10 @@ Create a new IAM role. By default the location of roles is `iam/roles/<identifie
 
 Two predefined role configuration are available:
 
-*   `APIGatewayLambdaInvocation`: The `AWSLambdaRole` policy is attached to it and it can be associated to API Gateway
+*   `APIGatewayLambdaInvocation`: The AWS policy `AWSLambdaRole` is attached to it and it can be associated to API Gateway
      endpoints.
-*   `LambdaBasicExecutionRole`: The `AWSLambdaBasicExecutionRole` is attached to it and it can be associated to Lambda
-     functions.
+*   `LambdaBasicExecutionRole`: The AWS policy `AWSLambdaBasicExecutionRole` is attached to it and it can be associated to
+     Lambda functions.
 
 It is possible to define custom policies and `trust-relationship` configuration. Is is also possible to reference
 policies from the Myrmex project.
@@ -74,7 +74,7 @@ needing to define specific configuration to reference different roles ARN.
 
 Usage:
 
-```
+```shell
 deploy-policies [options] [policy-identifiers]
 
   Options:
@@ -88,7 +88,7 @@ Deploy one or more policies in AWS. The `--environment` option is used as a pref
 
 Usage:
 
-```
+```shell
 deploy-roles [options] [role-identifiers]
 
   Options:
@@ -111,14 +111,14 @@ defined as the default one).
 
 AWS roles can be configured with JSON files with `@myrmex/iam`. The structure looks like this:
 
-```
+```json
 {
   "description": "Description of the role",
   "managed-policies": [
-    <policy-identifier>
+    "<policy-identifier>"
   ],
   "inline-policies": [
-    <policy-definition>
+    "<policy-definition>"
   ],
   "trust-relationship": {
     "Version": "2012-10-17",

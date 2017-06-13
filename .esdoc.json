@@ -6,6 +6,9 @@
   "includeSource": false,
   "coverage": false,
   "badge": false,
+  "plugins": [
+    { "name": "./docs/esdoc-plugin.js" }
+  ],
   "styles": ["./docs/style.css"],
   "manual": {
     "globalIndex": true,

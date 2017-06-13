@@ -56,7 +56,7 @@ cli is executed in the project folder.
 
 We create a new Myrmex project named `planet-express`.
 
-```bash
+```shell
 npm install -g @myrmex/cli
 myrmex new planet-express @myrmex/iam @myrmex/api-gateway @myrmex/lambda
 cd planet-express
@@ -77,7 +77,7 @@ the lambda to know which portions of code to execute.
 The Lambda needs to be associated to an IAM role that defines its authorizations in AWS. It could be authorized to access DynamoDB, RDS or S3 depending on the
 implementation of the application. For now, we use a role that allows the Lambda to write logs in CloudWatch.
 
-```bash
+```shell
 myrmex create-role PlanetExpressLambdaExecution --model LambdaBasicExecutionRole
 ```
 
@@ -91,7 +91,7 @@ Myrmex allows the creation of node modules that can be embedded in the package o
 The data access module uses the logging module. We indicate this dependency so that if a Lambda requires the data access module, it will include the logging
 module in its package too.
 
-```bash
+```shell
 myrmex create-node-module log
 myrmex create-node-module data-access --dependencies log
 ```
@@ -102,7 +102,7 @@ The implementation of the modules will not be detailed here, but they are "commo
 
 We create a Lambda, specifying its configuration and its dependencies.
 
-```bash
+```shell
 myrmex create-lambda api-generic --runtime nodejs6.10 --timeout 20 --memory 256 --role PlanetExpressLambdaExecution --dependencies data-access,log
 ```
 
@@ -115,7 +115,7 @@ integrate with it and expose them in various APIs.
 
 We create one API for each type of client application.
 
-```bash
+```shell
 myrmex create-api back-office --title "Back Office" --desc "Planet Express API for Back Office"
 myrmex create-api sender      --title "Sender"      --desc "Planet Express API for sender application"
 myrmex create-api recipient   --title "Recipient"   --desc "Planet Express API for recipient application"
@@ -125,7 +125,7 @@ myrmex create-api recipient   --title "Recipient"   --desc "Planet Express API f
 
 The API endpoints need to be associated to an IAM role that allows to invoke the Lambda.
 
-```bash
+```shell
 myrmex create-role PlanetExpressLambdaInvocation -m APIGatewayLambdaInvocation
 ```
 
@@ -133,7 +133,7 @@ myrmex create-role PlanetExpressLambdaInvocation -m APIGatewayLambdaInvocation
 
 We create the four endpoints and associate them to the APIs that have to expose them.
 
-```bash
+```shell
 myrmex create-endpoint /delivery/{id} get --apis back-office,recipient,sender --summary "View a delivery" --integration lambda-proxy --auth none --role PlanetExpressLambdaInvocation --lambda api-generic
 myrmex create-endpoint /delivery/{id} patch --apis back-office --summary "Update a delivery" --integration lambda-proxy --auth none --role PlanetExpressLambdaInvocation --lambda api-generic
 myrmex create-endpoint /delivery post --apis back-office,sender --summary "Create a delivery" --integration lambda-proxy --auth none --role PlanetExpressLambdaInvocation --lambda api-generic
@@ -144,14 +144,14 @@ myrmex create-endpoint /delivery/{id} delete --apis back-office,recipient --summ
 
 We deploy the stage `v0` of the three APIs on the `DEV` environment.
 
-```bash
+```shell
 myrmex deploy-apis back-office sender recipient --region us-east-1 --stage v0 --environment DEV --deploy-lambdas all --alias ""
 ```
 
 Altogether
 ---
 
-```bash
+```shell
 npm install -g @myrmex/cli
 myrmex new planet-express @myrmex/iam @myrmex/api-gateway @myrmex/lambda
 cd planet-express

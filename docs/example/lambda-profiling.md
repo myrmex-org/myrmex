@@ -6,20 +6,20 @@
 
 Lets create a new Myrmex project.
 
-```bash
+```shell
 myrmex new lambda-profiling @myrmex/iam @myrmex/lambda
 cd lambda-profiling
 ```
 
 We create a simple execution role for our Lambdas.
 
-```bash
+```shell
 myrmex create-role LambdaInspection --model LambdaBasicExecutionRole
 ```
 
 We create a node module called `inspection`. It will inspect its own execution environment.
 
-```bash
+```shell
 myrmex create-node-module inspection
 ```
 
@@ -70,7 +70,7 @@ module.exports = () => {
 
 Now we create three Lambdas that will use the `inspection` module as a dependency. Their are configured with different memory values: 128MB, 512MB and 1536MB.
 
-```bash
+```shell
 myrmex create-lambda config-128 --runtime nodejs6.10 --timeout 30 --memory 128 --dependencies inspection --role LambdaInspection
 myrmex create-lambda config-512 --runtime nodejs6.10 --timeout 30 --memory 512 --dependencies inspection --role LambdaInspection
 myrmex create-lambda config-1536 --runtime nodejs6.10 --timeout 30 --memory 1536 --dependencies inspection --role LambdaInspection
@@ -95,7 +95,7 @@ module.exports.handler = function(event, context, cb) {
 
 We can execute the lambdas locally to test them.
 
-```bash
+```shell
 # Install dependencies of the Lambdas
 myrmex install-lambdas-locally config-128 config-512 config-1536
 # Execute Lambdas locally
@@ -109,13 +109,13 @@ Testing the Lambdas in AWS
 
 Lets deploy in AWS!
 
-```bash
+```shell
 myrmex deploy-lambdas config-128 config-1536 config-512 --region us-east-1 --environment DEV --alias v0
 ```
 
 Now we can execute the Lambdas in AWS using Myrmex, but you can also use the AWS console if you prefer.
 
-```bash
+```shell
 myrmex test-lambda config-128 --region us-east-1 --environment DEV --alias v0
 myrmex test-lambda config-512 --region us-east-1 --environment DEV --alias v0
 myrmex test-lambda config-1536 --region us-east-1 --environment DEV --alias v0

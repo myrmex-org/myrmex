@@ -15,7 +15,7 @@ An AWS user or role that uses the plugin `@myrmex/lambda` must have access to La
 
 Install the npm module in a Myrmex project:
 
-```bash
+```shell
 npm install @myrmex/lambda
 ```
 
@@ -63,7 +63,7 @@ organization.
 
 This is what a project structure could look like:
 
-```text
+```shell
 lambda
 ├── lambdas                         The Lambdas defined by the application
 |   ├── my-nodejs-lambda            The name of this directory is the identifier of a Lambda
@@ -183,7 +183,7 @@ Using the `myrmex.json` file, the plugin configuration can be defined like this:
 
 ### create-lambda
 
-```
+```shell
 create-lambda [options] [identifier]
 
   Options:
@@ -200,7 +200,7 @@ Create a new Lambda. By default the location of Lambdas is `lambda/lambdas/<iden
 
 *For the Node.js runtime only.*
 
-```text
+```shell
 create-node-module [options] [name]
 
   Options:
@@ -219,7 +219,7 @@ When Myrmex deploys a Lambda, it executes `npm install` and the dependencies are
 
 ### deploy-lambdas
 
-```
+```shell
 deploy-lambdas [options] [lambda-identifiers...]
 
   Options:
@@ -236,7 +236,7 @@ in Amazon Lambda and apply an alias. Setting the option to an empty string (`--a
 
 ### install-lambdas-locally
 
-```
+```shell
 install-lambdas-locally [lambda-identifiers...]
 ```
 
@@ -244,7 +244,7 @@ Deletes the `node_modules` folder of one or several lambda and runs `npm install
 
 ### test-lambda-locally
 
-```
+```shell
 test-lambda-locally [options] [lambda-identifier]
 
   Options:
@@ -252,12 +252,12 @@ test-lambda-locally [options] [lambda-identifier]
 ```
 
 Executes a Lambda locally. The event option allows to select the example object that will be passed as the first argument.
-Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock of the context
+Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock of the conshell
 object is passed as the second argument.
 
 ### test-lambda
 
-```
+```shell
 test-lambda [options] [lambda-identifier]
 
   Options:
@@ -269,7 +269,7 @@ test-lambda [options] [lambda-identifier]
 
 Executes a Lambda deployed in AWS. The event option allows to select the example object that will be passed as the first
 argument. Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock of the
-context object is passed as the second argument.
+conshell object is passed as the second argument.
 
 Setting the option `--alias` to an empty string (`--alias ""`) will invoke the `LATEST` version of the Lambda.
 

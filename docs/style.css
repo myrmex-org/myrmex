@@ -2,15 +2,38 @@ html {
   font-family: 'Roboto', sans-serif
 }
 
+.layout-container > header > a.myrmex-home {
+  font-size: 0;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background: url(../../manual/asset/myrmex-small.png) no-repeat center;
+  background-size: 100px;
+  vertical-align: top;
+}
+
+.navigation {
+  width: 400px;
+}
+
+.navigation li {
+  white-space: normal;
+}
+
+.content {
+  margin-left: 400px;
+}
+
+p > code, li > code {
+  color: #ff6600;
+}
+
 .manual-user-index img{
   box-shadow: none !important;
 }
 
-.navigation li {
-    white-space: normal;
-}
 
 .manual-color-tutorial {
-    color: #008f98;
-    background-color: #c0e1e6;
+  color: #008f98;
+  background-color: #c0e1e6;
 }
