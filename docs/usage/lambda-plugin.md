@@ -54,6 +54,20 @@ The content of the `params` property is used as the argument of the following me
 * [`updateFunctionCode()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#updateFunctionCode-property)
 * [`updateFunctionConfiguration()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#updateFunctionConfiguration-property)
 
+Example of `config.json` file:
+
+```json
+{
+  "params": {
+    "Timeout": 10,
+    "MemorySize": "256",
+    "Runtime": "nodejs6.10",
+    "Handler": "index.handler",
+    "Role": "arn:aws:iam::012345678901:role/LambdaBasicExecution"
+  }
+}
+```
+
 By default, for the Node.js runtime, the directory `lambda/modules` contains the node modules of the project. For example,
 some of these modules could be named `log`, or `data-access` or `authorization` etc...
 

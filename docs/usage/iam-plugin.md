@@ -145,6 +145,51 @@ The *inline-policies* section contains a list of AIM policy definitions associat
 
 The *trust-relationship* section contains the policy that describe the trusted entities that can assume the role
 
+## Integration with `@myrmex/api-gateway`
+
+`@myrmex/iam` add some functionalities to  `@myrmex/api-gateway` when both are installed in the same project.
+
+### Simplify the association of an API endpoint with its invocation role
+
+In the [`spec.json`](/manual/usage/api-gateway-plugin.html#project-anatomy) file that describes an endpoint, the invocation
+role is configured via the [API Gateway extension to Swagger]
+(http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html) using the
+property `credentials`. It accepts the ARN of an IAM role. Using `@myrmex/iam`, it is also possible configure this property
+using the identifier of a role defined in the Myrmex project or the name of a role deployed in AWS.
+
+### New behavior for the option `--role <role>` of `myrmex create-endpoint`
+
+This option normally accepts the ARN of a role. With the plugin `@myrmex/iam`, it also accepts the identifier of an role
+defined in the Myrmex project or the name of a role deployed in AWS.
+
+If the option is not provided in the command line, a prompt will propose three option to set the value:
+
+* Select a role managed by the plugin @myrmex/iam
+* Select a role in your AWS account
+* Enter the value manually
+
+## Integration with `@myrmex/lambda`
+
+`@myrmex/iam` add some functionalities to  `@myrmex/lambda` when both are installed in the same project.
+
+### Simplify the association of a Lambda with its execution role
+
+In the [`config.json`](https://myrmx.github.io/manual/usage/lambda-plugin.html#project-anatomy) file that describes the
+configuration of a Lambda, the invocation role is configured via the using the property `params.role`. It accepts the ARN of
+an IAM role. Using `@myrmex/iam`, it is also possible configure this property using the identifier of a role defined in the
+Myrmex project or the name of a role deployed in AWS.
+
+### New behavior for the option `--role <role>` of `myrmex create-lambda`
+
+This option normally accepts the ARN of a role. With the plugin `@myrmex/iam`, it also accepts the identifier of an role
+defined in the Myrmex project or the name of a role deployed in AWS.
+
+If the option is not provided in the command line, a prompt will propose three option to set the value:
+
+* Select a role managed by the plugin @myrmex/iam
+* Select a role in your AWS account
+* Enter the value manually
+
 ## Hooks and extensions
 
 ### Hooks

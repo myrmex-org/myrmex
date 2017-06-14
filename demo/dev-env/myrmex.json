@@ -1,6 +1,7 @@
 {
   "name": "A Myrmex project",
   "plugins": [
+    "@myrmex/iam",
     "@myrmex/api-gateway",
     "@myrmex/cors",
     "@myrmex/lambda"

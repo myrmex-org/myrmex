@@ -9,6 +9,7 @@
   "plugins": [
     { "name": "./docs/esdoc-plugin.js" }
   ],
+  "scripts": ["./docs/highlight.pack.js"],
   "styles": ["./docs/style.css"],
   "manual": {
     "globalIndex": true,
