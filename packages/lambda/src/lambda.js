@@ -221,12 +221,47 @@ Lambda.prototype.installLocally = function install() {
 };
 
 /**
- * Create a zip package for a lambda and provide it's content in a buffer
- * @returns {Promise<Buffer>}
+ * Create a zip package for a lambda and provide it's content in an object following the definition of the AWS SDK
+ * methods createFunction() and updateFunctionCode()
+ * http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#createFunction-property
+ * http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#updateFunctionCode-property
+ * {
+ *   S3Bucket: "myBucket",
+ *   S3Key: "myKey",
+ *   S3ObjectVersion: "1",
+ *   ZipFile: <Binary String>
+ * }
+ * @returns {Promise<Object>}
  */
 Lambda.prototype.buildPackage = function buildPackage(report) {
   report = report || {};
   const initTime = process.hrtime();
+
+  const codeParams = {};
+
+  return plugin.myrmex.fire('buildLambdaPackage', this, codeParams)
+  .then(() => {
+    if (Object.keys(codeParams).length === 0) {
+      return this._buildPackage();
+    }
+    return Promise.resolve(codeParams);
+  })
+  .then(codeParams => {
+    report.packageBuildTime = process.hrtime(initTime);
+    return Promise.resolve(codeParams);
+  });
+};
+
+/**
+ * Fallback package creation if no plugin implement the hook "buildLambdaPackage"
+ * Create a zip package for a lambda and provide it's content in an object following the definition of the AWS SDK
+ * methods createFunction() and updateFunctionCode()
+ * {
+ *   ZipFile: <Buffer>
+ * }
+ * @returns {Promise<Object>}
+ */
+Lambda.prototype._buildPackage = function _buildPackage() {
   const lambdaPath = this.getFsPath();
 
   return this.installLocally()
@@ -237,14 +272,12 @@ Lambda.prototype.buildPackage = function buildPackage(report) {
       const archive = archiver.create('zip', {});
       outputStream.on('close', () => {
         fs.readFile(archivePath, (e, result) => {
-          report.packageBuildTime = process.hrtime(initTime);
           if (e) { return reject(e); }
-          resolve(result);
+          resolve({ ZipFile: result });
         });
       });
 
       archive.on('error', e => {
-        report.packageBuildTime = process.hrtime(initTime);
         reject(e);
       });
 
@@ -289,9 +322,9 @@ Lambda.prototype.create = function create(awsLambda, context, report) {
     this.buildPackage(report),
     retrieveRoleArn(params.Role, context)
   ])
-  .spread((buffer, roleArn) => {
+  .spread((codeReference, roleArn) => {
     initTime = process.hrtime();
-    params.Code = { ZipFile: buffer };
+    params.Code = codeReference;
     params.Role = roleArn;
     return awsLambda.createFunction(params).promise();
   })
@@ -310,14 +343,11 @@ Lambda.prototype.update = function update(awsLambda, context, report) {
   let initTime;
 
   return this.buildPackage(report)
-  .then((buffer) => {
+  .then(codeParams => {
     initTime = process.hrtime();
     // First, update the code
-    const codeParams = {
-      FunctionName: this.config.params.FunctionName,
-      Publish: this.config.params.Publish,
-      ZipFile: buffer
-    };
+    codeParams.FunctionName = this.config.params.FunctionName;
+    codeParams.Publish = this.config.params.Publish;
     return Promise.all([
       awsLambda.updateFunctionCode(codeParams).promise(),
       retrieveRoleArn(this.config.params.Role, context)
