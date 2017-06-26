@@ -1,7 +1,7 @@
 {
   "title": " Myrmex | A serverless applications builder",
   "source": "./packages",
-  "destination": "../myrmx.github.io/",
+  "destination": "../myrmex-org.github.io/",
   "excludes": ["node_modules"],
   "includeSource": false,
   "coverage": false,

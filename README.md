@@ -1,14 +1,12 @@
-![Myrmex Logo](https://raw.githubusercontent.com/myrmx/myrmex/master/images/myrmex.png)
+![Myrmex Logo](https://raw.githubusercontent.com/myrmex-org/myrmex/master/images/myrmex.png)
 
-[![Build Status](https://travis-ci.org/myrmx/myrmex.svg)](https://travis-ci.org/myrmx/myrmex)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/249a9410043a43dca599d29f53a7bf98)](https://www.codacy.com/app/alexisno/myrmex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=myrmx/myrmex&amp;utm_campaign=Badge_Grade)
-[![Codecov](https://codecov.io/gh/myrmx/myrmex/branch/master/graph/badge.svg)](https://codecov.io/gh/myrmx/myrmex)
-
-Beta version - Formerly named "Lager"
+[![Build Status](https://travis-ci.org/myrmex-org/myrmex.svg)](https://travis-ci.org/myrmex-org/myrmex)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/249a9410043a43dca599d29f53a7bf98)](https://www.codacy.com/app/alexisno/myrmex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=myrmex-org/myrmex&amp;utm_campaign=Badge_Grade)
+[![Codecov](https://codecov.io/gh/myrmex-org/myrmex/branch/master/graph/badge.svg)](https://codecov.io/gh/myrmex-org/myrmex)
 
 ## What is it?
 
-A serverless application builder.
+A serverless application framework.
 
 > AWS Lambda + API Gateway + Swagger specification === *Myrmex*
 
@@ -29,7 +27,7 @@ $ cd my-serverless-project
 $ myrmex -h
 ```
 
-Documentation available at [https://myrmx.github.io](https://myrmx.github.io).
+Documentation available at [https://myremx-org.github.io](https://myremx-org.github.io).
 
 ---
 

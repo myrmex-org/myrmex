@@ -174,7 +174,7 @@ If the option is not provided in the command line, a prompt will propose three o
 
 ### Simplify the association of a Lambda with its execution role
 
-In the [`config.json`](https://myrmx.github.io/manual/usage/lambda-plugin.html#project-anatomy) file that describes the
+In the [`config.json`](https://myrmex-org.github.io/manual/usage/lambda-plugin.html#project-anatomy) file that describes the
 configuration of a Lambda, the invocation role is configured via the using the property `params.role`. It accepts the ARN of
 an IAM role. Using `@myrmex/iam`, it is also possible configure this property using the identifier of a role defined in the
 Myrmex project or the name of a role deployed in AWS.

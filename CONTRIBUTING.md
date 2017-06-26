@@ -34,7 +34,7 @@ packages.
 ### Prerequisites
 
 *   Install docker
-*   Clone the repo `git clone git@github.com:myrmx/myrmex.git && cd myrmex`
+*   Clone the repo `git clone git@github.com:myrmex-org/myrmex.git && cd myrmex`
 *   Install the Lerna command line globally:  `npm install -g lerna`
 *   Install dependencies in all packages `lerna run npm install`
 *   Go to the folder of the development environment/project `cd demo/dev-env`
