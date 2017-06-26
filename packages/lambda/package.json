@@ -16,13 +16,13 @@
   "author": "Alexis Hénaut",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/myrmx/myrmex.git"
+    "url": "git+https://github.com/myrmex-org/myrmex.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/myrmx/myrmex/issues"
+    "url": "https://github.com/myrmex-org/myrmex/issues"
   },
-  "homepage": "https://github.com/myrmx/myrmex#readme",
+  "homepage": "https://github.com/myrmex-org/myrmex#readme",
   "dependencies": {
     "archiver": "^1.3.0",
     "aws-sdk": "^2.48.0",
