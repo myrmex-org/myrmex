@@ -66,12 +66,8 @@ module.exports = (icli) => {
       cmdSpec: '-a, --alias <alias>',
       description: 'select the alias to test',
       type: 'input',
-      default: plugin.myrmex.getConfig('stage') || 'v0',
       question: {
-        message: 'Which alias of the Lambda do you want to invoke?',
-        when: (answers, cmdParameterValues) => {
-          return cmdParameterValues['alias'] === undefined && plugin.myrmex.getConfig('lambda.alias') === undefined;
-        }
+        message: 'Which alias of the Lambda do you want to invoke?'
       }
     }],
     execute: executeCommand
@@ -161,6 +157,10 @@ module.exports = (icli) => {
   function executeCommand(parameters) {
     icli.print();
     icli.print('Executing ' + icli.format.info(parameters.lambdaIdentifier) + ' in AWS');
+    icli.print('  AWS region: ' + icli.format.info(parameters.region));
+    icli.print('  Environement (prefix for Lambdas names): ' + icli.format.info(parameters.environment));
+    icli.print('  Alias: ' + icli.format.info(parameters.alias || 'no alias'));
+    icli.print();
 
     return plugin.findLambda(parameters.lambdaIdentifier)
     .then(lambda => {
@@ -171,7 +171,11 @@ module.exports = (icli) => {
     })
     .then(result => {
       result.Payload = JSON.parse(result.Payload);
-      icli.print('Success result:');
+      let message = 'Success result:';
+      if (result.FunctionError === 'Unhandled') {
+        message = 'Invocation error:';
+      }
+      icli.print(message);
       icli.print(JSON.stringify(result, null, 2));
       icli.print();
     })

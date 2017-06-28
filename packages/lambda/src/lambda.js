@@ -68,6 +68,15 @@ Lambda.prototype.toString = function toString() {
   return 'Node Lambda ' + this.identifier;
 };
 
+
+/**
+ * Returns the content of the package.json file of the lambda
+ * @returns {object}
+ */
+Lambda.prototype.getPackageJson = function getPackageJson() {
+  return require(path.join(this.fsPath, 'package.json'));
+};
+
 /**
  * Returns the lambda location on the file system
  * @returns {string}
@@ -233,13 +242,13 @@ Lambda.prototype.installLocally = function install() {
  * }
  * @returns {Promise<Object>}
  */
-Lambda.prototype.buildPackage = function buildPackage(report) {
+Lambda.prototype.buildPackage = function buildPackage(context, report) {
   report = report || {};
   const initTime = process.hrtime();
 
   const codeParams = {};
 
-  return plugin.myrmex.fire('buildLambdaPackage', this, codeParams)
+  return plugin.myrmex.fire('buildLambdaPackage', this, context, codeParams)
   .then(() => {
     if (Object.keys(codeParams).length === 0) {
       return this._buildPackage();
@@ -319,7 +328,7 @@ Lambda.prototype.create = function create(awsLambda, context, report) {
   // but do not want to alter the original
   const params = _.cloneDeep(this.config.params);
   return Promise.all([
-    this.buildPackage(report),
+    this.buildPackage(report, context),
     retrieveRoleArn(params.Role, context)
   ])
   .spread((codeReference, roleArn) => {
@@ -342,7 +351,7 @@ Lambda.prototype.update = function update(awsLambda, context, report) {
   report = report || {};
   let initTime;
 
-  return this.buildPackage(report)
+  return this.buildPackage(report, context)
   .then(codeParams => {
     initTime = process.hrtime();
     // First, update the code

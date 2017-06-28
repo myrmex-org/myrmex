@@ -237,13 +237,16 @@ const plugin = {
   },
 
   extensions: {
-    getLambdas: loadLambdas
+    getLambdas: loadLambdas,
+    addLambda: loadLambda
   },
 
-  loadModules,
   loadLambdas,
-  findNodeModule,
+  loadModules,
+  loadLambda,
+  loadNodeModule,
   findLambda,
+  findNodeModule,
   getPolicies
 };
 
