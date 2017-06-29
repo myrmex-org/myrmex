@@ -27,7 +27,7 @@
     "snyk": "snyk",
     "test": "lerna run test",
     "test-integration": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha -- $(find test -name '*.integ.js' ! -ipath '*node_modules*')",
-    "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find test -name '*.integ.js' ! -ipath '*node_modules*') && codecov -F integration",
+    "test-integration-ci": "NODE_ENV=test istanbul cover --include-all-sources=true ./node_modules/mocha/bin/_mocha --report lcovonly -- $(find test -name '*.integ.js' ! -ipath '*node_modules*') && codecov -F integ",
     "eslint": "eslint . && echo \"  JS lint passed\n\"; exit 0",
     "mdlint": "remark . -qf && echo \"  Markdown lint passed\n\"; exit 0",
     "lint": "eslint . && remark . -qf && echo \"  JS lint and markdown lint passed\n\"; exit 0"
