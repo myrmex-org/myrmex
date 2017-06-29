@@ -1,4 +1,4 @@
-<img align="right" alt="myrmex logo" src="https://raw.githubusercontent.com/myrmex-org/myrmex/master/img/myrmex-logo2.png" />
+<img align="right" alt="myrmex logo" src="https://raw.githubusercontent.com/myrmex-org/myrmex/master/images/myrmex.png" />
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/@myrmex/node-lambda/badge.svg)](https://snyk.io/test/npm/@myrmex/node-lambda)
 
