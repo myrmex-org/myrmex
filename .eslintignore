@@ -3,3 +3,4 @@ coverage
 doc
 docs
 packages/cli/src/cli/figlet
+demo/express-app
