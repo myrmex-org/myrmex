@@ -13,10 +13,10 @@ module.exports = reports => {
   _.forEach(reports, report => {
     t.cell('Name', report.name);
     t.cell('Operation', report.operation);
-    t.cell('Version', report.publishedVersion);
-    t.cell('Alias', report.aliasExisted === undefined ? '' : (report.aliasExisted ? 'Updated' : 'Created'));
+    t.cell('Version', report.publishedVersion || 'n/a');
+    t.cell('Alias', report.aliasExisted === undefined ? 'n/a' : (report.aliasExisted ? 'Updated' : 'Created'));
     t.cell('ARN', report.arn);
-    t.cell('Zip build time', formatHrTime(report.packageBuildTime) + ' ms');
+    t.cell('Package build time', formatHrTime(report.packageBuildTime) + ' ms');
     t.cell('Deploy time', formatHrTime(report.deployTime) + ' ms');
     t.newRow();
   });

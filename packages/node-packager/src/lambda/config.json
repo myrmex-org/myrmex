@@ -1,9 +1,0 @@
-{
-  "params": {
-    "Timeout": 300,
-    "MemorySize": "1024",
-    "Role": "xxxxxx",
-    "Runtime": "nodejs6.10",
-    "Handler": "index.handler"
-  }
-}

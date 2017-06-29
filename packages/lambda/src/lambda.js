@@ -78,6 +78,14 @@ Lambda.prototype.getPackageJson = function getPackageJson() {
 };
 
 /**
+ * Returns the lambda runtime
+ * @returns {string}
+ */
+Lambda.prototype.getRuntime = function getRuntime() {
+  return this.config.params.Runtime;
+};
+
+/**
  * Returns the lambda location on the file system
  * @returns {string}
  */
@@ -212,7 +220,7 @@ Lambda.prototype.deploy = function deploy(region, context) {
     return report;
   })
   .catch(e => {
-    console.log('could not deploy ' + functionName);
+    console.log('Could not deploy ' + functionName);
     console.log(e);
     return Promise.reject(e);
   });
@@ -245,12 +253,12 @@ Lambda.prototype.installLocally = function install() {
 Lambda.prototype.buildPackage = function buildPackage(context, report) {
   report = report || {};
   const initTime = process.hrtime();
-
   const codeParams = {};
 
   return plugin.myrmex.fire('buildLambdaPackage', this, context, codeParams)
   .then(() => {
     if (Object.keys(codeParams).length === 0) {
+      // If no plugin has fullfied "codeParams", we execute the default packaging
       return this._buildPackage();
     }
     return Promise.resolve(codeParams);
@@ -328,7 +336,7 @@ Lambda.prototype.create = function create(awsLambda, context, report) {
   // but do not want to alter the original
   const params = _.cloneDeep(this.config.params);
   return Promise.all([
-    this.buildPackage(report, context),
+    this.buildPackage(context, report),
     retrieveRoleArn(params.Role, context)
   ])
   .spread((codeReference, roleArn) => {
@@ -351,7 +359,7 @@ Lambda.prototype.update = function update(awsLambda, context, report) {
   report = report || {};
   let initTime;
 
-  return this.buildPackage(report, context)
+  return this.buildPackage(context, report)
   .then(codeParams => {
     initTime = process.hrtime();
     // First, update the code

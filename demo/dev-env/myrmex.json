@@ -4,7 +4,8 @@
     "@myrmex/iam",
     "@myrmex/api-gateway",
     "@myrmex/cors",
-    "@myrmex/lambda"
+    "@myrmex/lambda",
+    "@myrmex/packager"
   ],
   "config": {
     "colors": true

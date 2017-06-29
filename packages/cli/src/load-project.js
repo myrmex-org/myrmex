@@ -19,7 +19,11 @@ module.exports = function loadProject(icli) {
       }
     },
     extensions: {
-      print: function() { icli.print.apply(icli, arguments); }
+      print: function() { return icli.print.apply(icli, arguments); },
+      format: function() {
+        const type = Array.prototype.shift.call(arguments);
+        return icli.format[type].apply(icli, arguments);
+      }
     },
     version: require('../package.json').version
   };
