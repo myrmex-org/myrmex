@@ -27,7 +27,7 @@ $ cd my-serverless-project
 $ myrmex -h
 ```
 
-Documentation available at [https://myremx-org.github.io](https://myremx-org.github.io).
+Documentation available at [https://myrmex-org.github.io/](https://myrmex-org.github.io/).
 
 ---
 
