@@ -1,6 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
+const _ = require('lodash');
 const AWS = require('aws-sdk');
 
 const iamHelper = require('./helper');
@@ -136,6 +137,17 @@ Role.prototype.attachPolicies = function attachPolicies(awsIAM, roleName, contex
   // Run the functions in serie
   return Promise.mapSeries(this.config['managed-policies'], (policyIdentifier) => {
     return this.attachManagedPolicy(awsIAM, policyIdentifier, roleName, context);
+  })
+  .then(() => {
+    const names = [];
+    const documents = [];
+    _.forEach(this.config['inline-policies'], (document, name) => {
+      names.push(name);
+      documents.push(document);
+    });
+    return Promise.mapSeries(documents, (policyDocument, index) => {
+      return this.putInlinePolicy(awsIAM, policyDocument, names[index], roleName);
+    });
   });
 };
 
@@ -158,6 +170,23 @@ Role.prototype.attachManagedPolicy = function attachManagedPolicy(awsIAM, policy
     };
     return awsIAM.attachRolePolicy(params).promise();
   });
+};
+
+/**
+ * [putInlinePolicy description]
+ * @param {object} awsIAM
+ * @param {object} policyDocument
+ * @param {string} policyName
+ * @param {string} roleName
+ * @returns Promise
+ */
+Role.prototype.putInlinePolicy = function attachManagedPolicy(awsIAM, policyDocument, policyName, roleName) {
+  const params = {
+    PolicyDocument: JSON.stringify(policyDocument),
+    PolicyName: policyName,
+    RoleName: roleName
+  };
+  return awsIAM.putRolePolicy(params).promise();
 };
 
 module.exports = Role;

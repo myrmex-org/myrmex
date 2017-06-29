@@ -95,6 +95,12 @@ function loadRoles() {
     // Retrieve configuration path of all API specifications
     return fs.readdirAsync(roleConfigsPath);
   })
+  .catch(e => {
+    if (e.code === 'ENOENT' && path.basename(e.path) === 'roles') {
+      return Promise.resolve([]);
+    }
+    return Promise.reject(e);
+  })
   .then((roleConfigFiles) => {
     // Load all the role configurations
     const rolePromises = [];
@@ -111,12 +117,6 @@ function loadRoles() {
   })
   .spread((roles) => {
     return Promise.resolve(roles);
-  })
-  .catch(e => {
-    if (e.code === 'ENOENT' && path.basename(e.path) === 'roles') {
-      return Promise.resolve([]);
-    }
-    return Promise.reject(e);
   });
 }
 
@@ -186,6 +186,7 @@ const plugin = {
 
   extensions: {
     getRoles: loadRoles,
+    addRole: loadRole,
     getAWSRoles: helper.retrieveAWSRoles,
     retrieveRoleArn: helper.retrieveRoleArn
   },
