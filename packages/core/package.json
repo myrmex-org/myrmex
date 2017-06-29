@@ -13,10 +13,10 @@
     "pebo": "0.0.2"
   },
   "devDependencies": {
-    "codecov": "^2.1.0",
+    "codecov": "^2.2.0",
     "comquirer": "0.0.15",
     "istanbul": "^0.4.5",
-    "mocha": "^3.3.0"
+    "mocha": "^3.4.2"
   },
   "keywords": [
     "AWS",

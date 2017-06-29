@@ -4,7 +4,7 @@ if [ -z "$TEST_SUITE" ]; then
     echo "No \$TEST_SUITE provided"
     exit 1;
 elif [ "$TEST_SUITE" == "integration" ]; then
-    npm run test-integration-ci
+    npm run test-integ-ci
 elif [ ! -d "packages/$TEST_SUITE" ]; then
     echo "The directory \"packages/$TEST_SUITE\" does not exists"
     exit 1;

@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/myrmex-org/myrmex#readme",
   "dependencies": {
-    "aws-sdk": "^2.48.0",
+    "aws-sdk": "^2.79.0",
     "bluebird": "^3.5.0",
     "easy-table": "^1.1.0",
     "lodash": "^4.17.4",
@@ -34,10 +34,10 @@
   },
   "devDependencies": {
     "aws-sdk-mock": "^1.7.0",
-    "codecov": "^2.1.0",
+    "codecov": "^2.2.0",
     "comquirer": "0.0.15",
     "istanbul": "^0.4.5",
-    "mocha": "^3.3.0"
+    "mocha": "^3.4.2"
   },
   "peerDependencies": {
     "@myrmex/core": "*"

@@ -30,8 +30,8 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "codecov": "^2.1.0",
+    "codecov": "^2.2.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.3.0"
+    "mocha": "^3.4.2"
   }
 }
