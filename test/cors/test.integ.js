@@ -155,37 +155,37 @@ describe('A project including the cors plugin', () => {
     .then(spec => {
       assert.equal(
         spec.paths['/mix'].post['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
         '\'http://cors-test-2.1.example.com\''
       );
       assert.equal(
         spec.paths['/mix'].options['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
         '\'http://cors-test-2.1.example.com\''
       );
       assert.equal(
         spec.paths['/mix'].options['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Methods'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Methods'],
         '\'POST\''
       );
       assert.equal(
         spec.paths['/protected'].get['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
         '\'http://cors-test-2.2.example.com\''
       );
       assert.equal(
         spec.paths['/protected'].post['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
         '\'http://cors-test-2.2.example.com\''
       );
       assert.equal(
         spec.paths['/protected'].options['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Origin'],
         '\'http://cors-test-2.2.example.com\''
       );
       assert.equal(
         spec.paths['/protected'].options['x-amazon-apigateway-integration']
-          .responses.default.responseParameters['method.response.header.Access-Control-Allow-Methods'],
+        .responses.default.responseParameters['method.response.header.Access-Control-Allow-Methods'],
         '\'GET,POST\''
       );
     });

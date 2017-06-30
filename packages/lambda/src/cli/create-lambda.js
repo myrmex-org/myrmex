@@ -208,8 +208,8 @@ module.exports = (icli) => {
     })
     .then(() => {
       return _.startsWith(parameters.runtime, 'nodejs')
-             ? initNodeJs(parameters, configFilePath)
-             : initPython(parameters, configFilePath);
+        ? initNodeJs(parameters, configFilePath)
+        : initPython(parameters, configFilePath);
     })
     .then(() => {
       // We create a test event file
