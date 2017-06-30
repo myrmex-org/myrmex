@@ -3,12 +3,14 @@
 const os = require('os');
 const path = require('path');
 const Promise = require('bluebird');
-const exec = Promise.promisify(require('child_process').exec);
+const exec = Promise.promisify(require('child_process').exec, {multiArgs: true});
 const fs = require('fs-extra');
 const archiver = require('archiver');
 const AWS = require('aws-sdk');
 const plugin = require('../index');
 const s3 = new AWS.S3();
+
+const DEPENDENCIES_DIR_NAME = 'myrmex-tmp-dependencies-dir';
 
 module.exports = function buildLambdaPackageHook(lambda, context, codeParams) {
   const packagerIdentifier = plugin.myrmex.getConfig('packager.lambdaIdentifier');
@@ -28,21 +30,21 @@ module.exports = function buildLambdaPackageHook(lambda, context, codeParams) {
   // Remove previous content
   return fs.remove(sourcesPath)
   .then(() => {
-    // Create a folder to put the Lambda sources
-    fs.mkdirp(sourcesPath);
-  })
-  .then(() => {
-    // Copy sources
-    return fs.copy(lambda.getFsPath(), sourcesPath, { filter: copyFilter });
+    return prepareSources(lambda.getFsPath(), sourcesPath);
   })
   .then(() => {
     // Install dependencies
     return install(sourcesPath, lambda.getRuntime());
   })
-  .then(output => {
+  .spread((stdout, stderr) => {
     if (plugin.myrmex.getConfig('packager.docker.showStdout')) {
-      plugin.myrmex.call('cli:print', output);
+      plugin.myrmex.call('cli:print', stdout);
+      plugin.myrmex.call('cli:print', stderr);
     }
+    // Remove useless files
+    return fs.remove(path.join(sourcesPath, DEPENDENCIES_DIR_NAME));
+  })
+  .then(() => {
     // Create zip of the Lambda (without installing dependencies)
     return archive(sourcesPath, zipPath);
   })
@@ -59,10 +61,11 @@ module.exports = function buildLambdaPackageHook(lambda, context, codeParams) {
         // Retrieve the location of the final zip on S3
         codeParams.S3Bucket = plugin.myrmex.getConfig('packager.bucket');
         codeParams.S3Key = packageName + '.zip';
-        return codeParams;
+        return Promise.resolve(codeParams);
       });
     }
-    return { ZipFile: zipData };
+    codeParams.ZipFile = zipData;
+    return Promise.resolve(codeParams);
   });
 };
 
@@ -75,6 +78,50 @@ function copyFilter(src) {
     }
   });
   return includePath;
+}
+
+function prepareSources(modulePath, sourcesPath) {
+  const rewrittenDependencies = {};
+  // Create a folder to put the Lambda sources
+  return fs.mkdirp(sourcesPath)
+  .then(() => {
+    // Copy sources
+    return fs.copy(modulePath, sourcesPath, { filter: copyFilter });
+  })
+  .then(() => {
+    // Retrieve dependencies on file system from package.json
+    const packageJson = JSON.parse(JSON.stringify(require(path.join(modulePath, 'package.json'))));
+    const dependencies = packageJson.dependencies;
+
+    // Shortcut
+    if (!dependencies) { return Promise.resolve(); }
+
+    // We declare an array that will be filed with promises that performs operations on the file system
+    const promises = [];
+    const keys = Object.keys(dependencies);
+    keys.forEach(k => {
+      let localDependencyPath;
+      if (dependencies[k].substr(0, 7) === 'file://') {
+        localDependencyPath = path.join(modulePath, dependencies[k].substr(7));
+      } else if (dependencies[k].substr(0, 1) === '.') {
+        localDependencyPath = path.join(modulePath, dependencies[k]);
+      }
+      if (localDependencyPath) {
+        const tmpDependencyPath = path.join(sourcesPath, DEPENDENCIES_DIR_NAME, k);
+        promises.push(fs.copy(localDependencyPath, tmpDependencyPath));
+        promises.push(prepareSources(localDependencyPath, tmpDependencyPath));
+        rewrittenDependencies[k] = './' + DEPENDENCIES_DIR_NAME + '/' + k;
+      } else {
+        rewrittenDependencies[k] = dependencies[k];
+      }
+    });
+    if (promises.length > 0) {
+      packageJson.dependencies = rewrittenDependencies;
+      promises.push(fs.writeJson(path.join(sourcesPath, 'package.json'), packageJson));
+      return Promise.all(promises);
+    }
+    return Promise.resolve();
+  });
 }
 
 function install(sourcesPath, runtime) {
