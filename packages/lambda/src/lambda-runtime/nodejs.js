@@ -26,10 +26,14 @@ module.exports.executeLocally = function executeLocally(lambda, event, contextMo
       reject(e);
     };
   });
+  console.log('Logs:');
   return Promise.any([
     Promise.promisify(m[handlerParts[1]])(event, contextMock || nodejsContextMock),
     contextPromise
-  ]);
+  ])
+  .then(result => {
+    return Promise.resolve('\nResponse:\n' + JSON.stringify(result, null, 2));
+  });
 };
 
 /**

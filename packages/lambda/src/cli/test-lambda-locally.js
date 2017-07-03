@@ -103,19 +103,18 @@ module.exports = (icli) => {
    */
   function executeCommand(parameters) {
     icli.print();
-    icli.print('Executing ' + icli.format.info(parameters.lambdaIdentifier));
+    icli.print('Executing ' + icli.format.info(parameters.lambdaIdentifier) + '\n');
 
     return plugin.findLambda(parameters.lambdaIdentifier)
     .then(lambda => {
       return lambda.executeLocally(parameters.event ? lambda.loadEventExample(parameters.event) : {});
     })
     .then(result => {
-      icli.print('Success result:');
-      icli.print(JSON.stringify(result, null, 2));
+      icli.print(result);
       icli.print();
     })
     .catch(e => {
-      icli.print('Error result:');
+      icli.print('An error occurred durring the execution:\n');
       icli.print(e);
       icli.print(e.stack);
       icli.print();
