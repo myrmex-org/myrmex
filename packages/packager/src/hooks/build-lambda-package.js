@@ -11,8 +11,14 @@ const plugin = require('../index');
 const s3 = new AWS.S3();
 
 const DEPENDENCIES_DIR_NAME = 'myrmex-tmp-dependencies-dir';
+const managedRuntimes = ['nodejs4.3', 'nodejs6.10', 'python2.7', 'python3.6'];
 
 module.exports = function buildLambdaPackageHook(lambda, context, codeParams) {
+  // Shorcut: if the runtime is not managed by the plugin, we skip this hook
+  if (managedRuntimes.indexOf(lambda.getRuntime()) === -1) {
+    return Promise.resolve();
+  }
+
   const packagerIdentifier = plugin.myrmex.getConfig('packager.lambdaIdentifier');
 
   // Shortcut: the Lambda of the packager must be deployed with the default packager of the plugin @myrmex/lambda
@@ -30,7 +36,7 @@ module.exports = function buildLambdaPackageHook(lambda, context, codeParams) {
   // Remove previous content
   return fs.remove(sourcesPath)
   .then(() => {
-    return prepareSources(lambda.getFsPath(), sourcesPath);
+    return prepareSources(lambda.getFsPath(), sourcesPath, lambda.getRuntime());
   })
   .then(() => {
     // Install dependencies
@@ -80,7 +86,7 @@ function copyFilter(src) {
   return includePath;
 }
 
-function prepareSources(modulePath, sourcesPath) {
+function prepareSources(modulePath, sourcesPath, runtime) {
   const rewrittenDependencies = {};
   // Create a folder to put the Lambda sources
   return fs.mkdirp(sourcesPath)
@@ -89,6 +95,11 @@ function prepareSources(modulePath, sourcesPath) {
     return fs.copy(modulePath, sourcesPath, { filter: copyFilter });
   })
   .then(() => {
+    // Shortcut: the next part is relevant only for node
+    if (['nodejs4.3', 'nodejs6.10'].indexOf(runtime) === -1) {
+      return Promise.resolve();
+    }
+
     // Retrieve dependencies on file system from package.json
     const packageJson = JSON.parse(JSON.stringify(require(path.join(modulePath, 'package.json'))));
     const dependencies = packageJson.dependencies;
@@ -109,7 +120,7 @@ function prepareSources(modulePath, sourcesPath) {
       if (localDependencyPath) {
         const tmpDependencyPath = path.join(sourcesPath, DEPENDENCIES_DIR_NAME, k);
         promises.push(fs.copy(localDependencyPath, tmpDependencyPath));
-        promises.push(prepareSources(localDependencyPath, tmpDependencyPath));
+        promises.push(prepareSources(localDependencyPath, tmpDependencyPath, runtime));
         rewrittenDependencies[k] = './' + DEPENDENCIES_DIR_NAME + '/' + k;
       } else {
         rewrittenDependencies[k] = dependencies[k];
@@ -129,7 +140,17 @@ function install(sourcesPath, runtime) {
   const gid = process.getgid();
   let cmd = plugin.myrmex.getConfig('packager.docker.useSudo') ? 'sudo ' : '';
   cmd += 'docker run --rm -v ' + sourcesPath + ':/data';
-  if (runtime === 'nodejs4.3') { cmd += ' -e RUNTIME=node4'; }
+  switch (runtime) {
+    case 'nodejs4.3':
+      cmd += ' -e RUNTIME=node4';
+      break;
+    case 'python2.7':
+      cmd += ' -e RUNTIME=python';
+      break;
+    case 'python3.6':
+      cmd += ' -e RUNTIME=python3';
+      break;
+  }
   if (uid) { cmd += ' -e HOST_UID=' + uid; }
   if (gid) { cmd += ' -e HOST_GID=' + gid; }
   cmd += ' myrmex/lambda-packager';

@@ -31,7 +31,7 @@ module.exports = (icli) => {
         message: 'Choose a unique identifier for the Lambda (alphanumeric caracters, "_" and "-" accepted)'
       }
     }, {
-      cmdSpec: '-r, --runtime <nodejs|nodejs4.3|nodejs6.10|python2.7|python3.6>',
+      cmdSpec: '-r, --runtime <nodejs4.3|nodejs6.10|python2.7|python3.6>',
       description: 'select the runtime',
       type: 'list',
       choices: choicesLists.runtimes,
@@ -126,7 +126,7 @@ module.exports = (icli) => {
     }
     return {
       memory: memoryValues,
-      runtimes: ['nodejs', 'nodejs4.3', 'nodejs6.10', 'python2.7', 'python3.6'],
+      runtimes: ['nodejs4.3', 'nodejs6.10', 'python2.7', 'python3.6'],
       dependencies: () => {
         return plugin.loadModules()
         .then(modules => {
