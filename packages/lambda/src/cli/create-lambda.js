@@ -1,12 +1,8 @@
 'use strict';
 
-const Promise = require('bluebird');
 const _ = require('lodash');
-
 const path = require('path');
-const fs = Promise.promisifyAll(require('fs'));
-const mkdirpAsync = Promise.promisify(require('mkdirp'));
-const ncpAsync = Promise.promisify(require('ncp'));
+const fs = require('fs-extra');
 
 const plugin = require('../index');
 
@@ -191,7 +187,7 @@ module.exports = (icli) => {
     if (!parameters.role && parameters.roleManually) { parameters.role = parameters.roleManually; }
 
     const configFilePath = path.join(process.cwd(), plugin.config.lambdasPath, parameters.identifier);
-    return mkdirpAsync(configFilePath)
+    return fs.mkdirp(configFilePath)
     .then(() => {
       // We create the configuration file of the Lambda
       const config = {
@@ -204,7 +200,7 @@ module.exports = (icli) => {
         }
       };
       // We save the configuration in a json file
-      return fs.writeFileAsync(configFilePath + path.sep + 'config.json', JSON.stringify(config, null, 2));
+      return fs.writeFile(configFilePath + path.sep + 'config.json', JSON.stringify(config, null, 2));
     })
     .then(() => {
       return _.startsWith(parameters.runtime, 'nodejs')
@@ -215,7 +211,7 @@ module.exports = (icli) => {
       // We create a test event file
       const src = path.join(__dirname, 'templates', 'events');
       const dest = path.join(configFilePath, 'events');
-      return ncpAsync(src, dest);
+      return fs.copy(src, dest);
     })
     .then(() => {
       const msg = '\n  The Lambda ' + icli.format.info(parameters.identifier) + ' has been created\n\n'
@@ -238,12 +234,12 @@ function initNodeJs(parameters, configFilePath) {
     packageJson.dependencies[moduleName] = path.relative(configFilePath, path.join(process.cwd(), plugin.config.modulesPath, moduleName));
   });
   // We save the package.json file
-  return fs.writeFileAsync(configFilePath + path.sep + 'package.json', JSON.stringify(packageJson, null, 2))
+  return fs.writeFile(configFilePath + path.sep + 'package.json', JSON.stringify(packageJson, null, 2))
   .then(() => {
     // We create the lambda handler
     const src = path.join(__dirname, 'templates', 'index.js');
     const dest = path.join(configFilePath, 'index.js');
-    return ncpAsync(src, dest);
+    return fs.copy(src, dest);
   });
 }
 
@@ -252,11 +248,11 @@ function initPython(parameters, configFilePath) {
   // We create the lambda handler
   const src = path.join(__dirname, 'templates', 'setup.cfg');
   const dest = path.join(configFilePath, 'setup.cfg');
-  return ncpAsync(src, dest)
+  return fs.copy(src, dest)
   .then(() => {
     // We create the lambda handler
     const src = path.join(__dirname, 'templates', 'lambda_function.py');
     const dest = path.join(configFilePath, 'lambda_function.py');
-    return ncpAsync(src, dest);
+    return fs.copy(src, dest);
   });
 }

@@ -1,8 +1,8 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs-extra');
 const Promise = require('bluebird');
-const rimraf = Promise.promisify(require('rimraf'));
 const exec = Promise.promisify(require('child_process').exec, { multiArgs: true });
 const nodejsContextMock = require('./nodejs-context-mock');
 
@@ -38,7 +38,7 @@ module.exports.executeLocally = function executeLocally(lambda, event, contextMo
  */
 module.exports.installLocally = function install(lambda) {
   const fsPath = lambda.getFsPath();
-  return rimraf(path.join(fsPath, 'node_modules'))
+  return fs.remove(path.join(fsPath, 'node_modules'))
   .then(() => {
     return exec('npm install --loglevel=error', { cwd: fsPath });
   });
