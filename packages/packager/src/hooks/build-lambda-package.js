@@ -119,7 +119,6 @@ function prepareSources(modulePath, sourcesPath, runtime) {
       }
       if (localDependencyPath) {
         const tmpDependencyPath = path.join(sourcesPath, DEPENDENCIES_DIR_NAME, k);
-        promises.push(fs.copy(localDependencyPath, tmpDependencyPath));
         promises.push(prepareSources(localDependencyPath, tmpDependencyPath, runtime));
         rewrittenDependencies[k] = './' + DEPENDENCIES_DIR_NAME + '/' + k;
       } else {
