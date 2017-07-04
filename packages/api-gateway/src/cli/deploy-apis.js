@@ -165,7 +165,7 @@ module.exports = (icli) => {
         promises.push(new Promise((resolve, reject) => {
           // 35 seconds delay
           setTimeout(() => {
-            icli.print('Deploying ' + api.getIdentifier() + ' ...');
+            icli.print('Deploying ' + icli.format.info(api.getIdentifier()) + ' ...');
             resolve(api.deploy(parameters.region, context));
           }, delay * 35000);
         }));
@@ -187,15 +187,18 @@ module.exports = (icli) => {
         t.cell('Stage', result.report.stage);
         t.cell('AWS identifier', result.report.awsId);
         if (result.report.failed) {
-          t.cell('Url', result.report.failed);
+          t.cell('Url', icli.format.error(result.report.failed));
           success = false;
         } else {
-          t.cell('Url', 'https://' + result.report.awsId + '.execute-api.us-east-1.amazonaws.com/' + result.report.stage);
+          t.cell(
+            'Url',
+            icli.format.info('https://' + result.report.awsId + '.execute-api.us-east-1.amazonaws.com/' + result.report.stage)
+          );
         }
         t.newRow();
       });
       icli.print();
-      icli.print('Deployment done');
+      icli.print(icli.format.success('Deployment done'));
       icli.print();
       icli.print(t.toString());
 
@@ -203,11 +206,16 @@ module.exports = (icli) => {
       if (success) {
         return Promise.map(apis, api => { return api.publish(parameters.region, context); })
         .then(() => {
-          icli.print('APIs have been published');
+          icli.print(icli.format.success('APIs have been published'));
           icli.print();
+        })
+        .catch(e => {
+          icli.print(icli.format.error('The deployment of APIs succeed but the publication step failed.'));
+          icli.print(e);
+          process.exit(1);
         });
       } else {
-        icli.print('The deployment of one or more APIs failed. The publication step will not be performed.');
+        icli.print(icli.format.error('The deployment of one or more APIs failed. The publication step will not be performed.'));
         icli.print();
         process.exit(1);
       }
