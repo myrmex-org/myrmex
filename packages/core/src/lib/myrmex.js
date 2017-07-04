@@ -48,7 +48,7 @@ class Myrmex extends Pebo {
   constructor() {
     super();
     this.log = log;
-    this.config = [];
+    this.config = {};
     this.plugins = [];
     this.extensions = [];
     const originalFire = this.fire;
@@ -76,7 +76,7 @@ class Myrmex extends Pebo {
     const pluginConfig = this.getConfig(plugiConfigKey);
     if (pluginConfig !== undefined) {
       // We override the default configuration of the plugin with th one of the project
-      plugin.config = _.assign(plugin.config, pluginConfig);
+      plugin.config = _.merge(plugin.config, pluginConfig);
     }
     // We reference the "final" plugin configuration in the Myrmex configuration
     this.config[plugiConfigKey] = plugin.config;

@@ -33,7 +33,7 @@ const Lambda = function Lambda(config, fsPath) {
   this.fsPath = fsPath;
 
   this.config.params = this.config.params || {};
-  this.config.params = _.assign({
+  this.config.params = _.merge({
     FunctionName: this.identifier,
     Role: 'PLEASE-CONFIGURE-AN-EXECUTION-ROLE-FOR-' + this.identifier,
     Timeout: 15,

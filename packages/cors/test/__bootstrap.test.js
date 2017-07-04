@@ -25,7 +25,7 @@ const nodeApiGatewayPlugin = testRequire('src/index');
  * @return Promise
  */
 before(function() {
-  _.assign(nodeApiGatewayPlugin.config, {
+  _.merge(nodeApiGatewayPlugin.config, {
     apisPath: 'test-assets' + path.sep + 'apis',
     endpointsPath: 'test-assets' + path.sep + 'endpoints',
     modelsPath: 'test-assets' + path.sep + 'models'

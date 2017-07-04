@@ -25,7 +25,7 @@ const iamPlugin = testRequire('src/index');
  * @return Promise
  */
 before(function() {
-  _.assign(iamPlugin.config, {
+  _.merge(iamPlugin.config, {
     policiesPath: 'test-assets' + path.sep + 'policies',
     rolesPath: 'test-assets' + path.sep + 'roles'
   });

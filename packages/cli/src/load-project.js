@@ -135,7 +135,8 @@ function getConfig() {
 
   // Add configuration passed by environment variables
   Object.keys(process.env).forEach(key => {
-    if (key.substring(0, 6) === 'MYRMEX_') {
+    const prefix = 'MYRMEX_';
+    if (key.substring(0, prefix.length) === prefix) {
       // We transform
       //     MYRMEX_myConfig_levels = value
       // into
@@ -146,11 +147,13 @@ function getConfig() {
           if (value === 'false') { value = false; }
           config[part] = value;
         } else {
-          config[part] = config[part] || {};
+          if (config[part] === undefined) {
+            config[part] = {};
+          }
           addParts(config[part], parts, value);
         }
       }
-      addParts(config.config, key.substring(6).split('_'), process.env[key]);
+      addParts(config.config, key.substring(prefix.length).split('_'), process.env[key]);
     }
   });
 

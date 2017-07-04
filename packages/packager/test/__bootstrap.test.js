@@ -38,7 +38,7 @@ process.on('unhandledRejection', (reason, p) => {
  * @return Promise
  */
 before(function() {
-  _.assign(packagerPlugin.config, {});
+  _.merge(packagerPlugin.config, {});
   assert.equal(packagerPlugin.myrmex, undefined);
   myrmex.registerPlugin(packagerPlugin);
   assert.equal(packagerPlugin.myrmex, myrmex);

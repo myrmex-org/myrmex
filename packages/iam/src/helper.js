@@ -10,7 +10,7 @@ const AWS = require('aws-sdk');
 // all local policies and search for the policy name
 function getPolicyByName(name, listParams, marker) {
   const iam = new AWS.IAM();
-  const params = _.assign({
+  const params = _.merge({
     Marker: marker,
     MaxItems: 100,
     PathPrefix: '/',

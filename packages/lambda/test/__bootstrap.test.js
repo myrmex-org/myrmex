@@ -38,7 +38,7 @@ process.on('unhandledRejection', (reason, p) => {
  * @return Promise
  */
 before(function() {
-  _.assign(nodeLambdaPlugin.config, {
+  _.merge(nodeLambdaPlugin.config, {
     lambdasPath: 'test-assets' + path.sep + 'lambdas',
     modulesPath: 'test-assets' + path.sep + 'modules'
   });
