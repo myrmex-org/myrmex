@@ -110,11 +110,24 @@ module.exports = (icli) => {
       return lambda.executeLocally(parameters.event ? lambda.loadEventExample(parameters.event) : {});
     })
     .then(result => {
-      icli.print(result);
-      icli.print();
+      if (result.logs) {
+        icli.print(icli.format.info('Logs:'));
+        icli.print(result.logs);
+        icli.print();
+      }
+      if (result.stdError) {
+        icli.print(icli.format.error('StdErr:'));
+        icli.print(result.stdErr);
+        icli.print();
+      }
+      if (result.response) {
+        icli.print(icli.format.success('Response:'));
+        icli.print(result.response);
+        icli.print();
+      }
     })
     .catch(e => {
-      icli.print('An error occurred durring the execution:\n');
+      icli.print(icli.format.error('An error occurred durring the execution:\n'));
       icli.print(e);
       icli.print(e.stack);
       icli.print();

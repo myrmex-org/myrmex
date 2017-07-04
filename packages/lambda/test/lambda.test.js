@@ -141,21 +141,34 @@ describe('A Lambda', () => {
 
   describe('local execution', () => {
     it('should work using a callback parameter', () => {
-      return callbackLambda.executeLocally({ id: 42 })
+      return callbackLambda.executeLocally({ id: 42, success: true })
       .then(res => {
-        assert.equal(res.id, 42);
-        assert.equal(res.content, 'fake');
+        assert.equal(res.logs, '\'Callback Lambda\'\n');
+        assert.equal(res.response.id, 42);
+        assert.equal(res.response.content, 'fake');
       });
     });
 
     it('should work using context.succeed()', () => {
       return contextLambda.executeLocally({ success: true })
       .then(res => {
-        assert.equal(res, 'A successful Lambda execution');
+        assert.equal(res.logs, '\'Success\'');
+        assert.equal(res.response, 'A successful Lambda execution');
       });
     });
 
-    it.skip('should work using context.fail()', () => {
+    it('should work using a callback parameter with an error', () => {
+      return callbackLambda.executeLocally({ id: 42, success: false })
+      .then(res => {
+        return Promise.reject(new Error('This code should not be reached'));
+      })
+      .catch(e => {
+        assert.equal(e.message, 'Callback Lambda error');
+        return Promise.resolve();
+      });
+    });
+
+    it('should work using context.fail()', () => {
       return contextLambda.executeLocally({ success: false })
       .then(res => {
         return Promise.reject(new Error('This code should not be reached'));
