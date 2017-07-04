@@ -17,8 +17,8 @@ module.exports = (icli, myrmex) => {
       default: true,
       question: {
         message: 'Do you want to use syntax highlighting?',
-        when: () => {
-          return myrmex.getConfig('colors') === undefined;
+        when: (answers, cmdParameterValues) => {
+          return cmdParameterValues.colors === undefined && myrmex.getConfig('colors') === undefined;
         }
       }
     }],

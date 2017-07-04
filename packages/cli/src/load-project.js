@@ -144,7 +144,9 @@ function getConfig() {
       function addParts(config, parts, value) {
         const part = parts.shift();
         if (parts.length === 0) {
+          // Convert string values "true" and "false" to booleans
           if (value === 'false') { value = false; }
+          if (value === 'true') { value = true; }
           config[part] = value;
         } else {
           if (config[part] === undefined) {
