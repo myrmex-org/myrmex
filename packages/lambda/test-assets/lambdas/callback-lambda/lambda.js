@@ -8,7 +8,6 @@ module.exports.handler = function(event, context, cb) {
   if (event.success) {
     cb(null, data);
   } else {
-    console.log('XXXXXXXXX');
     cb(new Error('Callback Lambda error'), null);
   }
 };

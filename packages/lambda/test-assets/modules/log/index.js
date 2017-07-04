@@ -3,5 +3,5 @@
 // This node module should implement a logging system
 
 module.exports = (msg) => {
-  console.log();
+  console.log(msg);
 };

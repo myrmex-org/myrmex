@@ -121,15 +121,24 @@ module.exports = (icli) => {
         icli.print();
       }
       if (result.response) {
-        icli.print(icli.format.success('Response:'));
-        icli.print(result.response);
-        icli.print();
+        if (result.response.success) {
+          icli.print(icli.format.success('Success response:'));
+          icli.print(result.response.success);
+          icli.print();
+        } else if (result.response.failure) {
+          icli.print(icli.format.error('Failure response:'));
+          icli.print(result.response.failure);
+          icli.print();
+        } else {
+          icli.print(icli.format.success('Response:'));
+          icli.print(result.response);
+          icli.print();
+        }
       }
     })
     .catch(e => {
-      icli.print(icli.format.error('An error occurred durring the execution:\n'));
-      icli.print(e);
-      icli.print(e.stack);
+      icli.print(icli.format.error('An error occurred during the execution:\n'));
+      icli.print(e.stack || e);
       icli.print();
     });
   }

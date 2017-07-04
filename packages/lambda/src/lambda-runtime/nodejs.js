@@ -16,18 +16,7 @@ module.exports.executeLocally = function executeLocally(lambda, event, contextMo
   const handlerParts = lambda.config.params.Handler.split('.');
   const m = require(path.join(lambda.getFsPath(), handlerParts[0]));
   contextMock = contextMock || nodejsContextMock;
-  const contextPromise = new Promise((resolve, reject) => {
-    const succeed = contextMock.succeed;
-    const fail = contextMock.fail;
-    contextMock.succeed = (res) => {
-      succeed(res);
-      resolve(res);
-    };
-    contextMock.fail = (e) => {
-      fail(e);
-      reject(e);
-    };
-  });
+
   // Catch console.log output
   const consoleLogFn = console.log;
   console.log = function() {
@@ -36,10 +25,34 @@ module.exports.executeLocally = function executeLocally(lambda, event, contextMo
     }).join(' ');
     result.logs.push(log);
   };
-  return Promise.race([
-    Promise.promisify(m[handlerParts[1]])(event, contextMock || nodejsContextMock),
-    contextPromise
-  ])
+
+  // Transform  context.succeed() / context.fail() as a Promise
+  const contextPromise = new Promise((resolve, reject) => {
+    const succeed = contextMock.succeed;
+    const fail = contextMock.fail;
+    contextMock.fail = (res) => {
+      fail(res);
+      resolve({ failure: res });
+    };
+    contextMock.succeed = (res) => {
+      succeed(res);
+      resolve({ success: res });
+    };
+  });
+
+  // Transform callback as a Promise
+  const callbackPromise = new Promise((resolve, reject) => {
+    m[handlerParts[1]](event, contextMock || nodejsContextMock, (err, res) => {
+      if (err) {
+        resolve({ failure: err });
+      } else {
+        resolve({ success: res });
+      }
+    });
+  });
+
+  // The first method (context or callback) that resolves or rejects will be considered
+  return Promise.race([callbackPromise, contextPromise])
   .then(res => {
     console.log = consoleLogFn;
     result.logs = result.logs.join('\n');
