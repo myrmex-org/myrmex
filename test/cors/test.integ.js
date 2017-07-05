@@ -9,7 +9,7 @@ const apiDeployDelay = require('../api-deploy-delay');
 
 describe('A project including the cors plugin', () => {
 
-  let address = 'https://lb4wzam4nj.execute-api.us-east-1.amazonaws.com/v0';
+  let address = '';
 
   before(() => {
     process.chdir(__dirname);
@@ -36,7 +36,7 @@ describe('A project including the cors plugin', () => {
       assert.ok(stdout.indexOf('/public     OPTIONS  X') > -1);
       assert.ok(stdout.indexOf('/private    OPTIONS  X') > -1);
       assert.ok(stdout.indexOf('/protected  OPTIONS  X') > -1);
-      assert.ok(stdout.indexOf('Deploying cors-test ...') > -1);
+      assert.ok(stdout.indexOf('Deploying \x1b[36mcors-test\x1b[0m ...') > -1);
       assert.ok(stdout.indexOf('cors-test   DEV cors-test - cors-test') > -1);
       assert.ok(stdout.indexOf('APIs have been published') > -1);
       address = /https:\/\/.+\.execute-api\.us-east-1\.amazonaws\.com\/v0/.exec(stdout)[0];

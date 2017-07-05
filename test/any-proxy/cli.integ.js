@@ -99,7 +99,7 @@ describe('Creation and deployment of a proxy integration with ANY http method', 
         assert.ok(stdout.indexOf('/          ANY     X') > -1);
         assert.ok(stdout.indexOf('/{proxy+}  ANY     X') > -1);
         assert.ok(stdout.indexOf('1 Lambda(s) to deploy: any-proxy') > -1);
-        assert.ok(stdout.indexOf('Deploying any-proxy ...') > -1);
+        assert.ok(stdout.indexOf('Deploying \x1b[36many-proxy\x1b[0m ...') > -1);
         assert.ok(stdout.indexOf('any-proxy   DEV any-proxy - Any+proxy') > -1);
         assert.ok(stdout.indexOf('APIs have been published') > -1);
 

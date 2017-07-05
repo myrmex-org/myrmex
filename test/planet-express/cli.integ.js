@@ -243,7 +243,7 @@ describe('Creation and deployment of the Planet Express project', () => {
         assert.ok(stdout.indexOf('1 Lambda(s) to deploy: api-generic') > -1);
         assert.ok(stdout.indexOf('Lambda functions deployed') > -1);
         assert.ok(stdout.indexOf('DEV-api-generic') > -1);
-        assert.ok(stdout.indexOf('Deploying back-office ...') > -1);
+        assert.ok(stdout.indexOf('Deploying \x1b[36mback-office\x1b[0m ...') > -1);
         assert.ok(stdout.indexOf('back-office  DEV back-office - Back+Office') > -1);
         assert.ok(stdout.indexOf('APIs have been published') > -1);
 
