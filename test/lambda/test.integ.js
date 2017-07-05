@@ -211,7 +211,8 @@ describe('use of the plugin @myrmex/lambda', () => {
   });
 
   describe('local installation of Lambdas', () => {
-    it('should be done via the sub-command "install-lambdas-locally"', () => {
+    it('should be done via the sub-command "install-lambdas-locally"', function() {
+      this.timeout(20000);
       icli.catchPrintStart(showStdout);
       return icli.parse(['node', 'script.js', 'install-lambdas-locally', 'node-a', 'node-b', 'python-a', 'python-b'])
       .then(res => {
