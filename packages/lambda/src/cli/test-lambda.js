@@ -171,16 +171,18 @@ module.exports = (icli) => {
     })
     .then(result => {
       result.Payload = JSON.parse(result.Payload);
-      let message = 'Success result:';
-      if (result.FunctionError === 'Unhandled') {
-        message = 'Invocation error:';
+      let message = icli.format.success('Success:');
+      if (result.FunctionError === 'Handled') {
+        message = icli.format.error('Handled error:');
+      } else if (result.FunctionError === 'Unhandled') {
+        message = icli.format.error('Unhandled error:');
       }
       icli.print(message);
       icli.print(JSON.stringify(result, null, 2));
       icli.print();
     })
     .catch(e => {
-      icli.print('Error result:');
+      icli.print(icli.format.error('Execution error:'));
       icli.print(e);
       icli.print(e.stack);
       icli.print();

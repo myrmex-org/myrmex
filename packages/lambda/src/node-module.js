@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 /**
  * Constructor function
  * @param {Object} packageJson - the content of a package.json file
@@ -19,6 +21,14 @@ const NodeModule = function NodeModule(packageJson, name, fsPath) {
  */
 NodeModule.prototype.getName = function getName() {
   return this.name;
+};
+
+/**
+ * Returns the content of the package.json file of the module
+ * @returns {object}
+ */
+NodeModule.prototype.getPackageJson = function getPackageJson() {
+  return require(path.join(this.fsPath, 'package.json'));
 };
 
 /**

@@ -122,11 +122,11 @@ module.exports = (icli) => {
       }
       if (result.response) {
         if (result.response.success) {
-          icli.print(icli.format.success('Success response:'));
+          icli.print(icli.format.success('Success:'));
           icli.print(result.response.success);
           icli.print();
         } else if (result.response.failure) {
-          icli.print(icli.format.error('Failure response:'));
+          icli.print(icli.format.error('Handled error:'));
           icli.print(result.response.failure);
           icli.print();
         } else {
@@ -137,7 +137,7 @@ module.exports = (icli) => {
       }
     })
     .catch(e => {
-      icli.print(icli.format.error('An error occurred during the execution:\n'));
+      icli.print(icli.format.error('An error occurred during the execution:') + '\n');
       icli.print(e.stack || e);
       icli.print();
     });
