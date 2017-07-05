@@ -26,7 +26,7 @@
   "homepage": "https://github.com/myrmex-org/cli#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "comquirer": "^0.0.15",
+    "comquirer": "^0.1.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
