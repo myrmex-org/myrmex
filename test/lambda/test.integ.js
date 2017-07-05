@@ -152,7 +152,7 @@ describe('use of the plugin @myrmex/lambda', () => {
       icli.catchPrintStart(showStdout);
       return icli.parse([
         'node', 'script.js', 'create-lambda', 'python-a',
-        '-r', 'python3.6',
+        '-r', 'python2.7',
         '-t', '12',
         '-m', '128',
         '--role',
@@ -204,7 +204,7 @@ describe('use of the plugin @myrmex/lambda', () => {
       .catch(e => {
         assert.equal(
           e.message,
-          'Tried to load a package.json file on a python3.6 Lambda (python-a)'
+          'Tried to load a package.json file on a python2.7 Lambda (python-a)'
         );
       });
     });
@@ -331,7 +331,7 @@ describe('use of the plugin @myrmex/lambda', () => {
         const stdout = icli.catchPrintStop();
         assert.ok(stdout.indexOf('Executing \x1b[36mpython-a\x1b[0m') > -1);
         assert.ok(stdout.indexOf('\x1b[31mAn error occurred during the execution:\x1b[0m') > -1);
-        assert.ok(stdout.indexOf('Error: Command failed: python3 -c') > -1);
+        assert.ok(stdout.indexOf('Error: Command failed: python -c') > -1);
         icli.catchPrintStart(showStdout);
         return icli.parse(['node', 'script.js', 'test-lambda-locally', 'python-b', '--event', 'test-error']);
       })
