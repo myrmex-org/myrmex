@@ -68,13 +68,16 @@ Lambda.prototype.toString = function toString() {
   return 'Node Lambda ' + this.identifier;
 };
 
-
 /**
  * Returns the content of the package.json file of the lambda
  * @returns {object}
  */
 Lambda.prototype.getPackageJson = function getPackageJson() {
-  return require(path.join(this.fsPath, 'package.json'));
+  if (this.config.params.Runtime.substr(0, 6) === 'nodejs') {
+    return require(path.join(this.fsPath, 'package.json'));
+  } else {
+    throw new Error('Tried to load a package.json file on a ' + this.config.params.Runtime + ' Lambda (' + this.getIdentifier() + ')');
+  }
 };
 
 /**

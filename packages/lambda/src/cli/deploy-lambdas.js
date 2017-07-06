@@ -142,7 +142,7 @@ module.exports = (icli) => {
       icli.print();
       icli.print('Deploying ' + icli.format.info(lambdas.length) + ' Lambda(s):');
       icli.print('  AWS region: ' + icli.format.info(parameters.region));
-      icli.print('  Environement (prefix for Lambdas names): ' + icli.format.info(parameters.environment));
+      icli.print('  Environement (prefix for Lambdas names): ' + icli.format.info(parameters.environment || 'no environment prefix'));
       icli.print('  Alias: ' + icli.format.info(parameters.alias || 'no alias'));
       icli.print();
       icli.print('This operation may last a little');
