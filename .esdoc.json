@@ -21,7 +21,8 @@
       "./docs/usage/iam-plugin.md",
       "./docs/usage/lambda-plugin.md",
       "./docs/usage/api-gateway-plugin.md",
-      "./docs/usage/cors-plugin.md"
+      "./docs/usage/cors-plugin.md",
+      "./docs/usage/packager.md"
     ],
     "example": [
       "./docs/example/express.md",

@@ -1,6 +1,6 @@
 # Lambda plugin
 
-The Lambda plugin allows to define and deploy Lambdas. It should work with any runtime but has been tested mostly with
+The `@myrmex/lambda` plugin allows to define and deploy Lambdas. It should work with any runtime but has been tested mostly with
 Node.js and secondly with Python.
 
 ## Prerequisites
@@ -30,25 +30,25 @@ Then enable the plugin in the `myrmex.json` file:
 }
 ```
 
-Once the plugin is installed and enabled in the project, the `myrmex` command line will provide new sub-commands to manage and
-deploy Lambdas.
+Once the plugin is installed and enabled in the project, the `myrmex` command line will provide new sub-commands to
+manage and deploy Lambdas.
 
 ## Project anatomy
 
 By default, the content managed by the Lambda plugin is located in an `lambda` directory in the root directory of the
 project.
 
-Out of the box, for the Node.js runtime, the Lambda plugin allows to separate the definition of Lambdas from the logic of the
-application by providing a specific place to write node modules but it is not mandatory to use it. `@myrmex/lambda` helps to
-define and deploy Lambdas but the developer is responsible of the implementation of the application. Other plugins built on
-top of the Lambda plugin may be more opinionated.
+Out of the box, for the Node.js runtime, the Lambda plugin allows to separate the definition of Lambdas from the logic
+of the application by providing a specific place to write node modules but it is not mandatory to use it.
+`@myrmex/lambda` helps to define and deploy Lambdas but the developer is responsible of the implementation of the
+application. Other plugins built on top of the Lambda plugin may be more opinionated.
 
 The directory `lambda/lambdas` contains the Lambdas definitions. For each of its sub-directory is considered as a
-Lambda definition. It must contains a `config.json` file and the code of the Lambda. The name of the subdirectory is used
-as the Lambda identifier.
+Lambda definition. It must contains a `config.json` file and the code of the Lambda. The name of the subdirectory is
+used as the Lambda identifier.
 
-The `config.json` file allows to define the runtime, the timeout, the memory, the role and other properties of the Lambda.
-The content of the `params` property is used as the argument of the following methods from the AWS SDK:
+The `config.json` file allows to define the runtime, the timeout, the memory, the role and other properties of the
+Lambda. The content of the `params` property is used as the argument of the following methods from the AWS SDK:
 
 * [`createFunction()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#createFunction-property)
 * [`updateFunctionCode()`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#updateFunctionCode-property)
@@ -68,12 +68,12 @@ Example of `config.json` file:
 }
 ```
 
-By default, for the Node.js runtime, the directory `lambda/modules` contains the node modules of the project. For example,
-some of these modules could be named `log`, or `data-access` or `authorization` etc...
+By default, for the Node.js runtime, the directory `lambda/modules` contains the node modules of the project. For
+example, some of these modules could be named `log`, or `data-access` or `authorization` etc...
 
-Each module should have a clear responsibility so that each Lambda can embed only the code it needs. This is a recommendation
-but the developer is free to organize the code as he want. The Lambda plugin does not force you to use a specific project
-organization.
+Each module should have a clear responsibility so that each Lambda can embed only the code it needs. This is a
+recommendation but the developer is free to organize the code as he want. The Lambda plugin does not force you to use a
+specific project organization.
 
 This is what a project structure could look like:
 
@@ -115,8 +115,8 @@ Example of `config.json` file:
 }
 ```
 
-The `package.json` of a module or a Lambda can declare dependencies with other modules using file paths in the `dependencies`
-property:
+The `package.json` of a module or a Lambda can declare dependencies with other modules using file paths in the
+`dependencies` property:
 
 ```json
 {
@@ -133,13 +133,13 @@ In this case, `require('log')` will load the module `log` installed in `lambda/m
 It is recommended to use relative paths for portability.
 
 It is recommended to use a recent version of `npm` to minimize the size of the Lambda packages and facilitate the
-configuration of nested dependencies. Indeed, `npm@2` can behave in an unexpected manner with nested dependencies when using
-relative file paths.
+configuration of nested dependencies. Indeed, `npm@2` can behave in an unexpected manner with nested dependencies when
+using relative file paths.
 
 ## Configuration
 
-These are [Myrmex configuration keys](/manual/installation/getting-started.html#project-configuration) specific to to the
-`@myrmex/lambda` plugin.
+These are [Myrmex configuration keys](/manual/installation/getting-started.html#project-configuration) specific to to
+the `@myrmex/lambda` plugin.
 
 ### Default values
 
@@ -166,11 +166,11 @@ Path to the folder that contains modules for Node.js Lambdas. Default value: `la
 
 Set the alias applied when deploying Lambdas.
 
-By setting this configuration, the `--alias` option of the [`myrmex deploy-lambdas`](#deploy-lambdas) command does not prompt
-when not provided via the command line and the configured value is used as the default value.
+By setting this configuration, the `--alias` option of the [`myrmex deploy-lambdas`](#deploy-lambdas) command does not
+prompt when not provided via the command line and the configured value is used as the default value.
 
-Setting `lambda.alias` to an empty string disables the creation/update of an alias and the new version of the Lambda will
-only be available as `LATEST`.
+Setting `lambda.alias` to an empty string disables the creation/update of an alias and the new version of the Lambda
+will only be available as `LATEST`.
 
 ### Example
 
@@ -223,11 +223,12 @@ create-node-module [options] [name]
 
 Prepare a new Node.js module. By default the location of modules is `lambda/modules/<name>/`.
 
-The creation of nodes modules is just a suggestion to organize the code of a project. The idea is to maintain each component
-of the application in its own node module to select only relevant components when deploying Lambdas.
+The creation of nodes modules is just a suggestion to organize the code of a project. The idea is to maintain each
+component of the application in its own node module to select only relevant components when deploying Lambdas.
 
-Every Lambda can declare its modules dependencies using [local paths](https://docs.npmjs.com/files/package.json#local-paths)
-in its `package.json` file. Every module can also declare dependencies to other modules that way.
+Every Lambda can declare its modules dependencies using
+[local paths](https://docs.npmjs.com/files/package.json#local-paths) in its `package.json` file. Every module can also
+declare dependencies to other modules that way.
 
 When Myrmex deploys a Lambda, it executes `npm install` and the dependencies are installed in the `node_modules` folder.
 
@@ -243,10 +244,14 @@ deploy-lambdas [options] [lambda-identifiers...]
     -a, --alias <alias>              select the alias to apply
 ```
 
-Deploy one or more Lambdas in AWS. The `--environment` option is used as a prefix. The `--alias` option will publish a version
-in Amazon Lambda and apply an alias. Setting the option to an empty string (`--alias ""`) will skip this.
+Deploy one or more Lambdas in AWS. The `--environment` option is used as a prefix. The `--alias` option will publish a
+version in Amazon Lambda and apply an alias. Setting the option to an empty string (`--alias ""`) will skip this.
 
-> When deploying Node.js Lambdas, it is recommended to have a recent version of npm installed (>= 4)
+> When deploying Node.js Lambdas, it is recommended to use npm4 to optimize the size of the packages and avoid the
+> resolution of local dependencies with symbolic links (behavior of npm5).
+
+> When deploying Lambdas with C/C++ bindings and/or to be sure to create packages with the correct runtime, use the
+> plugin [`@myrmex/packager`](/manual/usage/packager.html)
 
 ### install-lambdas-locally
 
@@ -265,9 +270,9 @@ test-lambda-locally [options] [lambda-identifier]
     -e, --event <event-name>  Event example to use
 ```
 
-Executes a Lambda locally. The event option allows to select the example object that will be passed as the first argument.
-Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock of the conshell
-object is passed as the second argument.
+Executes a Lambda locally. The event option allows to select the example object that will be passed as the first
+argument. Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock
+of the conshell object is passed as the second argument.
 
 ### test-lambda
 
@@ -282,8 +287,8 @@ test-lambda [options] [lambda-identifier]
 ```
 
 Executes a Lambda deployed in AWS. The event option allows to select the example object that will be passed as the first
-argument. Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock of the
-conshell object is passed as the second argument.
+argument. Example objects are defined in json files in `lambda/lambdas/<identifier>/events/<event-name>.json`. A mock
+of the conshell object is passed as the second argument.
 
 Setting the option `--alias` to an empty string (`--alias ""`) will invoke the `LATEST` version of the Lambda.
 
@@ -293,8 +298,8 @@ Setting the option `--alias` to an empty string (`--alias ""`) will invoke the `
 
 ### Associate a Lambda with an API endpoint
 
-In the [`spec.json`](/manual/usage/api-gateway-plugin.html#project-anatomy) file that describes an endpoint, a new extension
-to Swagger is available to select a Lambda that must be used for the endpoint integration.
+In the [`spec.json`](/manual/usage/api-gateway-plugin.html#project-anatomy) file that describes an endpoint, a new
+extension to Swagger is available to select a Lambda that must be used for the endpoint integration.
 
 ```json
 {
@@ -318,20 +323,22 @@ The value of `--lambda <lambda-identifier>` will be set in extension to Swagger 
 
 ### New options for `myrmex deploy-apis`
 
-When calling [`myrmex create-endpoint`](/manual/usage/api-gateway-plugin.html#deploy-apis), two new options are available:
+When calling [`myrmex create-endpoint`](/manual/usage/api-gateway-plugin.html#deploy-apis), two new options are
+available:
 
 #### `--deploy-lambdas <all|partial|none>`
 
 The option `--deploy-lambdas <all|partial|none>` accepts three possible values:
 
 * `all` will perform the deployment of all Lambdas defined in the Myrmex project before deploying the APIs.
-* `partial` will perform the deployment of all Lambdas that are associated to deployed endpoints before deploying the APIs.
-* `none` will not deploy any Lambda, but it will retrieve the ARNs of all Lambdas that are associated to deployed endpoints.
-  So these Lambda have to be already deployed with the appropriate alias.
+* `partial` will perform the deployment of all Lambdas that are associated to deployed endpoints before deploying the
+  APIs.
+* `none` will not deploy any Lambda, but it will retrieve the ARNs of all Lambdas that are associated to deployed
+  endpoints. So these Lambda have to be already deployed with the appropriate alias.
 
 #### `--alias <alias>`
 
 The option `--alias <alias>` allows to select the Lambda alias that will be integrated with endpoints.
 
-If the [`lambda.alias`](#-lambda-alias-) configuration is set and the option is not provided via the command line, no prompt
-will appear to set the value the configured value is used as the default value.
+If the [`lambda.alias`](#-lambda-alias-) configuration is set and the option is not provided via the command line, no
+prompt will appear to set the value the configured value is used as the default value.

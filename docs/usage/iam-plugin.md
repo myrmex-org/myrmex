@@ -1,7 +1,7 @@
 # IAM plugin
 
-The IAM plugin allows to define and deploy AWS policies and roles. It can be used to avoid referencing IAM roles ARNs and
-simplify the configuration of other plugins.
+The `@myrmex/iam` plugin allows to define and deploy AWS policies and roles. It can be used to avoid referencing IAM
+roles ARNs and simplify the configuration of other plugins.
 
 ## Prerequisites
 
