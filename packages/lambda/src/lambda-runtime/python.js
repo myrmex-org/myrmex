@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const Promise = require('bluebird');
 const exec = Promise.promisify(require('child_process').exec, { multiArgs: true });
 
-const separator = '__LOGS_AND_RESPONSE_SEPARATOR__'
+const separator = '__LOGS_AND_RESPONSE_SEPARATOR__';
 
 /**
  * Returns the result of a local execution

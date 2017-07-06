@@ -1,4 +1,5 @@
-/*eslint-env mocha */
+/* eslint-env mocha */
+/* eslint max-lines: "off" */
 'use strict';
 
 const path = require('path');
