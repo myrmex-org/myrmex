@@ -36,9 +36,6 @@ const stderrStream = {
       if (obj.err && obj.err.stack) {
         process.stderr.write(obj.err.stack + eol);
         process.stderr.write(eol + 'More information in myrmex.log' + eol);
-      } else if (obj.promise && obj.reason) {
-        process.stderr.write((obj.reason.stack ? obj.reason.stack : util.inspect(obj.reason)) + eol);
-        process.stderr.write(eol + 'More information in myrmex.log' + eol);
       } else {
         const cleanedObj = cleanObject(obj);
         if (cleanedObj) {
