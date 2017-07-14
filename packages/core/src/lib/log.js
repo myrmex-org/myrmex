@@ -1,22 +1,50 @@
 'use strict';
 
 const path = require('path');
+const util = require('util');
+const _ = require('lodash');
 const bunyan = require('bunyan');
 const eol = require('os').EOL;
+
+const levels = {
+  10: 'TRACE',
+  20: 'DEBUG',
+  30: 'INFO',
+  40: 'WARN',
+  50: 'ERROR',
+  60: 'FATAL'
+}
+const excludedKeys = ['name', 'hostname', 'pid', 'level', 'msg', 'time', 'v'];
+function cleanObject(o) {
+  let hasData = false;
+  const r = {};
+  Object.keys(o).forEach(k => {
+    if (excludedKeys.indexOf(k) === -1) {
+      r[k] = o[k];
+      hasData = true;
+    }
+  });
+  return hasData ? r : undefined;
+}
 
 const stderrStream = {
   level: 'warn',
   type: 'raw',
   stream: {
     write: (obj) => {
-      if (obj.err && obj.err.code && obj.err.message) {
-        process.stderr.write(eol + obj.err.code + eol + obj.err.message + eol + obj.err.stack + eol);
-      } else if (obj.promise && obj.reason && obj.reason.code) {
-        process.stderr.write(eol + obj.reason.code + eol + obj.reason.stack + eol);
+      process.stderr.write(eol + '[' + obj.time.toISOString() + '] ' + levels[obj.level] + ': ' + obj.msg + eol);
+      if (obj.err && obj.err.stack) {
+        process.stderr.write(obj.err.stack + eol);
+        process.stderr.write(eol + 'More information in myrmex.log' + eol);
+      } else if (obj.promise && obj.reason) {
+        process.stderr.write((obj.reason.stack ? obj.reason.stack : util.inspect(obj.reason)) + eol);
+        process.stderr.write(eol + 'More information in myrmex.log' + eol);
       } else {
-        process.stderr.write(eol + JSON.stringify(obj, null, 2) + eol);
+        const cleanedObj = cleanObject(obj);
+        if (cleanedObj) {
+          process.stderr.write(util.inspect(cleanedObj) + eol);
+        }
       }
-      process.stderr.write(eol + 'More information in myrmex.log' + eol);
     }
   }
 };
