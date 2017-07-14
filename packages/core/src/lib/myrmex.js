@@ -13,12 +13,12 @@ if (process.env.NODE_ENV !== 'test') {
   });
 
   process.on('uncaughtException', (e) => {
-    log.fatal(e, 'Uncaught Exception');
+    log.fatal(e, 'Uncaught Exception: %s', e.message);
     process.exit(1);
   });
 
   process.on('unhandledRejection', (reason, promise) => {
-    log.fatal({ promise: promise, reason: reason }, 'Unhandled Rejection');
+    log.fatal(reason, 'Unhandled Rejection: %s', reason.message);
     process.exit(1);
   });
 }
