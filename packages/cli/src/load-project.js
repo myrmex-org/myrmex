@@ -31,12 +31,7 @@ module.exports = function loadProject(icli) {
   const projectRoot = getProjectRootDirectory();
   if (projectRoot) {
     process.chdir(projectRoot);
-    let myrmex;
-    try {
-      myrmex = getMyrmexInstance();
-    } catch (e) {
-      return Promise.reject(e);
-    }
+    const myrmex = getMyrmexInstance(icli);
     return myrmex.init(getConfig())
     .then(() => {
       // We add the cli plugin
@@ -86,16 +81,19 @@ function getProjectRootDirectory() {
  * Load the @myrmex/core module installed in the project
  * @return {Myrmex} - a myrmex instance
  */
-function getMyrmexInstance() {
+function getMyrmexInstance(icli) {
   try {
     return require(path.join(process.cwd(), 'node_modules', '@myrmex', 'core'));
   } catch (e) {
     if (e.code !== 'MODULE_NOT_FOUND' || e.message.slice(e.message.length - 13, -1) !== '@myrmex' + path.sep + 'core') {
       throw e;
     }
-    const msg = 'Myrmex seems to be present in a package.json file but not installed. Maybe you have to use `npm install`.';
+    const msg = icli.format.error('Error') + ': '
+              + 'The npm module ' + icli.format.info('@myrmex/core') + ' seems to be present in a '
+              + icli.format.info('package.json') + ' file but not installed.'
+              + ' Maybe you have to use ' + icli.format.cmd('npm install') + '.';
     process.stderr.write('\n' + msg + '\n\n');
-    throw new Error(msg);
+    process.exit(1);
   }
 }
 
