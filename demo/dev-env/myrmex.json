@@ -5,7 +5,8 @@
     "@myrmex/api-gateway",
     "@myrmex/cors",
     "@myrmex/lambda",
-    "@myrmex/packager"
+    "@myrmex/packager",
+    "@myrmex/cloud-formation"
   ],
   "config": {
     "colors": true
