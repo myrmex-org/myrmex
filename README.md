@@ -8,13 +8,11 @@
 
 A serverless application framework.
 
-> AWS Lambda + API Gateway + Swagger specification === *Myrmex*
-
 Myrmex helps you to organize your code and deploy serverless applications in AWS. Its plugin system allows you to work with
-AWS Lambda or API Gateway or both of them. The IAM plugin can help you to declare the IAM permissions your application needs
+*AWS Lambda* or *API Gateway* or both of them. The IAM plugin can help you to declare the *IAM* permissions your application needs
 in your versionning system.
 
-Control the IAM permissions needed to deploy your application. Allow several developers to publish different versions of the
+Control the *IAM* permissions needed to deploy your application. Allow several developers to publish different versions of the
 project on the same AWS account.
 
 Write your own plugins to enrich the command line, create higher level functionalities and integrate with other services.
