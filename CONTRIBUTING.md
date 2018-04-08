@@ -33,21 +33,20 @@ packages.
 
 ### Prerequisites
 
-*   Install docker
+*   Install `docker` and `docker-compose`
 *   Clone the repo `git clone git@github.com:myrmex-org/myrmex.git && cd myrmex`
 *   Install the Lerna command line globally:  `npm install -g lerna`
 *   Install dependencies in all packages `lerna run npm install`
 *   Go to the folder of the development environment/project `cd demo/dev-env`
-*   Create a configuration file and set the AWS credentials that Myrmex will use to deploy in AWS `cp env.list.example
-    env.list`
+*   `docker-compose run dev`
 
-#### Launching the development environment
+### Launching the development environment
 
-The `run.sh` script runs zsh in a docker container.
+The command `docker-compose run dev` runs zsh in a docker container.
 
 ```bash
 # In the directory `/demo/dev-env`
-bash ./run.sh
+docker-compose run dev
 ```
 
 You will be logged with the user `myrmex`, in the root directory of a sample project. This sample project is empty, but it is
@@ -59,8 +58,28 @@ myrmex -h
 ```
 
 The code of the repository is available in the container via docker volumes, so any change will be automatically visible in
-the container. `run.sh` detects you UID/GID on the host machine and pass it to the container that will change the UID/GID of
-the user `myrmex` of the container accordingly. So the permissions in the container will match the permissions on the host.
+the container.
+
+### Configuring AWS credentials
+
+The `docker-compose.yml` file uses a volume to mount the `~/.aws` directory inside the container. 
+
+If set on the host, the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION` will be
+available in the container.
+
+### Configuring user permissions
+
+As explained before, the code of the repository is available in the container via docker volumes. By default, the user
+`myrmex` in the container has the `UID` 1000 and the `GID` 1000. It is possible to change it to match the host user `UID` and
+`GID` exposing them as environment variables. So the permissions in the container will match the permissions on the host.
+
+```bash
+# In the directory `/demo/dev-env`
+# UID and GID are not environment variables but shell variables and therefore are not available in docker-compose
+# The following command will set them as environment variables
+export UID GID
+docker-compose run dev
+```
 
 ### Before creating a pull request
 
