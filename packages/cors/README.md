@@ -4,4 +4,9 @@
 
 # Myrmex API Gateway plugin
 
+```bash
+npm install -g myrmex
+myrmex -h
+```
+
 Documentation available at [https://myrmex-org.github.io](https://myrmex-org.github.io).

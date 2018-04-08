@@ -4,10 +4,9 @@
 
 # Myrmex core module
 
-AWS Lambda + API Gateway + Swagger specification === *Myrmex*
-
-The **Lambda API Gateway Endpoints Router**.
-
-Myrmex helps you to organize your code and deploy serverless applications in AWS.
+```bash
+npm install -g myrmex
+myrmex -h
+```
 
 Documentation available at [https://myrmex-org.github.io](https://myrmex-org.github.io).
